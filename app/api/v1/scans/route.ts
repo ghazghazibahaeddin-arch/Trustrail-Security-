@@ -9,6 +9,7 @@ import {
   listEnrichedFindings,
   listProjectsWithStats,
 } from '@/lib/domain-mappers';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const ScanRequestSchema = z.object({
   projectId: z.string().optional(),
@@ -254,6 +255,65 @@ export async function POST(req: NextRequest) {
     resourceId: scanId,
     details: `Executed ${execResult.scannersRun.join(', ')} on ${projectName}: ${execResult.findings.length} findings (${newFindingsInserted} new, ${existingFindingsUpdated} deduplicated).`,
   });
+
+  const correlationId = `corr-${scanId}`;
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType: scanStatus === 'Failed' ? 'scan.failed' : 'scan.completed',
+    actorId: authResult.auth.email,
+    sourceConnector: 'trustrail_scanner',
+    sourceResourceId: projectRow?.id || projectName,
+    affectedAssetIds: assetId ? [assetId] : [],
+    correlationId,
+    payload: {
+      scanId,
+      projectName,
+      findingsDetected: execResult.findings.length,
+      newFindingsInserted,
+      scannersRun: execResult.scannersRun,
+    },
+  });
+
+  const secretFindings = execResult.findings.filter((f) => f.category === 'SECRET');
+  if (secretFindings.length > 0) {
+    publishEvent(db, {
+      orgId: authResult.auth.orgId,
+      eventType: 'secret.detected',
+      actorId: authResult.auth.email,
+      sourceConnector: 'trustrail_scanner',
+      sourceResourceId: projectRow?.repo_url || projectName,
+      affectedAssetIds: assetId ? [assetId] : [],
+      correlationId,
+      payload: {
+        count: secretFindings.length,
+        titles: secretFindings.slice(0, 5).map((s) => s.title),
+      },
+    });
+  } else if (newFindingsInserted > 0) {
+    publishEvent(db, {
+      orgId: authResult.auth.orgId,
+      eventType: 'vulnerability.discovered',
+      actorId: authResult.auth.email,
+      sourceConnector: 'trustrail_scanner',
+      sourceResourceId: projectRow?.id || projectName,
+      affectedAssetIds: assetId ? [assetId] : [],
+      correlationId,
+      payload: { newFindingsInserted, totalFindings: execResult.findings.length },
+    });
+  }
+
+  if (execResult.sbom) {
+    publishEvent(db, {
+      orgId: authResult.auth.orgId,
+      eventType: 'sbom.generated',
+      actorId: authResult.auth.email,
+      sourceConnector: 'trustrail_scanner',
+      sourceResourceId: projectRow?.id || projectName,
+      affectedAssetIds: assetId ? [assetId] : [],
+      correlationId,
+      payload: { components: execResult.sbom.components.length },
+    });
+  }
 
   return jsonOk(
     {

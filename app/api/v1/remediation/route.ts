@@ -5,6 +5,7 @@ import { getDb, appendAuditLog } from '@/lib/db';
 import { jsonError, jsonOk, requireAuth } from '@/lib/api-response';
 import { executeUnifiedScan } from '@/lib/engines/scanner-engine';
 import { computeOrganizationSnapshot, listEnrichedFindings } from '@/lib/domain-mappers';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const CreateRemediationSchema = z.object({
   findingId: z.string().min(1),
@@ -140,6 +141,15 @@ export async function POST(req: NextRequest) {
     details: `Generated remediation patch for finding ${finding.id} ("${finding.title}").`,
   });
 
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType: 'remediation.proposed',
+    actorId: authResult.auth.email,
+    sourceConnector: 'remediation_engine',
+    sourceResourceId: runId,
+    payload: { findingId: finding.id, title: finding.title, verificationCommand },
+  });
+
   return jsonOk(
     {
       run: listRuns(authResult.auth.orgId, finding.id).find((r) => (r as { id: string }).id === runId),
@@ -204,6 +214,14 @@ export async function PATCH(req: NextRequest) {
 
     if (scanCheck.findings.length > 0) {
       db.prepare(`UPDATE remediation_runs SET status = 'Failed', verification_passed = 0 WHERE id = ?`).run(run.id);
+      publishEvent(db, {
+        orgId: authResult.auth.orgId,
+        eventType: 'remediation.failed',
+        actorId: authResult.auth.email,
+        sourceConnector: 'remediation_engine',
+        sourceResourceId: run.id,
+        payload: { findingId: run.finding_id, remainingFindings: scanCheck.findings.length },
+      });
       return jsonError(
         `Verification failed: patched sample still triggered ${scanCheck.findings.length} scanner finding(s).`,
         422,
@@ -281,6 +299,16 @@ export async function PATCH(req: NextRequest) {
     resourceType: 'Finding',
     resourceId: run.finding_id,
     details: `Closed finding ${run.finding_id} ("${run.title}") after passing verification & clean re-scan (${run.id}).`,
+  });
+
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType: 'remediation.verified',
+    actorId: authResult.auth.email,
+    sourceConnector: 'remediation_engine',
+    sourceResourceId: run.finding_id,
+    evidenceReference: evidence,
+    payload: { runId: run.id, findingId: run.finding_id, title: run.title },
   });
 
   return jsonOk({

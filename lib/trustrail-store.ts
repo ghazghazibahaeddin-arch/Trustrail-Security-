@@ -95,6 +95,8 @@ export interface SecurityFinding {
   riskScore?: number;
   priorityTier?: 'P0-IMMEDIATE' | 'P1-URGENT' | 'P2-ELEVATED' | 'P3-SCHEDULED';
   riskReasons?: string[];
+  kevListed?: boolean;
+  epssScore?: number | null;
 }
 
 export interface GraphNode {
@@ -228,8 +230,19 @@ export interface MaskedConnectorConfig {
   encrypted: boolean;
   keyVersion?: number;
   githubTokenHint?: string;
+  githubAppId?: string;
+  githubInstallationId?: string;
+  githubPrivateKeyConfigured?: boolean;
   defaultRepo?: string;
+  gitlabUrl?: string;
+  gitlabTokenHint?: string;
+  bitbucketWorkspace?: string;
+  bitbucketAppPasswordHint?: string;
   webhookUrlHint?: string;
+  teamsWebhookUrlHint?: string;
+  emailProvider?: string;
+  emailFrom?: string;
+  emailApiKeyHint?: string;
   awsRoleArn?: string;
   awsExternalIdHint?: string;
   awsAccessKeyIdHint?: string;
@@ -237,6 +250,18 @@ export interface MaskedConnectorConfig {
   azureTenantId?: string;
   azureSubscriptionId?: string;
   gcpProjectId?: string;
+  kubeClusterName?: string;
+  kubeApiUrlHint?: string;
+  kubeTokenHint?: string;
+  splunkHecUrlHint?: string;
+  splunkHecTokenHint?: string;
+  elasticEndpointUrlHint?: string;
+  elasticApiKeyHint?: string;
+  vaultAddress?: string;
+  vaultTokenHint?: string;
+  awsKmsKeyArn?: string;
+  ssoIssuerUrl?: string;
+  ssoClientId?: string;
 }
 
 export interface Connector {
@@ -246,12 +271,150 @@ export interface Connector {
   category: string;
   status: string;
   availabilityState?: string;
+  lifecycleState?: string;
+  syncCursor?: string | null;
+  assetsDiscovered?: number;
+  eventsImported?: number;
+  failureCount?: number;
+  lastError?: string | null;
+  credentialExpiresAt?: string | null;
+  missingPermissions?: string[];
+  ownerEmail?: string | null;
+  dataDirection?: 'inbound' | 'outbound' | 'bidirectional';
   lastSync: string;
   authType: string;
   permissions: string[];
   healthCheck: string;
   configHint: string;
   config?: MaskedConnectorConfig;
+}
+
+export interface InternalEventItem {
+  eventId: string;
+  eventType: string;
+  eventVersion: string;
+  tenantId: string;
+  actorId: string;
+  sourceConnector: string;
+  sourceResourceId: string;
+  affectedAssetIds: string[];
+  correlationId: string;
+  causationId?: string | null;
+  timestamp: string;
+  evidenceReference?: string | null;
+  payload: Record<string, unknown>;
+  idempotencyKey: string;
+  processingStatus: 'Pending' | 'Processing' | 'Processed' | 'Failed' | 'Dead_Letter';
+  attempts: number;
+  lastError?: string | null;
+  processedAt?: string | null;
+}
+
+export interface IntegrationDependencySpec {
+  providerKey: string;
+  displayName: string;
+  category: string;
+  dataDirection: 'inbound' | 'outbound' | 'bidirectional';
+  requiredCredentials: string[];
+  emitsEvents: string[];
+  consumesEvents: string[];
+  connectedModules: string[];
+  fallbackMode: string;
+}
+
+export interface ConnectorSyncRun {
+  id: string;
+  connectorId: string;
+  mode: 'initial' | 'incremental' | 'webhook' | 'manual';
+  status: 'Running' | 'Completed' | 'Partial' | 'Failed';
+  assetsDiscovered: number;
+  eventsImported: number;
+  failuresCount: number;
+  cursor?: string | null;
+  errorMessage?: string | null;
+  startedAt: string;
+  completedAt?: string | null;
+}
+
+export interface RunnerItem {
+  id: string;
+  orgId: string;
+  name: string;
+  mode: 'scan' | 'cicd' | 'runtime_collector';
+  status: 'Pending_Enrollment' | 'Online' | 'Degraded' | 'Offline' | 'Revoked';
+  tokenPrefix: string;
+  deviceFingerprint?: string | null;
+  environment: string;
+  version: string;
+  capabilities: string[];
+  lastHeartbeatAt?: string | null;
+  stats: Record<string, unknown>;
+  createdAt: string;
+}
+
+export interface RunnerJobItem {
+  id: string;
+  orgId: string;
+  runnerId?: string | null;
+  jobType: string;
+  target: Record<string, unknown>;
+  status: 'Queued' | 'Dispatched' | 'Running' | 'Completed' | 'Failed' | 'Cancelled';
+  timeoutSec: number;
+  result?: Record<string, unknown> | null;
+  signature?: string | null;
+  createdAt: string;
+  completedAt?: string | null;
+}
+
+export interface RuntimeEventItem {
+  id: string;
+  orgId: string;
+  source: 'otel' | 'kubernetes_audit' | 'falco' | 'cloudtrail' | 'custom';
+  severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+  eventType: string;
+  assetId?: string | null;
+  actor: string;
+  resource: string;
+  summary: string;
+  raw: Record<string, unknown>;
+  correlatedFindingId?: string | null;
+  correlatedIncidentId?: string | null;
+  receivedAt: string;
+}
+
+export interface SiemExportItem {
+  id: string;
+  orgId: string;
+  destination: 'splunk' | 'elastic' | 'sentinel' | 'webhook';
+  resourceType: string;
+  resourceId: string;
+  correlationId: string;
+  status: 'Delivered' | 'Queued' | 'Failed';
+  httpStatus?: number | null;
+  attempts: number;
+  errorMessage?: string | null;
+  exportedAt: string;
+}
+
+export interface SsoConfigItem {
+  id: string;
+  orgId: string;
+  provider: 'oidc' | 'saml' | 'okta' | 'entra';
+  issuerUrl?: string | null;
+  clientId?: string | null;
+  domainHint?: string | null;
+  roleMapping: Record<string, string>;
+  enabled: boolean;
+  updatedAt: string;
+}
+
+export interface ScimTokenItem {
+  id: string;
+  name: string;
+  tokenPrefix: string;
+  revoked: boolean;
+  lastUsedAt?: string | null;
+  createdAt: string;
 }
 
 export interface ApiKeyItem {

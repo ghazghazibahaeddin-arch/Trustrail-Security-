@@ -3,6 +3,7 @@ import { NextRequest } from 'next/server';
 import { getDb, appendAuditLog } from '@/lib/db';
 import { jsonError, jsonOk } from '@/lib/api-response';
 import { verifyGithubWebhookSignature } from '@/lib/security/crypto';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 export async function POST(req: NextRequest) {
   const secret = process.env.GITHUB_WEBHOOK_SECRET;
@@ -61,6 +62,25 @@ export async function POST(req: NextRequest) {
     resourceType: 'Webhook',
     resourceId: deliveryId,
     details: `Verified GitHub ${eventType} webhook for ${repoFullName || 'repository'}.`,
+  });
+
+  const actionStr = String(payload.action || '');
+  const mappedEvent =
+    eventType === 'pull_request'
+      ? actionStr === 'synchronize'
+        ? 'pull_request.updated'
+        : 'pull_request.opened'
+      : 'repository.connected';
+
+  publishEvent(db, {
+    orgId: targetOrgId,
+    eventType: mappedEvent,
+    actorId: 'webhook@github.com',
+    sourceConnector: 'github',
+    sourceResourceId: repoFullName || deliveryId,
+    affectedAssetIds: matchedProject ? [matchedProject.id] : [],
+    correlationId: `corr-${deliveryId}`,
+    payload: { deliveryId, githubEvent: eventType, action: actionStr || null },
   });
 
   return jsonOk({

@@ -5,6 +5,8 @@ export interface RiskInput {
   assetCriticality: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
   inActiveAttackPath: boolean;
   fixAvailable: boolean;
+  kevListed?: boolean;
+  epssScore?: number | null;
 }
 
 export interface RiskEvaluation {
@@ -15,19 +17,30 @@ export interface RiskEvaluation {
 
 export function calculateRiskPriority(input: RiskInput): RiskEvaluation {
   const reasons: string[] = [];
-  let score = Math.round(Math.min(10, Math.max(0, input.cvss)) * 6.0); // up to 60 pts from CVSS
+  let score = Math.round(Math.min(10, Math.max(0, input.cvss)) * 5.5); // up to 55 pts from CVSS
   reasons.push(`Base CVSS ${input.cvss.toFixed(1)} (+${score} pts)`);
 
   const exploitPts =
     input.exploitability === 'High'
-      ? 15
+      ? 14
       : input.exploitability === 'Proof-of-Concept'
-      ? 12
+      ? 11
       : input.exploitability === 'Medium'
       ? 7
       : 2;
   score += exploitPts;
   reasons.push(`Exploitability=${input.exploitability} (+${exploitPts} pts)`);
+
+  if (input.kevListed) {
+    score += 15;
+    reasons.push('CISA KEV Known Exploited Vulnerability (+15 pts)');
+  }
+
+  if (typeof input.epssScore === 'number' && input.epssScore >= 0.5) {
+    const epssPts = input.epssScore >= 0.8 ? 10 : 6;
+    score += epssPts;
+    reasons.push(`FIRST EPSS probability ${(input.epssScore * 100).toFixed(1)}% (+${epssPts} pts)`);
+  }
 
   if (input.internetExposed) {
     score += 10;

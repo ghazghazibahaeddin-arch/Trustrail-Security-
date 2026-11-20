@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { getDb, appendAuditLog } from '@/lib/db';
 import { jsonError, jsonOk, requireAuth } from '@/lib/api-response';
 import { computeOrganizationSnapshot } from '@/lib/domain-mappers';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const CreateIncidentSchema = z.object({
   title: z.string().min(3).max(200),
@@ -137,6 +138,19 @@ export async function POST(req: NextRequest) {
     resourceType: 'Incident',
     resourceId: id,
     details: `${parsed.data.severity} "${parsed.data.title}" on ${parsed.data.affectedAsset}.`,
+  });
+
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType: 'incident.created',
+    actorId: authResult.auth.email,
+    sourceConnector: 'incident_command',
+    sourceResourceId: id,
+    payload: {
+      title: parsed.data.title.trim(),
+      severity: parsed.data.severity,
+      affectedAsset: parsed.data.affectedAsset.trim(),
+    },
   });
 
   const rows = db

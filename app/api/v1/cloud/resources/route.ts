@@ -5,6 +5,7 @@ import { getDb, appendAuditLog } from '@/lib/db';
 import { jsonError, jsonOk, requireAuth } from '@/lib/api-response';
 import { scanTerraformAndIaC } from '@/lib/engines/scanner-engine';
 import { computeOrganizationSnapshot } from '@/lib/domain-mappers';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const IngestCloudPostureSchema = z.object({
   provider: z.enum(['aws', 'azure', 'gcp']).default('aws'),
@@ -189,6 +190,22 @@ export async function POST(req: NextRequest) {
     resourceType: 'CloudAccount',
     resourceId: `${parsed.data.provider}:${parsed.data.accountId}`,
     details: `Evaluated ${evaluatedCount} cloud resources (${nonCompliantCount} non-compliant, ${newFindingsCount} new findings).`,
+  });
+
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType: nonCompliantCount > 0 ? 'state.drift_detected' : 'cloud.resource.discovered',
+    actorId: authResult.auth.email,
+    sourceConnector: parsed.data.provider,
+    sourceResourceId: `${parsed.data.provider}:${parsed.data.accountId}`,
+    payload: {
+      provider: parsed.data.provider,
+      accountId: parsed.data.accountId,
+      region: parsed.data.region,
+      evaluatedCount,
+      nonCompliantCount,
+      newFindingsCount,
+    },
   });
 
   return jsonOk(

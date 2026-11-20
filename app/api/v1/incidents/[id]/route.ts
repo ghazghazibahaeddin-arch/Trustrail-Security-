@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { getDb, appendAuditLog } from '@/lib/db';
 import { jsonError, jsonOk, requireAuth } from '@/lib/api-response';
 import { computeOrganizationSnapshot } from '@/lib/domain-mappers';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const UpdateIncidentSchema = z.object({
   status: z.enum(['Open', 'Contained', 'Recovered', 'Closed']).optional(),
@@ -62,6 +63,20 @@ export async function PATCH(
     resourceType: 'Incident',
     resourceId: id,
     details: `${row.title}: status=${nextStatus}${parsed.data.appendAction ? ` | ${parsed.data.appendAction}` : ''}`,
+  });
+
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType:
+      nextStatus === 'Contained'
+        ? 'incident.contained'
+        : nextStatus === 'Closed' || nextStatus === 'Recovered'
+          ? 'incident.resolved'
+          : 'incident.updated',
+    actorId: authResult.auth.email,
+    sourceConnector: 'incident_command',
+    sourceResourceId: id,
+    payload: { title: row.title, status: nextStatus, appendAction: parsed.data.appendAction || null },
   });
 
   const updated = db

@@ -18,7 +18,7 @@ export async function POST(
   if (!row) return jsonError('Connector not found.', 404, 'NOT_FOUND');
 
   db.prepare(
-    `UPDATE connectors SET status = 'Disconnected', availability_state = 'DISCONNECTED', health_check = 'Offline' WHERE id = ? AND org_id = ?`
+    `UPDATE connectors SET status = 'Disconnected', availability_state = 'DISCONNECTED', lifecycle_state = 'DISCONNECTED', health_check = 'Offline' WHERE id = ? AND org_id = ?`
   ).run(id, authResult.auth.orgId);
 
   appendAuditLog(db, {
@@ -30,5 +30,11 @@ export async function POST(
     details: `Disconnected connector ${row.name}.`,
   });
 
-  return jsonOk({ id, status: 'Disconnected', availabilityState: 'DISCONNECTED', healthCheck: 'Offline' });
+  return jsonOk({
+    id,
+    status: 'Disconnected',
+    availabilityState: 'DISCONNECTED',
+    lifecycleState: 'DISCONNECTED',
+    healthCheck: 'Offline',
+  });
 }

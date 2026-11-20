@@ -7,6 +7,7 @@ import { parseConnectorConfig } from '@/lib/security/connector-config';
 import { executeUnifiedScan, NormalizedFindingInput } from '@/lib/engines/scanner-engine';
 import { queryOsvPackages } from '@/lib/integrations/osv-client';
 import { computeOrganizationSnapshot, listEnrichedFindings, listProjectsWithStats } from '@/lib/domain-mappers';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const ScanGithubRepoSchema = z.object({
   repo: z.string().min(3).max(200),
@@ -347,6 +348,48 @@ export async function POST(req: NextRequest) {
       resourceId: projectRow.id,
       details: `Live scanned GitHub repository ${repoMeta.full_name}@${branch}: ${filesScanned} manifests/files inspected, ${combinedFindings.length} findings (${newFindingsInserted} new).`,
     });
+
+    const correlationId = `corr-${scanId}`;
+    publishEvent(db, {
+      orgId: authResult.auth.orgId,
+      eventType: 'scan.completed',
+      actorId: authResult.auth.email,
+      sourceConnector: 'github',
+      sourceResourceId: repoMeta.full_name,
+      affectedAssetIds: [assetRow.id],
+      correlationId,
+      payload: {
+        scanId,
+        branch,
+        filesScanned,
+        findingsDetected: combinedFindings.length,
+        newFindingsInserted,
+      },
+    });
+    if (newFindingsInserted > 0) {
+      publishEvent(db, {
+        orgId: authResult.auth.orgId,
+        eventType: 'vulnerability.discovered',
+        actorId: authResult.auth.email,
+        sourceConnector: 'github',
+        sourceResourceId: repoMeta.full_name,
+        affectedAssetIds: [assetRow.id],
+        correlationId,
+        payload: { newFindingsInserted },
+      });
+    }
+    if (sbomJson) {
+      publishEvent(db, {
+        orgId: authResult.auth.orgId,
+        eventType: 'sbom.generated',
+        actorId: authResult.auth.email,
+        sourceConnector: 'github',
+        sourceResourceId: projectRow.id,
+        affectedAssetIds: [assetRow.id],
+        correlationId,
+        payload: { repository: repoMeta.full_name },
+      });
+    }
 
     return jsonOk(
       {

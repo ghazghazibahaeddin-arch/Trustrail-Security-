@@ -332,8 +332,17 @@ export function listEnrichedFindings(db: DatabaseSync, orgId: string) {
     }
   }
 
+  const intelRows = db
+    .prepare(
+      `SELECT cve_id, MAX(kev_listed) as kev_listed, MAX(epss_score) as epss_score
+       FROM vulnerability_intel GROUP BY cve_id`
+    )
+    .all() as Array<{ cve_id: string; kev_listed: number; epss_score: number | null }>;
+  const intelMap = new Map(intelRows.map((i) => [i.cve_id.toUpperCase(), i]));
+
   return rows.map((r) => {
     const asset = r.asset_id ? assetMap.get(r.asset_id) : undefined;
+    const intel = r.cve ? intelMap.get(r.cve.toUpperCase()) : undefined;
     const risk = calculateRiskPriority({
       cvss: r.cvss,
       exploitability: r.exploitability,
@@ -341,6 +350,8 @@ export function listEnrichedFindings(db: DatabaseSync, orgId: string) {
       assetCriticality: asset?.criticality || (r.severity === 'CRITICAL' ? 'CRITICAL' : 'HIGH'),
       inActiveAttackPath: findingIdsInPaths.has(r.id),
       fixAvailable: Boolean(r.suggested_fix),
+      kevListed: Boolean(intel?.kev_listed),
+      epssScore: intel?.epss_score ?? null,
     });
 
     return {
@@ -356,6 +367,8 @@ export function listEnrichedFindings(db: DatabaseSync, orgId: string) {
       filePath: r.file_path || undefined,
       line: r.line || undefined,
       cve: r.cve || undefined,
+      kevListed: Boolean(intel?.kev_listed),
+      epssScore: intel?.epss_score ?? undefined,
       cvss: r.cvss,
       exploitability: r.exploitability,
       status: r.status,

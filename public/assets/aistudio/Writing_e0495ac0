@@ -1,0 +1,1828 @@
+TRUSTRAIL SECURITY CLOUD
+
+MASTER INTEGRATION FABRIC + FULL PLATFORM IMPLEMENTATION PROMPT
+
+Actual Integrations, Internal System Connectivity, Real Security Engines, APIs, Agents, Automation and Complete Product Execution
+
+---
+
+0. YOUR ROLE AND MISSION
+
+You are the autonomous engineering team responsible for completing the existing TRUSTRAIL Security Cloud repository.
+
+You are acting as:
+
+- Principal Software Architect
+- Integration Architect
+- Senior Backend Engineer
+- Senior Frontend Engineer
+- Cybersecurity Architect
+- Cloud Security Engineer
+- DevSecOps Engineer
+- Software Supply Chain Security Engineer
+- AI Agent Security Engineer
+- Security Operations Engineer
+- Database Engineer
+- QA Automation Engineer
+- SRE / Production Engineer
+
+Your assignment is to transform the existing TRUSTRAIL application into a fully operational, interconnected cybersecurity platform.
+
+This is an implementation assignment, not an audit-only assignment.
+
+You must actually modify the existing repository, install and configure necessary dependencies, build connectors, implement APIs, connect security engines, connect internal modules, implement background processing, fix defects, execute tests, and verify real functionality.
+
+The existing platform already reportedly includes:
+
+- Login and registration.
+- Organization creation and initial provisioning.
+- 47 documented API routes.
+- GitHub repository scanning.
+- OSV.dev integration.
+- HTTP/TLS Probe.
+- SSRF protection.
+- API key issuance and revocation.
+- Connector configuration.
+- Slack, Discord, GitHub and AWS configuration support.
+- Initial Terraform and OCI connector support.
+- CycloneDX SBOM generation.
+- 26 automated tests.
+- Existing OpenAPI documentation.
+- A working local development server.
+
+Preserve all genuinely working functionality.
+
+Do not rebuild existing functionality unnecessarily.
+
+Do not delete capabilities to make testing easier.
+
+Do not replace working implementations with mock services.
+
+Do not stop after producing documentation.
+
+Your responsibility is to COMPLETE THE PRODUCT.
+
+1. THE TARGET PRODUCT
+
+TRUSTRAIL is:
+
+A unified, developer-first cybersecurity platform that discovers risks, understands attack paths, protects software development and cloud infrastructure, detects suspicious behavior, prevents dangerous changes, automates remediation and supports incident response and recovery.
+
+It serves:
+
+1. Independent developers.
+2. Development teams.
+3. Startups.
+4. Small businesses.
+5. Medium-sized technology companies.
+6. Enterprise security and engineering teams.
+
+The platform must have these product interfaces:
+
+- TRUSTRAIL Web Application.
+- TRUSTRAIL REST API.
+- TRUSTRAIL CLI.
+- TRUSTRAIL Developer SDKs.
+- TRUSTRAIL GitHub App.
+- TRUSTRAIL Customer-Side Runner/Agent.
+- TRUSTRAIL MCP Server.
+- TRUSTRAIL Connector Hub.
+- TRUSTRAIL Internal Integration Fabric.
+
+All these interfaces must communicate with the same backend services, security policies, data model and authorization system.
+
+---
+
+2. MOST IMPORTANT: BUILD THE TRUSTRAIL INTEGRATION FABRIC
+
+This is a central product component, not an optional addition.
+
+Build an actual integration architecture that connects:
+
+A. External providers to TRUSTRAIL.
+
+B. TRUSTRAIL security modules to one another.
+
+C. Customer infrastructure to TRUSTRAIL.
+
+D. Developer tools and AI agents to TRUSTRAIL.
+
+E. Security findings to automated actions, evidence and recovery.
+
+Do not implement isolated connectors that only store credentials.
+
+2.1 Connector Hub
+
+Create a complete Integration Hub in the platform.
+
+It must provide:
+
+- Integration catalog.
+- Search.
+- Categories.
+- Provider details.
+- Connection setup.
+- OAuth authorization where appropriate.
+- API token configuration where appropriate.
+- Cloud role configuration.
+- Permission scope explanation.
+- Connection testing.
+- Initial synchronization.
+- Incremental synchronization.
+- Synchronization history.
+- Last successful synchronization.
+- Connector health.
+- Error details.
+- Reconnection.
+- Token expiration.
+- Credential rotation.
+- Disconnection.
+- Data deletion according to policy.
+- Connector-specific configuration.
+- Connection ownership.
+- Audit history.
+
+Every integration must have a real implementation behind its configuration screen.
+
+2.2 Integration Lifecycle
+
+Implement a unified connector state machine:
+
+- AVAILABLE.
+- NOT_CONFIGURED.
+- CONFIGURING.
+- AUTHENTICATING.
+- AUTHENTICATED.
+- CONNECTED.
+- INITIAL_SYNC.
+- SYNCHRONIZING.
+- HEALTHY.
+- DEGRADED.
+- ERROR.
+- REAUTH_REQUIRED.
+- DISCONNECTED.
+
+The state must reflect actual operational evidence.
+
+A successful credential save does not equal a successful connection.
+
+A successful authentication does not necessarily equal a successful synchronization.
+
+A successful synchronization does not necessarily mean all required operations work.
+
+The UI must display the accurate state.
+
+2.3 Connector Architecture
+
+Create a standardized interface similar to:
+
+Connector interface:
+
+- provider
+- connector_id
+- organization_id
+- authentication_method
+- required_scopes
+- validate_credentials()
+- connect()
+- test_connection()
+- discover_assets()
+- initial_sync()
+- incremental_sync()
+- process_webhook()
+- execute_supported_action()
+- get_health()
+- refresh_credentials()
+- disconnect()
+- revoke()
+- delete_connection_data()
+
+Every provider adapter must implement only the operations it genuinely supports.
+
+Use typed schemas.
+
+Use versioned connector contracts.
+
+Add provider-specific error mapping.
+
+Do not let every connector implement its own separate authentication, logging and retry architecture.
+
+2.4 Integration Health
+
+For every connector maintain:
+
+- Last connection attempt.
+- Last successful connection.
+- Last successful synchronization.
+- Last failed operation.
+- Provider response status.
+- Credential expiration.
+- Missing permissions.
+- Synchronization cursor.
+- Number of discovered assets.
+- Number of imported events.
+- Number of processing failures.
+- Current health state.
+
+Create a health overview with actionable errors.
+
+---
+
+3. BUILD THE INTERNAL EVENT BUS
+
+The most important requirement is to make the different TRUSTRAIL modules work together.
+
+Implement a real internal event infrastructure.
+
+Use the existing queue technology if it works. Otherwise select an appropriate production-capable system.
+
+Examples:
+
+- PostgreSQL transactional outbox.
+- Redis-backed jobs.
+- BullMQ or a suitable equivalent.
+- A durable event broker when scale requires it.
+
+Do not introduce unnecessary infrastructure.
+
+3.1 Standard Internal Event Contract
+
+Every event should include:
+
+- event_id.
+- event_type.
+- event_version.
+- tenant_id.
+- actor_id.
+- source_connector.
+- source_resource_id.
+- affected_asset_ids.
+- correlation_id.
+- causation_id.
+- timestamp.
+- evidence_reference.
+- payload.
+- processing_status.
+
+Add validation and schema versioning.
+
+3.2 Required Event Types
+
+Implement events such as:
+
+- asset.discovered
+- asset.updated
+- asset.exposed
+- repository.connected
+- repository.updated
+- scan.started
+- scan.completed
+- scan.failed
+- vulnerability.discovered
+- vulnerability.updated
+- secret.detected
+- dependency.changed
+- sbom.generated
+- artifact.signature_verified
+- cloud.resource.discovered
+- cloud.configuration_changed
+- identity.permission_changed
+- attack_path.created
+- attack_path.updated
+- security_event.received
+- policy.evaluated
+- policy.failed
+- change.requested
+- change.approved
+- change.rejected
+- deployment.blocked
+- deployment.completed
+- state.drift_detected
+- remediation.created
+- remediation.applied
+- remediation.verified
+- incident.created
+- incident.escalated
+- containment.executed
+- recovery.started
+- recovery.completed
+- integration.failed
+- connector.degraded
+- trust_receipt.created
+
+3.3 Internal Event Automation
+
+Example:
+
+When a GitHub scanner discovers a vulnerable dependency:
+
+1. Save the finding.
+2. Associate it with the repository.
+3. Identify the package and dependency version.
+4. Create or update the relevant asset relationships.
+5. Update the Security Graph.
+6. Query vulnerability intelligence.
+7. Recalculate risk.
+8. Recalculate related attack paths.
+9. Evaluate applicable security policies.
+10. Create a remediation recommendation.
+11. Notify the project owner.
+12. Update compliance evidence.
+13. Make the finding available through REST API, CLI and MCP.
+14. Track subsequent remediation.
+15. Re-scan after the fix.
+16. Update the attack graph.
+17. Verify the finding is resolved.
+18. Create a final evidence receipt.
+
+This complete workflow must work.
+
+The same principle applies to cloud misconfiguration, exposed credentials, suspicious identity changes, dangerous deployments and agent security events.
+
+3.4 Reliability Requirements
+
+Implement:
+
+- Idempotency.
+- Retry policies.
+- Dead-letter handling.
+- Duplicate event detection.
+- Transactional event publishing.
+- Tenant-aware processing.
+- Event replay where appropriate.
+- Processing observability.
+- Failure recovery.
+- Event ordering for workflows where required.
+
+A failed event consumer must not silently lose security events.
+
+---
+
+4. BUILD THE FIRST-PARTY TRUSTRAIL RUNNER / AGENT
+
+This is a major missing architectural component if the platform must protect customer environments beyond what third-party APIs expose.
+
+Build a first-party product component called:
+
+TRUSTRAIL Runner
+
+It is an installable and manageable customer-side execution and collection service.
+
+It must operate in clearly separated modes.
+
+4.1 Scan Runner
+
+Run trusted security scanners in an isolated environment.
+
+Capabilities:
+
+- Repository scanning.
+- SAST.
+- SCA.
+- Secret scanning.
+- IaC scanning.
+- Container scanning.
+- SBOM generation.
+- Artifact verification.
+- Terraform plan analysis.
+- Local project analysis.
+
+Support both local CLI execution and centrally managed scanning jobs.
+
+4.2 CI/CD Runner Mode
+
+Run from customer CI/CD pipelines.
+
+Support:
+
+- GitHub Actions.
+- GitLab CI.
+- Generic CI scripts.
+- Jenkins integration where included.
+
+It must:
+
+- Receive a specific scan or policy request.
+- Execute the required approved operations.
+- Return signed or authenticated result metadata.
+- Publish the result to TRUSTRAIL.
+- Return an appropriate CI exit status.
+- Avoid exposing tokens.
+- Support cancellation and bounded execution.
+
+4.3 Runtime Collector Mode
+
+Provide a dedicated optional component for customers who require runtime security visibility.
+
+Support:
+
+- OpenTelemetry signals.
+- Kubernetes audit events.
+- Cloud and platform event ingestion.
+- Supported runtime security event sources.
+- Falco integration where appropriate.
+- Custom structured security events.
+
+Do not claim full operating-system EDR or runtime kernel monitoring unless an actual corresponding agent and telemetry path are implemented.
+
+4.4 Runner Security
+
+The Runner must:
+
+- Use outbound-only communication by default.
+- Support mTLS or an equivalent strong device identity model.
+- Use short-lived enrollment tokens.
+- Support credential rotation and revocation.
+- Have explicit organization and environment identity.
+- Use least privilege.
+- Have CPU and memory limits.
+- Use execution timeouts.
+- Execute untrusted scanning work in isolated containers or sandboxes.
+- Not require privileged host access unnecessarily.
+- Never expose customer secrets in logs.
+- Validate downloaded tasks.
+- Verify signed updates.
+- Support safe updates and rollback.
+- Work in restricted environments where appropriate.
+- Queue permitted events during temporary disconnection.
+- Sync securely when connectivity returns.
+
+Provide installation documentation and real packaging.
+
+The Agent must be optional for features that can be safely provided by SaaS integrations, but required where local or runtime access is genuinely needed.
+
+---
+
+5. REQUIRED EXTERNAL INTEGRATIONS
+
+Implement the following integrations as actual usable connectors, with operational tests.
+
+Do not create an integration card and call it finished.
+
+5.1 Source Control
+
+GitHub App — Primary
+
+Complete:
+
+- GitHub App registration configuration.
+- Private key handling.
+- JWT authentication.
+- Installation token generation.
+- Installation access discovery.
+- Repository listing.
+- Repository metadata.
+- Branch and commit retrieval.
+- Pull Request events.
+- Push events.
+- Workflow access.
+- Security check publishing.
+- GitHub Checks API.
+- Pull Request comments.
+- Pull Request creation.
+- Repository content access.
+- Webhook processing.
+- Webhook signature validation.
+- Installation suspension.
+- Permission revocation.
+- Reauthorization.
+
+Prefer scoped installation authentication over permanent personal access tokens.
+
+Support PAT as an explicitly labeled fallback when necessary.
+
+GitLab
+
+Implement:
+
+- OAuth or supported access token authentication.
+- Project discovery.
+- Repository access.
+- Merge Request events.
+- Pipeline events.
+- CI security feedback.
+- Findings synchronization.
+- Pull/Merge Request remediation where authorized.
+
+Bitbucket
+
+Create an extensible adapter if Bitbucket is part of the advertised product scope.
+
+Do not advertise unsupported source-control providers.
+
+---
+
+5.2 Vulnerability Intelligence
+
+Implement an actual provider aggregation layer.
+
+OSV.dev
+
+Preserve and improve the existing integration.
+
+Support:
+
+- Batch package vulnerability queries.
+- Ecosystem identification.
+- Version-aware vulnerability lookup.
+- Commit-based queries where supported.
+- Detailed vulnerability records.
+- Fixed version identification.
+- Package URL mapping.
+- Pagination where applicable.
+- Rate and error handling.
+- Provider provenance.
+
+NVD
+
+Integrate the NVD vulnerability API.
+
+Support:
+
+- CVE retrieval.
+- CVE modification synchronization.
+- CVSS details.
+- CWE associations.
+- References.
+- Affected products where available.
+- API key configuration if required.
+- Caching and incremental sync.
+
+CISA Known Exploited Vulnerabilities
+
+Integrate the public KEV catalog.
+
+Support:
+
+- Catalog synchronization.
+- CVE matching.
+- Known exploitation indicators.
+- Required remediation information.
+- Last update tracking.
+
+EPSS
+
+Integrate the FIRST EPSS data source.
+
+Support:
+
+- Exploitation probability signals.
+- Date-based updates.
+- CVE mapping.
+- Historical comparison where available.
+
+GitHub Security Advisories
+
+Integrate accessible advisory data where provider permissions and API capabilities allow.
+
+Intelligence Aggregation
+
+Normalize findings from all sources.
+
+Do not create duplicate vulnerability records unnecessarily.
+
+Maintain:
+
+- Original provider.
+- Original identifier.
+- Source URL.
+- Retrieval timestamp.
+- Last update.
+- Fixed version.
+- Confidence.
+- Conflicting information.
+- Data freshness.
+
+The Risk Engine must use these sources consistently.
+
+---
+
+5.3 Scanner Engine Integrations
+
+Create a real Scanner Adapter System.
+
+Implement and integrate suitable tools:
+
+SAST
+
+- Semgrep or a technically justified equivalent.
+
+Secrets
+
+- Gitleaks.
+- Additional secret detection rules where appropriate.
+
+SCA
+
+- OSV-Scanner.
+- OSV.dev API.
+- Lockfile parsers for supported package ecosystems.
+
+IaC
+
+- Checkov.
+- Trivy IaC scanning or another validated scanner.
+
+Container Security
+
+- Trivy.
+- Syft for SBOM generation.
+
+Artifact Security
+
+- Cosign.
+- Sigstore verification.
+- Registry digest validation.
+
+Policy
+
+- OPA / Rego.
+- Conftest or equivalent for IaC and policy checks.
+
+API / DAST
+
+- OpenAPI parsing.
+- OWASP ZAP Baseline or an equivalent passive scanner when properly configured.
+- Safe authenticated API test workflows where authorized.
+
+Do not run every scanner against every project indiscriminately.
+
+Use the project type to determine applicable scanners.
+
+The orchestration engine must:
+
+1. Detect project type.
+2. Identify the required scanners.
+3. Run them safely.
+4. Collect results.
+5. Normalize findings.
+6. Deduplicate results.
+7. Map findings to assets.
+8. Calculate risk.
+9. Persist evidence.
+10. Trigger downstream workflows.
+
+All scanner versions must be trackable.
+
+Containerized scanner execution must be resource-limited and sandboxed.
+
+Check scanner licenses before distribution.
+
+---
+
+5.4 SBOM and Software Supply Chain
+
+Integrate:
+
+- CycloneDX.
+- SPDX.
+- Syft.
+- Cosign.
+- Sigstore.
+- OCI registries.
+- SLSA provenance verification where supported.
+
+Build actual workflows for:
+
+- SBOM generation.
+- SBOM validation.
+- Package inventory.
+- Dependency relationships.
+- License identification.
+- Vulnerability correlation.
+- Artifact digest verification.
+- Signature verification.
+- Provenance checks.
+- Release trust evidence.
+
+Store artifacts securely.
+
+Preserve references to original source artifacts.
+
+Never claim provenance verification if the attestation or signer identity was not validated.
+
+---
+
+5.5 Cloud Providers
+
+AWS — Complete Primary Integration
+
+Implement actual AWS APIs.
+
+Support:
+
+- Secure AssumeRole.
+- External ID.
+- Account identity verification.
+- IAM.
+- Security Groups.
+- S3.
+- EC2.
+- ECR.
+- CloudTrail.
+- AWS Config where enabled.
+- Security Hub where enabled.
+- IAM Access Analyzer where available.
+- Relevant supported cloud security findings.
+
+Implement:
+
+- Resource discovery.
+- Configuration collection.
+- Permission analysis.
+- Public exposure detection.
+- Logging checks.
+- Encryption checks.
+- Security event ingestion.
+- Asset mapping.
+- Drift detection.
+- Evidence generation.
+
+Provide a least-privilege IAM policy template.
+
+Test with a dedicated AWS test account.
+
+Azure
+
+Implement the cloud connector architecture and required operational functionality:
+
+- Entra identity.
+- Service principal or managed identity authentication.
+- Subscription discovery.
+- Resource inventory.
+- Role assignments.
+- Storage exposure.
+- Network security rules.
+- Activity logs.
+- Relevant Defender for Cloud findings where access is available.
+
+Google Cloud
+
+Implement:
+
+- Service account or Workload Identity authentication.
+- Project discovery.
+- Asset inventory.
+- IAM analysis.
+- Public storage checks.
+- Firewall configuration analysis.
+- Cloud Audit Logs.
+- Relevant Security Command Center findings where available.
+
+Do not report Azure or GCP as fully supported until their actual collection and security analysis workflows pass integration tests.
+
+---
+
+5.6 Infrastructure and Deployment
+
+Terraform / OpenTofu
+
+Integrate:
+
+- Plan ingestion.
+- Plan JSON parsing.
+- Resource diff analysis.
+- IaC scanning.
+- Policy evaluation.
+- Risk calculation.
+- Approval requirements.
+- CI/CD status feedback.
+- Execution control where configured.
+- State drift comparison.
+
+Kubernetes
+
+Build a real Kubernetes connector.
+
+Support:
+
+- Cluster discovery.
+- Namespaces.
+- Workloads.
+- Service accounts.
+- RBAC.
+- Network policies.
+- Pod security configuration.
+- Secrets exposure indicators.
+- Image security references.
+- Audit events where available.
+- Configuration drift.
+- Security findings.
+
+Use least-privilege service accounts and a customer-side agent or secure connector where necessary.
+
+Container Registries
+
+Support:
+
+- Amazon ECR.
+- GitHub Container Registry.
+- Docker Hub.
+- Generic OCI-compatible registries.
+
+Implement credential management, image metadata, digest validation, image scanning, SBOM and signature verification.
+
+---
+
+5.7 Runtime and Telemetry
+
+Integrate:
+
+- OpenTelemetry.
+- Falco where appropriate.
+- AWS CloudTrail.
+- Kubernetes audit events.
+- Supported runtime event sources.
+
+Build normalized security-event ingestion.
+
+Correlate events with:
+
+- Asset Graph.
+- Identities.
+- Projects.
+- Deployments.
+- Findings.
+- Attack Paths.
+- Incidents.
+
+Make it clear which security signals are actively collected and which systems are not covered.
+
+---
+
+5.8 Identity and Enterprise Authentication
+
+Implement:
+
+- OIDC.
+- SAML 2.0.
+- Entra ID integration.
+- Okta integration or compatible OIDC/SAML configuration.
+- SCIM 2.0 where enterprise provisioning is supported.
+
+Support:
+
+- SSO.
+- Role mapping.
+- Group synchronization.
+- Automatic provisioning.
+- User deactivation.
+- Organization membership.
+- Session handling.
+
+Keep tenant boundaries strict.
+
+---
+
+5.9 Secrets Management and Key Management
+
+Integrate appropriate external providers:
+
+- AWS Secrets Manager.
+- AWS KMS.
+- HashiCorp Vault.
+- Generic KMS adapter where practical.
+
+Support:
+
+- Secure credential retrieval.
+- Encryption key management.
+- Key rotation.
+- Credential access auditing.
+- Secret rotation workflows.
+- Encryption at rest.
+- Access separation.
+
+Keep local development secrets separate from production secrets.
+
+---
+
+5.10 Notifications and Collaboration
+
+Implement:
+
+- Slack.
+- Microsoft Teams.
+- Email through an actual provider such as SES, Postmark or Resend.
+- Discord where desired.
+- Generic HTTPS Webhooks.
+
+Support:
+
+- Incident alerts.
+- Critical findings.
+- Scan completion.
+- Failed integration notifications.
+- Remediation updates.
+- Approval requests.
+- Policy violations.
+- Scheduled summaries.
+
+Verify actual message delivery.
+
+Implement retry logic and delivery tracking.
+
+Do not claim delivery merely because a message was queued.
+
+---
+
+5.11 SIEM and Security Export
+
+Implement integration adapters for:
+
+- Splunk.
+- Elastic Security.
+- Microsoft Sentinel.
+- Generic webhook or supported event export.
+
+Support:
+
+- Security event forwarding.
+- Finding export.
+- Incident export.
+- Evidence export.
+- Correlation identifiers.
+- Retry and delivery status.
+
+This is important for medium-sized and larger companies that already use security monitoring platforms.
+
+---
+
+6. BUILD TRUSTRAIL'S OWN INTERNAL SECURITY PLATFORM
+
+All of the previous integrations must feed the same security engines.
+
+Implement and connect the following modules.
+
+A. Asset Intelligence
+
+- Unified Asset Inventory.
+- Asset Ownership.
+- Asset Discovery.
+- Dependency Graph.
+- Exposure Analysis.
+- Asset History.
+- Shadow Asset Detection.
+- External Attack Surface.
+- Resource Relationships.
+
+B. Vulnerability Intelligence
+
+- SAST.
+- SCA.
+- Secret Scanning.
+- IaC.
+- Containers.
+- API Security.
+- Vulnerability Correlation.
+- Duplicate Elimination.
+- False Positive Management.
+- Fix Availability.
+- Rescanning.
+
+C. Attack Path Intelligence
+
+- Identity relationships.
+- Permission paths.
+- Dependency paths.
+- Public exposure paths.
+- Vulnerability paths.
+- Cloud resource relationships.
+- Critical data paths.
+- Risk propagation.
+- Attack path explanation.
+- Recommended path-breaking remediation.
+
+D. Risk Engine
+
+Use:
+
+- Vulnerability severity.
+- Exploitability.
+- KEV status.
+- EPSS.
+- Asset criticality.
+- Exposure.
+- Identity privileges.
+- Attack path membership.
+- Existing mitigations.
+- Business impact.
+- Confidence and evidence freshness.
+
+Explain all important decisions.
+
+E. Change Integrity
+
+- Universal Change Passport.
+- DeltaSeal.
+- IntentLock.
+- Approval Binding.
+- Risk Evaluation.
+- Execution Gate.
+- State Witness.
+- Drift Monitor.
+- Change Receipt.
+
+F. Agent and MCP Security
+
+- Agent Identity.
+- MCP Inventory.
+- Tool Inventory.
+- Scoped Authority.
+- Credential Isolation.
+- Tool Allowlisting.
+- High-Risk Approval.
+- Cumulative Action Limits.
+- Agent Activity History.
+- Revocation.
+
+G. Remediation
+
+- AI Explanation.
+- Proposed Fix.
+- Patch Creation.
+- Pull Request.
+- Test Execution.
+- Security Re-scan.
+- Verified Resolution.
+- Rollback support where feasible.
+
+H. Incident Response
+
+- Incident Correlation.
+- Severity.
+- Evidence.
+- Timeline.
+- Response Tasks.
+- Playbooks.
+- Containment.
+- Recovery.
+- Post-Incident Reports.
+
+I. Deception
+
+- Canary Tokens.
+- Honey Credentials.
+- Decoy Files.
+- Suspicious Access Detection.
+- Event Correlation.
+- Response Integration.
+
+J. Compliance and Trust
+
+- Compliance Control Mapping.
+- Evidence Management.
+- Security Reports.
+- Shareable Trust Center.
+- Signed Change Receipts.
+- Public Report Expiration.
+- Revocation.
+- Customer Evidence Export.
+
+K. AI Security Assistant
+
+The assistant must use actual TRUSTRAIL data.
+
+It must be able to answer:
+
+- What are the most dangerous risks?
+- What is the most likely attack path?
+- Which assets are exposed?
+- What happened in the latest security events?
+- What requires urgent repair?
+- What changed in this deployment?
+- Which security controls failed?
+- Which integrations are unhealthy?
+- What remediation can be safely performed?
+
+AI must not bypass deterministic policies or execute privileged operations without authorization.
+
+---
+
+7. CONNECT THE REST API, CLI, SDK AND MCP TO ALL MODULES
+
+The platform must expose one coherent service layer.
+
+REST API
+
+Complete and document APIs for:
+
+- Authentication.
+- Organizations.
+- Users.
+- Projects.
+- Assets.
+- Connectors.
+- Scans.
+- Findings.
+- SBOM.
+- Vulnerabilities.
+- Attack Paths.
+- Risk.
+- Cloud Resources.
+- Identities.
+- Changes.
+- Approvals.
+- Policies.
+- Remediation.
+- Agents.
+- MCP.
+- Events.
+- Incidents.
+- Recovery.
+- Evidence.
+- Trust Center.
+- Notifications.
+- API Keys.
+- Reports.
+
+Use versioned API contracts.
+
+Validate every endpoint.
+
+Apply authentication and tenant authorization consistently.
+
+CLI
+
+Implement real commands for:
+
+- login.
+- logout.
+- init.
+- connect.
+- scan.
+- analyze.
+- findings.
+- assets.
+- attack-paths.
+- sbom.
+- policy-check.
+- change-check.
+- remediate.
+- status.
+- reports.
+- disconnect.
+
+The commands must execute real platform operations.
+
+SDKs
+
+Implement and test TypeScript and Python SDKs where supported.
+
+The SDKs must wrap the actual REST API.
+
+Include:
+
+- Authentication.
+- Pagination.
+- Error handling.
+- Timeouts.
+- Retries.
+- Typed responses.
+- Documentation.
+- Working usage examples.
+
+MCP Server
+
+Provide a real MCP Server exposing TRUSTRAIL capabilities.
+
+Include read-only tools and action tools.
+
+Read-only examples:
+
+- get_security_posture.
+- list_findings.
+- get_finding.
+- get_attack_paths.
+- get_asset.
+- get_scan_status.
+- get_incidents.
+- get_integration_health.
+
+Action examples:
+
+- start_scan.
+- analyze_change.
+- request_remediation.
+- create_remediation_pr.
+- create_incident.
+- request_containment.
+- generate_report.
+
+All MCP operations must call the same backend services as the REST API.
+
+Implement proper MCP authorization appropriate to the selected transport, token audience verification, scope enforcement and user consent.
+
+Never pass an MCP access token through to an upstream provider.
+
+Use separate provider credentials managed by TRUSTRAIL.
+
+Require human approval for sensitive actions.
+
+Test every declared MCP tool with real calls.
+
+---
+
+8. BUILD AN INTEGRATION DEPENDENCY MAP
+
+Create a visible internal map showing how each integration supports product capabilities.
+
+For each capability, define:
+
+- Required connectors.
+- Optional connectors.
+- Internal engine.
+- Expected input.
+- Expected output.
+- Data dependencies.
+- Events emitted.
+- Events consumed.
+- API endpoints.
+- CLI operations.
+- MCP tools.
+- Error behavior.
+- Test scenarios.
+
+Examples:
+
+GitHub Repository Scanning:
+
+GitHub App → Repository Discovery → TRUSTRAIL Runner → SAST/SCA/Secrets → OSV → Unified Findings → Asset Graph → Risk Engine → Attack Paths → Remediation → Pull Request → Verification.
+
+AWS Cloud Security:
+
+AWS AssumeRole → AWS APIs → Asset Inventory → IAM Analysis → Security Findings → Attack Graph → Risk Engine → Incident/Notification → Remediation → Verification.
+
+Terraform:
+
+CI/CD Plan → TRUSTRAIL Policy Engine → Change Passport → Risk Evaluation → Approval → Gate Result → Actual Deployment → State Verification → Evidence Receipt.
+
+Agent Security:
+
+MCP Server Discovery → Agent Identity → Tool Permissions → Action Request → Policy Evaluation → Approval → Execution → Event Capture → Risk Analysis → Audit Evidence.
+
+All these workflows must be implemented and tested.
+
+---
+
+9. INTEGRATION SECURITY REQUIREMENTS
+
+Every connector must use the safest feasible authentication method.
+
+Prefer:
+
+- GitHub App installation authentication.
+- OAuth 2.0 Authorization Code with PKCE where appropriate.
+- Cloud role assumption and workload identity.
+- Short-lived credentials.
+- Scoped access tokens.
+- mTLS for agents where appropriate.
+- Signed webhooks.
+- Encrypted secret storage.
+
+Never hardcode credentials.
+
+Never expose tokens to the browser unnecessarily.
+
+Never log secrets.
+
+Correct the API key implementation if it incorrectly describes SHA-256 as encryption.
+
+Use secure hash or keyed-digest verification for high-entropy API keys, and real authenticated encryption for provider secrets that must be retrieved later.
+
+Use envelope encryption and key rotation where supported.
+
+All outbound requests must have secure network policies.
+
+All URL-fetching integrations must protect against SSRF.
+
+Test:
+
+- DNS rebinding.
+- Redirect SSRF.
+- IPv4 private ranges.
+- IPv6 private and loopback ranges.
+- Cloud metadata endpoints.
+- Unsafe protocols.
+- Outbound webhook SSRF.
+- Proxy bypass.
+- Excessive response sizes.
+- Excessive request timeouts.
+
+Do not introduce a vulnerability while implementing an integration.
+
+---
+
+10. THE INTEGRATION CENTER USER EXPERIENCE
+
+Create a complete Integration Center.
+
+Each integration must display:
+
+- Provider logo/name.
+- Description.
+- What data it collects.
+- What operations it can perform.
+- Required permissions.
+- Data direction.
+- Authentication method.
+- Connection status.
+- Health.
+- Last sync.
+- Discovered assets.
+- Imported events.
+- Errors.
+- Reconnect button.
+- Test connection button.
+- Manage settings.
+- Disconnect.
+- Delete.
+
+Provide a clear onboarding flow.
+
+When a user connects a provider:
+
+1. Explain requested permissions.
+2. Initiate the correct authentication flow.
+3. Validate credentials.
+4. Verify account identity.
+5. Verify scopes.
+6. Test actual provider access.
+7. Perform an initial sync.
+8. Show the actual result.
+9. Start the required scheduled synchronization.
+10. Register webhooks where supported.
+11. Display the successful connection details.
+
+Do not require users to manually configure things that can be safely automated.
+
+Use an Integration Setup Wizard with precise instructions for unavailable external configuration.
+
+---
+
+11. CUSTOMER-SIDE INSTALLATION AND ONBOARDING
+
+Build a smooth path for developers and companies.
+
+A new user should be able to:
+
+1. Register.
+2. Create an organization.
+3. Create a project.
+4. Install TRUSTRAIL CLI or connect GitHub.
+5. Import a real repository.
+6. Start a scan.
+7. Receive actual findings.
+8. View the associated evidence.
+9. Connect AWS if required.
+10. Configure notifications.
+11. Invite teammates.
+12. Enable policies.
+13. Use the REST API.
+14. Connect an MCP client.
+
+Provide onboarding that adapts to the customer's environment.
+
+Do not show all advanced enterprise configuration to a solo developer at first.
+
+Provide advanced configuration when the organization needs it.
+
+---
+
+12. REAL FUNCTIONAL ACCEPTANCE TESTS
+
+Build complete end-to-end test suites.
+
+Test A — GitHub to Security Graph
+
+- Create test organization.
+- Install GitHub App.
+- Connect test repository.
+- Discover files.
+- Run all applicable scanners.
+- Generate SBOM.
+- Query vulnerability databases.
+- Generate findings.
+- Update Asset Graph.
+- Create Attack Paths.
+- Generate remediation.
+- Create Pull Request.
+- Re-scan.
+- Verify resolution.
+
+Test B — AWS to Security Graph
+
+- Connect AWS test account.
+- Assume role.
+- Discover resources.
+- Read IAM.
+- Inspect storage and network configuration.
+- Collect CloudTrail events where enabled.
+- Detect an intentionally insecure test configuration.
+- Generate findings.
+- Create remediation recommendation.
+- Correct configuration in test account.
+- Verify resolution.
+
+Test C — Terraform Change Protection
+
+- Submit unsafe plan.
+- Parse plan.
+- Evaluate policy.
+- Generate Change Passport.
+- Identify impact.
+- Reject unauthorized change.
+- Submit compliant plan.
+- Approve.
+- Execute only in test environment.
+- Verify final state.
+
+Test D — Container Supply Chain
+
+- Import test OCI image.
+- Scan packages.
+- Generate SBOM.
+- Match vulnerability intelligence.
+- Verify digest.
+- Verify signature when present.
+- Record provenance state.
+- Create findings.
+- Re-test after remediation.
+
+Test E — MCP and AI Agent
+
+- Connect an authenticated MCP client.
+- Discover tools.
+- Query findings.
+- Query attack paths.
+- Start authorized scan.
+- Request remediation.
+- Deny an unauthorized action.
+- Require approval for a privileged operation.
+- Verify tenant isolation.
+- Revoke authorization.
+
+Test F — Incident Response
+
+- Generate synthetic security event.
+- Correlate it with an asset.
+- Create an incident.
+- Generate response tasks.
+- Approve a safe action.
+- Execute in sandbox.
+- Capture evidence.
+- Verify result.
+- Generate report.
+
+Test G — Integration Failure and Recovery
+
+- Expire GitHub credentials.
+- Confirm degraded connector state.
+- Trigger reconnection.
+- Verify synchronization resumes.
+- Introduce provider rate limit.
+- Verify backoff.
+- Introduce duplicate webhook.
+- Verify idempotency.
+- Stop a worker.
+- Verify retry and recovery.
+
+---
+
+13. COMPLETE THE EXISTING PROJECT WITHOUT LOSING ANY WORK
+
+Before implementation:
+
+- Back up the repository state.
+- Inspect migrations.
+- Inspect all existing modules.
+- Record working features.
+- Identify defective code.
+- Identify missing integrations.
+
+Then work incrementally.
+
+Do not indiscriminately rewrite the application.
+
+Do not delete existing working tests.
+
+Do not use a mock adapter in production.
+
+Use test doubles exclusively within automated tests.
+
+Do not silently downgrade a feature to partial functionality.
+
+When full external operation requires credentials that are not available:
+
+- Implement the connector.
+- Implement its authentication flow.
+- Implement all provider operations.
+- Implement error handling.
+- Implement contract tests.
+- Implement configuration UI.
+- Prepare documentation.
+- Clearly identify the exact external credential required.
+- Mark only the live provider verification as blocked.
+
+Continue all other work.
+
+---
+
+14. DATABASE, DEPLOYMENT AND OBSERVABILITY
+
+Verify and complete:
+
+- PostgreSQL production architecture.
+- Redis or chosen queue infrastructure.
+- Object storage.
+- Secure secret storage.
+- Database migrations.
+- Backup.
+- Restore.
+- Worker deployment.
+- Scanner isolation.
+- Agent deployment.
+- Health monitoring.
+- Error reporting.
+- Metrics.
+- Distributed tracing.
+- Audit events.
+- Rate limits.
+- Resource limits.
+- Container image security.
+- Deployment rollback.
+- Configuration validation.
+
+If SQLite is used for local development, it may remain as a development option, but use a properly tested production data architecture.
+
+Add Docker Compose and production deployment documentation.
+
+Ensure that background security processing does not block interactive frontend requests.
+
+---
+
+15. FULL QUALITY AND BUG REPAIR
+
+Inspect and repair every existing and newly introduced defect.
+
+Run:
+
+- TypeScript checks.
+- ESLint.
+- Build.
+- Unit tests.
+- Integration tests.
+- API tests.
+- Connector tests.
+- Scanner tests.
+- Database tests.
+- Authorization tests.
+- Tenant isolation tests.
+- Frontend browser tests.
+- CLI tests.
+- SDK tests.
+- MCP tests.
+- E2E tests.
+- Security regression tests.
+- Performance tests.
+
+Inspect browser console errors and application logs.
+
+Fix:
+
+- Broken pages.
+- Dead buttons.
+- Broken API operations.
+- Incorrect status states.
+- Incorrect connector states.
+- Incorrect secret handling.
+- Data persistence failures.
+- Tenant isolation failures.
+- Missing error handling.
+- Stale synchronization.
+- Incorrect scan output.
+- Duplicate findings.
+- Incorrect vulnerability matching.
+- Failed remediation.
+- Race conditions.
+- Background job failures.
+- Broken navigation.
+- Incorrect loading states.
+- Inaccessible forms.
+- Responsive design defects.
+
+For every important bug:
+
+1. Reproduce it.
+2. Find its root cause.
+3. Fix it.
+4. Add a regression test.
+5. Re-run the relevant tests.
+6. Check connected modules for regressions.
+
+Do not hide errors.
+
+Do not disable security protections to make tests pass.
+
+Do not claim there are zero bugs forever.
+
+Eliminate all known release-blocking defects.
+
+---
+
+16. DO NOT FORGET THE COMMERCIAL PRODUCT REQUIREMENTS
+
+Ensure the platform is usable by:
+
+Individual Developers
+
+- Fast installation.
+- CLI.
+- GitHub onboarding.
+- Clear findings.
+- Fast scans.
+- Useful free plan.
+- Developer-oriented workflow.
+
+Startups and Small Businesses
+
+- Workspace.
+- Team.
+- Projects.
+- Shared findings.
+- Notifications.
+- Policies.
+- Integrations.
+- Remediation tracking.
+
+Medium-Sized Companies
+
+- Multiple teams.
+- Multiple cloud environments.
+- Central policies.
+- Advanced access control.
+- Audit.
+- Security Graph.
+- SIEM export.
+- Incident management.
+
+Enterprises
+
+- SSO.
+- SCIM.
+- Advanced RBAC.
+- Large-scale integration support.
+- Evidence exports.
+- Retention policies.
+- Audit trail.
+- Dedicated runner options.
+- Private deployment options when supported.
+
+The product must grow in capability without becoming a collection of disconnected products.
+
+---
+
+17. FINAL EXECUTION ORDER
+
+Execute the work in the following order, but do not treat a phase as permission to abandon later phases.
+
+PHASE 1 — Repair the Core Platform
+
+Authentication, tenants, secrets, database, API, job infrastructure, Connector Hub.
+
+PHASE 2 — Complete the Internal Integration Fabric
+
+Event bus, shared data models, event processing, cross-module workflows.
+
+PHASE 3 — Build and Package TRUSTRAIL Runner
+
+CLI, scanner workers, CI runner, optional runtime collector, secure enrollment.
+
+PHASE 4 — Complete Core Integrations
+
+GitHub, OSV, NVD, KEV, EPSS, scanner engines, AWS, Terraform, Docker/OCI.
+
+PHASE 5 — Complete Additional Infrastructure Integrations
+
+Kubernetes, Azure, GCP, identity providers, notifications, SIEM and secrets management according to the advertised product scope.
+
+PHASE 6 — Complete Security Engines
+
+Asset discovery, findings, attack graph, risk, supply chain, change integrity, agent security, runtime events.
+
+PHASE 7 — Complete Automated Defense
+
+Remediation, Pull Requests, policy enforcement, incident response, recovery and deception.
+
+PHASE 8 — Complete Developer and Enterprise Interfaces
+
+REST, OpenAPI, CLI, SDKs, MCP, enterprise administration, integrations experience.
+
+PHASE 9 — Complete Quality and Productionization
+
+All tests, all critical fixes, performance, security, deployment and documentation.
+
+Do not stop after writing the plan.
+
+Perform the actual work.
+
+---
+
+18. REQUIRED DELIVERABLES
+
+Update the source code and provide:
+
+1. Full working Connector Hub.
+2. Full internal Integration Fabric.
+3. TRUSTRAIL Runner and installation package.
+4. Real provider adapters.
+5. Connected scanner engine orchestration.
+6. Complete Security Graph workflows.
+7. Completed API.
+8. CLI.
+9. SDKs.
+10. MCP Server.
+11. Complete user interfaces.
+12. Automated test suites.
+13. Integration configuration documentation.
+14. Secure deployment configuration.
+15. Complete feature-to-integration map.
+16. Feature completion matrix.
+17. API completeness report.
+18. Integration health and test report.
+19. Security audit.
+20. Performance report.
+21. Bug-fix report.
+22. Remaining external dependency report.
+23. Production readiness report.
+
+The integration matrix must show for each provider:
+
+- Provider.
+- Module served.
+- Authentication.
+- Required scopes.
+- Operations implemented.
+- Live tests completed.
+- Functional test results.
+- Errors.
+- Health.
+- Remaining blockers.
+
+---
+
+19. FINAL NON-NEGOTIABLE ACCEPTANCE RULES
+
+A GitHub connector is complete only when it can access an authorized repository and execute all advertised repository operations.
+
+An AWS connector is complete only when it authenticates, discovers the permitted account resources, evaluates their security state and saves real evidence.
+
+A scanner is complete only when it runs, parses actual output, records findings and handles execution failures correctly.
+
+An attack path is complete only when its relationships are derived from evidence and the result can be recalculated after a fix.
+
+A remediation is complete only when the proposed change has been tested and its effect has been verified.
+
+A notification is complete only when the provider reports successful delivery or the platform correctly records a delivery failure.
+
+An MCP tool is complete only when it invokes the real backend operation under the correct user and organization permissions.
+
+An integration is not Healthy merely because its settings are saved.
+
+A user workflow is complete only when a real user can execute it from beginning to end.
+
+No external credentials may be fabricated.
+
+No customer data may be exposed between organizations.
+
+No production security action may be performed without the required authorization.
+
+No feature may be silently removed from the agreed product scope.
+
+---
+
+20. START NOW
+
+Start by inspecting the existing repository and preserving all good work.
+
+Implement the Integration Fabric and its internal event connections.
+
+Then complete the actual provider integrations and install/configure the real security engines required by each module.
+
+Connect every feature to the internal data model and event architecture.
+
+Complete all workflows, repair defects, and run the tests.
+
+When credentials are unavailable, finish everything possible without them and produce an exact setup checklist. Do not stop the entire project because one external provider is unavailable.
+
+Do not return only a plan.
+
+Do not return only a report.
+
+Do not merely say that integrations have been added.
+
+Modify the actual application, run the actual services, connect actual integrations, execute actual scans, and verify actual results.
+
+The final goal is one fully integrated TRUSTRAIL Security Cloud in which every implemented security capability is connected to the appropriate provider, security engine, internal event workflow, REST API, CLI, MCP interface and user experience.
+
+The platform must function as one complete cybersecurity system, not as separate modules that merely appear together in a dashboard.

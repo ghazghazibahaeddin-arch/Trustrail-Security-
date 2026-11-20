@@ -2,12 +2,14 @@ import crypto from 'node:crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb, appendAuditLog } from '@/lib/db';
 import { requireAuth } from '@/lib/api-response';
-import { listEnrichedFindings } from '@/lib/domain-mappers';
+import { computeOrganizationSnapshot, listEnrichedFindings } from '@/lib/domain-mappers';
 import { synthesizeAttackPaths } from '@/lib/engines/attack-path-engine';
 import { evaluatePolicies, type PolicyRule } from '@/lib/engines/policy-engine';
 import { executeUnifiedScan } from '@/lib/engines/scanner-engine';
 import { computeChangeStateHash } from '@/lib/engines/intent-lock';
 import { sha256 } from '@/lib/security/crypto';
+import { formatConnectorRow } from '@/lib/connectors/hub';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const MCP_TOOLS = [
   {
@@ -66,6 +68,63 @@ const MCP_TOOLS = [
         patchPayload: { type: 'object' },
       },
       required: ['title', 'targetAsset', 'purpose'],
+    },
+  },
+  {
+    name: 'trustrail_get_security_posture',
+    description: 'Get real-time security posture score, rating, open findings count, and compliance percentage.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'trustrail_get_integration_health',
+    description: 'Inspect lifecycle health, sync cursors, and errors across all configured organization connectors.',
+    inputSchema: { type: 'object', properties: {} },
+  },
+  {
+    name: 'trustrail_get_incidents',
+    description: 'List active and historical security incidents for the authenticated organization.',
+    inputSchema: {
+      type: 'object',
+      properties: { status: { type: 'string', enum: ['Open', 'Contained', 'Recovered', 'Closed', 'ALL'] } },
+    },
+  },
+  {
+    name: 'trustrail_analyze_change',
+    description: 'Compute IntentLock SHA-256 state hash and evaluate policy compliance before applying a proposed change.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        targetAsset: { type: 'string' },
+        purpose: { type: 'string' },
+        payload: { type: 'object' },
+      },
+      required: ['targetAsset', 'purpose'],
+    },
+  },
+  {
+    name: 'trustrail_create_incident',
+    description: 'Create a tracked security incident and emit event bus notifications (requires Developer+).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        title: { type: 'string' },
+        severity: { type: 'string', enum: ['SEV-1', 'SEV-2', 'SEV-3'] },
+        affectedAsset: { type: 'string' },
+        summary: { type: 'string' },
+      },
+      required: ['title', 'severity', 'affectedAsset'],
+    },
+  },
+  {
+    name: 'trustrail_create_remediation_pr',
+    description: 'Generate a gated remediation patch run & IntentLock proposal for a finding (requires Developer+; human approval required).',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        findingId: { type: 'string' },
+        patchDiff: { type: 'string' },
+      },
+      required: ['findingId'],
     },
   },
 ];
@@ -275,6 +334,146 @@ export async function POST(req: NextRequest) {
               intentLockStatus: 'Locked',
               requiresHumanApproval: true,
               hash: newHash,
+            }),
+          },
+        ],
+      });
+    }
+
+    if (toolName === 'trustrail_get_security_posture') {
+      const posture = computeOrganizationSnapshot(db, authResult.auth.orgId);
+      return rpcResult(body.id, {
+        content: [{ type: 'text', text: JSON.stringify({ posture }) }],
+      });
+    }
+
+    if (toolName === 'trustrail_get_integration_health') {
+      const rows = db
+        .prepare('SELECT * FROM connectors WHERE org_id = ? ORDER BY name ASC')
+        .all(authResult.auth.orgId) as Array<Record<string, unknown>>;
+      const connectors = rows.map((r) => formatConnectorRow(r, authResult.auth.orgId));
+      return rpcResult(body.id, {
+        content: [{ type: 'text', text: JSON.stringify({ connectors }) }],
+      });
+    }
+
+    if (toolName === 'trustrail_get_incidents') {
+      const rows = db
+        .prepare(
+          `SELECT id, title, severity, status, affected_asset as affectedAsset, owner, opened_at as openedAt
+           FROM incidents WHERE org_id = ? ORDER BY opened_at DESC`
+        )
+        .all(authResult.auth.orgId) as Array<Record<string, unknown>>;
+      const statusFilter = typeof args.status === 'string' ? args.status : 'ALL';
+      const filtered = statusFilter === 'ALL' ? rows : rows.filter((r) => r.status === statusFilter);
+      return rpcResult(body.id, {
+        content: [{ type: 'text', text: JSON.stringify({ incidents: filtered }) }],
+      });
+    }
+
+    if (toolName === 'trustrail_analyze_change') {
+      const targetAsset = String(args.targetAsset || 'unknown-asset');
+      const purpose = String(args.purpose || 'MCP change analysis');
+      const payload = (args.payload as Record<string, unknown>) || {};
+      const stateHash = computeChangeStateHash({
+        targetAsset,
+        previousStateHash: 'baseline',
+        newStatePayload: payload,
+        purpose,
+      });
+      const policies = db
+        .prepare('SELECT id, name, engine, severity, status, rule_code as ruleCode FROM policies WHERE org_id = ?')
+        .all(authResult.auth.orgId) as unknown as PolicyRule[];
+      const decision = evaluatePolicies(
+        policies,
+        {
+          type: 'change_contract',
+          hasPublicS3: Boolean(payload.acl === 'public-read' || payload.acl === 'public-read-write'),
+          hasOpenAdminPort: Boolean(payload.openAdminPort),
+        },
+        'Enforce'
+      );
+      return rpcResult(body.id, {
+        content: [{ type: 'text', text: JSON.stringify({ targetAsset, stateHash, policyDecision: decision }) }],
+      });
+    }
+
+    if (toolName === 'trustrail_create_incident') {
+      if (authResult.auth.role === 'Viewer') {
+        return rpcError(body.id, -32003, 'Forbidden: Viewer role cannot create incidents via MCP.', 403);
+      }
+      const incId = `inc-${crypto.randomUUID().slice(0, 8)}`;
+      const now = new Date().toISOString();
+      const severity = args.severity === 'SEV-1' || args.severity === 'SEV-2' || args.severity === 'SEV-3' ? args.severity : 'SEV-2';
+      const title = String(args.title || 'MCP Reported Security Incident');
+      const affectedAsset = String(args.affectedAsset || 'unknown-asset');
+      db.prepare(
+        `INSERT INTO incidents (id, org_id, title, severity, status, affected_asset, owner, summary, playbook_name, actions_taken_json, opened_at)
+         VALUES (?, ?, ?, ?, 'Open', ?, ?, ?, 'MCP Automated Triage', ?, ?)`
+      ).run(
+        incId,
+        authResult.auth.orgId,
+        title,
+        severity,
+        affectedAsset,
+        authResult.auth.name,
+        String(args.summary || 'Created via MCP server.'),
+        JSON.stringify([`Created via MCP by ${authResult.auth.email}`]),
+        now
+      );
+      publishEvent(db, {
+        orgId: authResult.auth.orgId,
+        eventType: 'incident.created',
+        actorId: authResult.auth.email,
+        sourceConnector: 'mcp_server',
+        sourceResourceId: incId,
+        payload: { title, severity, affectedAsset },
+      });
+      return rpcResult(body.id, {
+        content: [{ type: 'text', text: JSON.stringify({ incidentId: incId, severity, status: 'Open' }) }],
+      });
+    }
+
+    if (toolName === 'trustrail_create_remediation_pr') {
+      if (authResult.auth.role === 'Viewer') {
+        return rpcError(body.id, -32003, 'Forbidden: Viewer role cannot create remediation runs via MCP.', 403);
+      }
+      const findingId = String(args.findingId || '');
+      const finding = db
+        .prepare('SELECT id, title, file_path, suggested_fix FROM findings WHERE id = ? AND org_id = ?')
+        .get(findingId, authResult.auth.orgId) as
+        | { id: string; title: string; file_path: string | null; suggested_fix: string }
+        | undefined;
+      if (!finding) {
+        return rpcError(body.id, -32602, `Finding "${findingId}" not found in organization.`);
+      }
+      const runId = `rem-${crypto.randomUUID().slice(0, 8)}`;
+      const now = new Date().toISOString();
+      const patchDiff =
+        typeof args.patchDiff === 'string' && args.patchDiff.trim()
+          ? args.patchDiff
+          : `--- a/${finding.file_path || 'src/app.ts'}\n+++ b/${finding.file_path || 'src/app.ts'}\n+ // ${finding.suggested_fix}`;
+      db.prepare(
+        `INSERT INTO remediation_runs (id, org_id, finding_id, status, patch_diff, verification_command, verification_passed, rescan_clean, created_by, created_at)
+         VALUES (?, ?, ?, 'Patch_Generated', ?, 'npm test && trustrail scan .', 0, 0, ?, ?)`
+      ).run(runId, authResult.auth.orgId, finding.id, patchDiff, authResult.auth.email, now);
+      publishEvent(db, {
+        orgId: authResult.auth.orgId,
+        eventType: 'remediation.proposed',
+        actorId: authResult.auth.email,
+        sourceConnector: 'mcp_server',
+        sourceResourceId: runId,
+        payload: { findingId: finding.id, requiresHumanApproval: true },
+      });
+      return rpcResult(body.id, {
+        content: [
+          {
+            type: 'text',
+            text: JSON.stringify({
+              remediationRunId: runId,
+              findingId: finding.id,
+              status: 'Patch_Generated',
+              requiresHumanApproval: true,
             }),
           },
         ],

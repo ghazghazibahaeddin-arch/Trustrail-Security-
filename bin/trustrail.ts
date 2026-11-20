@@ -5,13 +5,20 @@ import { executeUnifiedScan, scanTerraformAndIaC } from '../lib/engines/scanner-
 import { TrustrailClient } from '../lib/sdk/trustrail-client';
 
 function printUsage() {
-  console.log(`Trustrail Security Cloud CLI v1.1.0
+  console.log(`Trustrail Security Cloud CLI v1.2.0
 
 Usage:
+  trustrail login --email <email> --password <password> [--url <apiUrl>]
+  trustrail status [--url <apiUrl>] [--token <bearer>]
   trustrail scan <targetPath> [--project <name>] [--sync --url <apiUrl> --token <bearer>]
   trustrail terraform-check <tfFileOrPlanJson> [--url <apiUrl> --token <bearer>]
   trustrail sbom --projectId <id> [--format cyclonedx|spdx] [--url <apiUrl>] [--token <bearer>]
   trustrail findings [--url <apiUrl>] [--token <bearer>] [--severity <CRITICAL|HIGH|MEDIUM|LOW>]
+  trustrail assets [--url <apiUrl>] [--token <bearer>]
+  trustrail attack-paths [--url <apiUrl>] [--token <bearer>]
+  trustrail policy-check --type <ci_pipeline|terraform_plan|change_contract> [--url <apiUrl>] [--token <bearer>]
+  trustrail change-check --target <asset> --purpose <text> [--url <apiUrl>] [--token <bearer>]
+  trustrail runner [--url <apiUrl>] [--token <bearer>]
   trustrail graph [--url <apiUrl>] [--token <bearer>]
   trustrail remediate <findingId> [--url <apiUrl>] [--token <bearer>]
   trustrail attest --title <title> [--url <apiUrl>] [--token <bearer>]
@@ -148,12 +155,68 @@ async function main() {
     process.exit(res.findings.some((f) => f.severity === 'CRITICAL') && args.includes('--fail-on-critical') ? 2 : 0);
   }
 
+  if (cmd === 'login') {
+    const email = getFlag(args, '--email');
+    const password = getFlag(args, '--password');
+    if (!email || !password) {
+      console.error('Missing --email or --password.');
+      process.exit(1);
+    }
+    const client = new TrustrailClient({ baseUrl: apiUrl });
+    const res = await client.login(email, password);
+    console.log(JSON.stringify({ authenticated: true, user: res.user, organization: res.organization, token: res.token }, null, 2));
+    process.exit(0);
+  }
+
   if (!token) {
     console.error('Missing API token. Pass --token <bearer> or set TRUSTRAIL_TOKEN.');
     process.exit(1);
   }
 
   const client = new TrustrailClient({ baseUrl: apiUrl, token });
+
+  if (cmd === 'status') {
+    const res = await client.getSecurityPosture();
+    console.log(JSON.stringify(res, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'assets') {
+    const graph = await client.getGraph();
+    console.log(JSON.stringify({ assets: graph.nodes }, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'attack-paths') {
+    const graph = await client.getGraph();
+    console.log(JSON.stringify({ attackPaths: graph.attackPaths }, null, 2));
+    process.exit(0);
+  }
+
+  if (cmd === 'policy-check') {
+    const type = getFlag(args, '--type') || 'ci_pipeline';
+    const res = await client.evaluatePolicy({
+      type,
+      hasPublicS3: args.includes('--public-s3'),
+      hasOpenAdminPort: args.includes('--open-admin-port'),
+    });
+    console.log(JSON.stringify(res, null, 2));
+    process.exit(res.allowed ? 0 : 2);
+  }
+
+  if (cmd === 'change-check') {
+    const targetAsset = getFlag(args, '--target') || 'prod-cluster';
+    const purpose = getFlag(args, '--purpose') || 'CLI change gate check';
+    const res = await client.evaluatePolicy({ type: 'change_contract', targetAsset, purpose });
+    console.log(JSON.stringify({ targetAsset, purpose, policyDecision: res }, null, 2));
+    process.exit(res.allowed ? 0 : 2);
+  }
+
+  if (cmd === 'runner') {
+    const res = await client.listRunners();
+    console.log(JSON.stringify(res, null, 2));
+    process.exit(0);
+  }
 
   if (cmd === 'findings') {
     const severity = getFlag(args, '--severity');

@@ -160,8 +160,59 @@ export async function GET() {
         post: { summary: 'Verify connector credentials via live AWS STS / GitHub / webhook / engine health checks (Admin+)' },
       },
       '/api/v1/connectors/{id}/disconnect': { post: { summary: 'Disconnect connector (Admin+)' } },
+      '/api/v1/connectors/{id}': {
+        delete: { summary: 'Disconnect and purge connector configuration & sync history (Admin+)' },
+      },
+      '/api/v1/connectors/{id}/sync': {
+        get: { summary: 'List connector sync runs and cursor history' },
+        post: { summary: 'Trigger initial or incremental connector synchronization (Developer+)' },
+      },
       '/api/v1/connectors/rotate-secrets': {
         post: { summary: 'Rotate AES-256-GCM vault encryption key envelopes for org connectors (Admin+)' },
+      },
+      '/api/v1/fabric/events': {
+        get: { summary: 'List Internal Event Bus transactional outbox events, statuses, and dependency map' },
+        post: { summary: 'Publish an internal event or replay a Failed/Dead_Letter event (Developer+)' },
+      },
+      '/api/v1/intel/query': {
+        get: { summary: 'List cached OSV/NVD/KEV/EPSS vulnerability intelligence records' },
+        post: { summary: 'Query OSV.dev, NVD v2, CISA KEV, and FIRST EPSS and enrich finding risk scores (Developer+)' },
+      },
+      '/api/v1/integrations/kubernetes/analyze': {
+        post: { summary: 'Analyze Kubernetes YAML manifests or cluster snapshot for RBAC/PodSecurity/NetworkPolicy risks (Developer+)' },
+      },
+      '/api/v1/events/ingest': {
+        get: { summary: 'List ingested runtime telemetry events and correlated incidents' },
+        post: { summary: 'Ingest OTel, Kubernetes Audit, Falco, or CloudTrail events (User Bearer or Runner Token)' },
+      },
+      '/api/v1/siem/export': {
+        get: { summary: 'List SIEM export deliveries and status receipts' },
+        post: { summary: 'Dispatch security event or posture alert to Splunk HEC, Elastic/Sentinel, or webhook (Developer+)' },
+      },
+      '/api/v1/runner': {
+        get: { summary: 'List organization TRUSTRAIL Runners, job queue, and CI/CD pipeline snippets' },
+        post: { summary: 'Issue runner enrollment token or queue a remote runner job (Admin+)' },
+      },
+      '/api/v1/runner/enroll': {
+        post: { summary: 'Enroll TRUSTRAIL Runner with device fingerprint and capabilities (Runner Bearer tr_run_)' },
+      },
+      '/api/v1/runner/heartbeat': {
+        post: { summary: 'Report TRUSTRAIL Runner health and metrics heartbeat (Runner Bearer tr_run_)' },
+      },
+      '/api/v1/runner/jobs': {
+        get: { summary: 'Claim next queued job for the authenticated TRUSTRAIL Runner (Runner Bearer tr_run_)' },
+        post: { summary: 'Submit signed TRUSTRAIL Runner job results and normalized findings (Runner Bearer tr_run_)' },
+      },
+      '/api/v1/runner/{id}': {
+        delete: { summary: 'Revoke a TRUSTRAIL Runner immediately (Admin+)' },
+      },
+      '/api/v1/sso': {
+        get: { summary: 'Get organization OIDC/SAML SSO configuration and SCIM 2.0 tokens' },
+        post: { summary: 'Configure Enterprise SSO (OIDC/SAML/Okta/Entra) or issue/revoke SCIM 2.0 tokens (Admin+)' },
+      },
+      '/api/v1/scim/v2/Users': {
+        get: { summary: 'RFC 7644 SCIM 2.0 list provisioned users (SCIM Bearer tr_scim_)' },
+        post: { summary: 'RFC 7644 SCIM 2.0 create or update user & RBAC role mapping (SCIM Bearer tr_scim_)' },
       },
       '/api/v1/cloud/resources': {
         get: { summary: 'List discovered CSPM cloud resources and compliance state' },

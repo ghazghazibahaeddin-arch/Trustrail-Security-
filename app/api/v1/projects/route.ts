@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { getDb, appendAuditLog } from '@/lib/db';
 import { jsonError, jsonOk, requireAuth } from '@/lib/api-response';
 import { listProjectsWithStats } from '@/lib/domain-mappers';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const CreateProjectSchema = z.object({
   name: z.string().min(2).max(120),
@@ -81,6 +82,16 @@ export async function POST(req: NextRequest) {
     resourceType: 'Project',
     resourceId: projId,
     details: `Registered repository ${parsed.data.name} (${parsed.data.repoUrl}).`,
+  });
+
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType: 'repository.connected',
+    actorId: authResult.auth.email,
+    sourceConnector: 'github',
+    sourceResourceId: parsed.data.repoUrl.trim(),
+    affectedAssetIds: [assetId],
+    payload: { projectId: projId, name: parsed.data.name.trim(), branch: parsed.data.branch.trim() },
   });
 
   const projects = listProjectsWithStats(db, authResult.auth.orgId);

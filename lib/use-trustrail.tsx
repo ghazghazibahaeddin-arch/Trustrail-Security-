@@ -30,6 +30,15 @@ import {
   Edition,
   Role,
   EMPTY_ORGANIZATION,
+  InternalEventItem,
+  IntegrationDependencySpec,
+  ConnectorSyncRun,
+  RunnerItem,
+  RunnerJobItem,
+  RuntimeEventItem,
+  SiemExportItem,
+  SsoConfigItem,
+  ScimTokenItem,
 } from './trustrail-store';
 
 export type NavTab =
@@ -121,6 +130,15 @@ interface TrustrailContextType {
   cloudResources: CloudResource[];
   backgroundJobs: BackgroundJob[];
   systemMetrics: SystemMetrics | null;
+  fabricEvents: InternalEventItem[];
+  dependencyMap: IntegrationDependencySpec[];
+  runners: RunnerItem[];
+  runnerJobs: RunnerJobItem[];
+  ciSnippets: Record<string, string>;
+  runtimeEvents: RuntimeEventItem[];
+  siemExports: SiemExportItem[];
+  ssoConfig: SsoConfigItem | null;
+  scimTokens: ScimTokenItem[];
 
   isScanning: boolean;
   scanProgress: string;
@@ -195,24 +213,39 @@ interface TrustrailContextType {
   issueTrustPassport: (title: string, scope: string[], expiresDays?: number) => Promise<void>;
   revokeTrustPassport: (id: string) => Promise<void>;
   testConnector: (id: string) => Promise<void>;
-  configureConnector: (
-    id: string,
-    payload: {
-      githubToken?: string;
-      defaultRepo?: string;
-      webhookUrl?: string;
-      awsRoleArn?: string;
-      awsExternalId?: string;
-      awsAccessKeyId?: string;
-      awsSecretAccessKey?: string;
-      awsRegion?: string;
-      azureTenantId?: string;
-      azureSubscriptionId?: string;
-      gcpProjectId?: string;
-      verifyNow?: boolean;
-    }
-  ) => Promise<boolean>;
+  configureConnector: (id: string, payload: Record<string, unknown>) => Promise<boolean>;
   disconnectConnector: (id: string) => Promise<void>;
+  syncConnector: (id: string, mode?: 'initial' | 'incremental' | 'manual') => Promise<void>;
+  deleteConnectorData: (id: string) => Promise<void>;
+  fetchSyncRuns: (id: string) => Promise<ConnectorSyncRun[]>;
+  analyzeKubernetes: (payload: { clusterName?: string; manifestYaml?: string }) => Promise<Record<string, unknown> | null>;
+  queryVulnerabilityIntel: (payload: { cveIds?: string[]; forceRefresh?: boolean }) => Promise<Record<string, unknown> | null>;
+  replayFabricEvent: (eventId: string, simulateFailure?: boolean) => Promise<void>;
+  createRunner: (name: string, mode?: 'scan' | 'cicd' | 'runtime_collector', environment?: string) => Promise<{ runner: RunnerItem; enrollmentToken: string } | null>;
+  revokeRunner: (id: string) => Promise<void>;
+  ingestRuntimeEvent: (payload: {
+    source: 'otel' | 'kubernetes_audit' | 'falco' | 'cloudtrail' | 'custom';
+    severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+    eventType: string;
+    actor: string;
+    resource: string;
+    summary: string;
+  }) => Promise<Record<string, unknown> | null>;
+  exportToSiem: (payload: {
+    destination: 'splunk' | 'elastic' | 'sentinel' | 'webhook';
+    resourceType: string;
+    resourceId: string;
+    eventData: Record<string, unknown>;
+  }) => Promise<void>;
+  configureSso: (payload: {
+    provider: 'oidc' | 'saml' | 'okta' | 'entra';
+    issuerUrl?: string;
+    clientId?: string;
+    domainHint?: string;
+    enabled?: boolean;
+  }) => Promise<boolean>;
+  issueScimToken: (name: string) => Promise<{ scimToken: ScimTokenItem; secret: string } | null>;
+  revokeScimToken: (tokenId: string) => Promise<void>;
   rotateVaultSecrets: () => Promise<void>;
   evaluateCloudPosture: (payload: {
     provider: 'aws' | 'azure' | 'gcp';
@@ -318,6 +351,15 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
   const [cloudResources, setCloudResources] = useState<CloudResource[]>([]);
   const [backgroundJobs, setBackgroundJobs] = useState<BackgroundJob[]>([]);
   const [systemMetrics, setSystemMetrics] = useState<SystemMetrics | null>(null);
+  const [fabricEvents, setFabricEvents] = useState<InternalEventItem[]>([]);
+  const [dependencyMap, setDependencyMap] = useState<IntegrationDependencySpec[]>([]);
+  const [runners, setRunners] = useState<RunnerItem[]>([]);
+  const [runnerJobs, setRunnerJobs] = useState<RunnerJobItem[]>([]);
+  const [ciSnippets, setCiSnippets] = useState<Record<string, string>>({});
+  const [runtimeEvents, setRuntimeEvents] = useState<RuntimeEventItem[]>([]);
+  const [siemExports, setSiemExports] = useState<SiemExportItem[]>([]);
+  const [ssoConfig, setSsoConfig] = useState<SsoConfigItem | null>(null);
+  const [scimTokens, setScimTokens] = useState<ScimTokenItem[]>([]);
 
   const [isScanning, setIsScanning] = useState(false);
   const [scanProgress, setScanProgress] = useState('');
@@ -362,6 +404,11 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
         cloudRes,
         jobsRes,
         metricsRes,
+        fabricRes,
+        runnerRes,
+        runtimeRes,
+        siemRes,
+        ssoRes,
       ] = await Promise.all([
         apiFetch<{ organization: Organization }>('/api/v1/organizations'),
         apiFetch<{ projects: Project[] }>('/api/v1/projects'),
@@ -373,7 +420,7 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
         apiFetch<{ incidents: Incident[] }>('/api/v1/incidents'),
         apiFetch<{ canaries: CanaryItem[] }>('/api/v1/deception'),
         apiFetch<{ controls: ComplianceControl[] }>('/api/v1/compliance'),
-        apiFetch<{ connectors: Connector[] }>('/api/v1/connectors'),
+        apiFetch<{ connectors: Connector[]; dependencyMap?: IntegrationDependencySpec[] }>('/api/v1/connectors'),
         apiFetch<{ trustReceipts: TrustReceiptItem[] }>('/api/v1/trust-center'),
         apiFetch<{ members: TeamMember[] }>('/api/v1/team'),
         apiFetch<{ chainVerified: boolean; logs: AuditLogItem[] }>('/api/v1/audit-logs?limit=50'),
@@ -383,6 +430,11 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
         apiFetch<{ resources: CloudResource[] }>('/api/v1/cloud/resources').catch(() => ({ resources: [] })),
         apiFetch<{ jobs: BackgroundJob[] }>('/api/v1/jobs').catch(() => ({ jobs: [] })),
         apiFetch<SystemMetrics>('/api/v1/system/metrics').catch(() => null),
+        apiFetch<{ events: InternalEventItem[]; dependencyMap?: IntegrationDependencySpec[] }>('/api/v1/fabric/events?limit=60').catch(() => ({ events: [], dependencyMap: [] })),
+        apiFetch<{ runners: RunnerItem[]; jobs: RunnerJobItem[]; ciSnippets: Record<string, string> }>('/api/v1/runner').catch(() => ({ runners: [], jobs: [], ciSnippets: {} })),
+        apiFetch<{ events: RuntimeEventItem[] }>('/api/v1/events/ingest').catch(() => ({ events: [] })),
+        apiFetch<{ exports: SiemExportItem[] }>('/api/v1/siem/export').catch(() => ({ exports: [] })),
+        apiFetch<{ ssoConfig: SsoConfigItem | null; scimTokens: ScimTokenItem[] }>('/api/v1/sso').catch(() => ({ ssoConfig: null, scimTokens: [] })),
       ]);
 
       setOrg(orgRes.organization);
@@ -398,6 +450,7 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
       setCanaries(canRes.canaries);
       setComplianceControls(compRes.controls);
       setConnectors(connRes.connectors);
+      setDependencyMap(connRes.dependencyMap || fabricRes.dependencyMap || []);
       setApiKeys(keysRes.apiKeys);
       setTrustReceipts(trRes.trustReceipts);
       setTeamMembers(teamRes.members);
@@ -408,6 +461,14 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
       setCloudResources(cloudRes.resources);
       setBackgroundJobs(jobsRes.jobs);
       setSystemMetrics(metricsRes);
+      setFabricEvents(fabricRes.events);
+      setRunners(runnerRes.runners);
+      setRunnerJobs(runnerRes.jobs);
+      setCiSnippets(runnerRes.ciSnippets || {});
+      setRuntimeEvents(runtimeRes.events);
+      setSiemExports(siemRes.exports);
+      setSsoConfig(ssoRes.ssoConfig);
+      setScimTokens(ssoRes.scimTokens || []);
     } catch (err) {
       showNotice('error', (err as Error).message);
     } finally {
@@ -981,23 +1042,7 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const configureConnector = async (
-    id: string,
-    payload: {
-      githubToken?: string;
-      defaultRepo?: string;
-      webhookUrl?: string;
-      awsRoleArn?: string;
-      awsExternalId?: string;
-      awsAccessKeyId?: string;
-      awsSecretAccessKey?: string;
-      awsRegion?: string;
-      azureTenantId?: string;
-      azureSubscriptionId?: string;
-      gcpProjectId?: string;
-      verifyNow?: boolean;
-    }
-  ) => {
+  const configureConnector = async (id: string, payload: Record<string, unknown>) => {
     try {
       const res = await apiFetch<{ message?: string }>(`/api/v1/connectors/${encodeURIComponent(id)}/configure`, {
         method: 'POST',
@@ -1017,6 +1062,205 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
       await apiFetch(`/api/v1/connectors/${encodeURIComponent(id)}/disconnect`, { method: 'POST' });
       await refreshAll();
       showNotice('success', 'Connector disconnected.');
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+    }
+  };
+
+  const syncConnector = async (id: string, mode: 'initial' | 'incremental' | 'manual' = 'manual') => {
+    try {
+      const res = await apiFetch<{ run?: { status?: string; assetsDiscovered?: number; eventsImported?: number } }>(
+        `/api/v1/connectors/${encodeURIComponent(id)}/sync`,
+        { method: 'POST', body: JSON.stringify({ mode }) }
+      );
+      await refreshAll();
+      showNotice(
+        'success',
+        `Connector sync ${res.run?.status || 'Completed'}: ${res.run?.assetsDiscovered ?? 0} assets, ${res.run?.eventsImported ?? 0} events.`
+      );
+    } catch (err) {
+      await refreshAll();
+      showNotice('error', (err as Error).message);
+    }
+  };
+
+  const deleteConnectorData = async (id: string) => {
+    try {
+      await apiFetch(`/api/v1/connectors/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      await refreshAll();
+      showNotice('success', 'Connector credentials, sync cursors, and run history purged.');
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+    }
+  };
+
+  const fetchSyncRuns = async (id: string): Promise<ConnectorSyncRun[]> => {
+    try {
+      const res = await apiFetch<{ runs: ConnectorSyncRun[] }>(`/api/v1/connectors/${encodeURIComponent(id)}/sync`);
+      return res.runs || [];
+    } catch {
+      return [];
+    }
+  };
+
+  const analyzeKubernetes = async (payload: { clusterName?: string; manifestYaml?: string }) => {
+    try {
+      const res = await apiFetch<Record<string, unknown>>('/api/v1/integrations/kubernetes/analyze', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      await refreshAll();
+      showNotice('success', `Kubernetes scan complete: ${String(res.findingsCount ?? 0)} posture risk(s) detected.`);
+      return res;
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+      return null;
+    }
+  };
+
+  const queryVulnerabilityIntel = async (payload: { cveIds?: string[]; forceRefresh?: boolean }) => {
+    try {
+      const res = await apiFetch<Record<string, unknown>>('/api/v1/intel/query', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      await refreshAll();
+      showNotice('success', 'Enriched CVE intelligence from NVD, CISA KEV, FIRST EPSS, and OSV.dev.');
+      return res;
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+      return null;
+    }
+  };
+
+  const replayFabricEvent = async (eventId: string, simulateFailure = false) => {
+    try {
+      await apiFetch('/api/v1/fabric/events', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'replay', eventId, simulateFailure }),
+      });
+      await refreshAll();
+      showNotice('success', `Replayed internal event ${eventId}.`);
+    } catch (err) {
+      await refreshAll();
+      showNotice('error', (err as Error).message);
+    }
+  };
+
+  const createRunner = async (
+    name: string,
+    mode: 'scan' | 'cicd' | 'runtime_collector' = 'cicd',
+    environment = 'production'
+  ) => {
+    try {
+      const res = await apiFetch<{ runner: RunnerItem; enrollmentToken: string }>('/api/v1/runner', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'create_runner', name, mode, environment }),
+      });
+      await refreshAll();
+      showNotice('success', `Issued TRUSTRAIL Runner enrollment token (${res.runner.tokenPrefix}...).`);
+      return res;
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+      return null;
+    }
+  };
+
+  const revokeRunner = async (id: string) => {
+    try {
+      await apiFetch(`/api/v1/runner/${encodeURIComponent(id)}`, { method: 'DELETE' });
+      await refreshAll();
+      showNotice('success', 'TRUSTRAIL Runner revoked.');
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+    }
+  };
+
+  const ingestRuntimeEvent = async (payload: {
+    source: 'otel' | 'kubernetes_audit' | 'falco' | 'cloudtrail' | 'custom';
+    severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+    eventType: string;
+    actor: string;
+    resource: string;
+    summary: string;
+  }) => {
+    try {
+      const res = await apiFetch<Record<string, unknown>>('/api/v1/events/ingest', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      await refreshAll();
+      showNotice('success', `Ingested runtime event (${payload.source}): ${payload.eventType}.`);
+      return res;
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+      return null;
+    }
+  };
+
+  const exportToSiem = async (payload: {
+    destination: 'splunk' | 'elastic' | 'sentinel' | 'webhook';
+    resourceType: string;
+    resourceId: string;
+    eventData: Record<string, unknown>;
+  }) => {
+    try {
+      const res = await apiFetch<{ exportRecord?: { status?: string } }>('/api/v1/siem/export', {
+        method: 'POST',
+        body: JSON.stringify(payload),
+      });
+      await refreshAll();
+      showNotice('success', `SIEM export (${payload.destination}): ${res.exportRecord?.status || 'Recorded'}.`);
+    } catch (err) {
+      await refreshAll();
+      showNotice('error', (err as Error).message);
+    }
+  };
+
+  const configureSso = async (payload: {
+    provider: 'oidc' | 'saml' | 'okta' | 'entra';
+    issuerUrl?: string;
+    clientId?: string;
+    domainHint?: string;
+    enabled?: boolean;
+  }) => {
+    try {
+      await apiFetch('/api/v1/sso', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'configure_sso', ...payload }),
+      });
+      await refreshAll();
+      showNotice('success', `Saved ${payload.provider.toUpperCase()} SSO configuration.`);
+      return true;
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+      return false;
+    }
+  };
+
+  const issueScimToken = async (name: string) => {
+    try {
+      const res = await apiFetch<{ scimToken: ScimTokenItem; secret: string }>('/api/v1/sso', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'issue_scim_token', name }),
+      });
+      await refreshAll();
+      showNotice('success', `Issued SCIM 2.0 token "${name}". Copy it now.`);
+      return res;
+    } catch (err) {
+      showNotice('error', (err as Error).message);
+      return null;
+    }
+  };
+
+  const revokeScimToken = async (tokenId: string) => {
+    try {
+      await apiFetch('/api/v1/sso', {
+        method: 'POST',
+        body: JSON.stringify({ action: 'revoke_scim_token', tokenId }),
+      });
+      await refreshAll();
+      showNotice('success', 'SCIM 2.0 token revoked.');
     } catch (err) {
       showNotice('error', (err as Error).message);
     }
@@ -1343,6 +1587,15 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
         cloudResources,
         backgroundJobs,
         systemMetrics,
+        fabricEvents,
+        dependencyMap,
+        runners,
+        runnerJobs,
+        ciSnippets,
+        runtimeEvents,
+        siemExports,
+        ssoConfig,
+        scimTokens,
         isScanning,
         scanProgress,
         login,
@@ -1386,6 +1639,19 @@ export function TrustrailProvider({ children }: { children: React.ReactNode }) {
         testConnector,
         configureConnector,
         disconnectConnector,
+        syncConnector,
+        deleteConnectorData,
+        fetchSyncRuns,
+        analyzeKubernetes,
+        queryVulnerabilityIntel,
+        replayFabricEvent,
+        createRunner,
+        revokeRunner,
+        ingestRuntimeEvent,
+        exportToSiem,
+        configureSso,
+        issueScimToken,
+        revokeScimToken,
         rotateVaultSecrets,
         evaluateCloudPosture,
         inspectOciImage,

@@ -105,7 +105,7 @@ describe('MCP Server JSON-RPC 2.0, CLI, TypeScript SDK & OpenAPI Parity', () => 
       })
     );
     const listJson = (await listRes.json()) as { result: { tools: Array<{ name: string }> } };
-    expect(listJson.result.tools).toHaveLength(5);
+    expect(listJson.result.tools).toHaveLength(11);
 
     // Call list_findings
     const findingsRes = await McpRoute.POST(
@@ -149,7 +149,7 @@ describe('MCP Server JSON-RPC 2.0, CLI, TypeScript SDK & OpenAPI Parity', () => 
     expect(parsedRem.intentLockStatus).toBe('Locked');
     expect(parsedRem.requiresHumanApproval).toBe(true);
 
-    // Viewer blocked from trustrail_run_scan
+    // Viewer blocked from trustrail_run_scan and trustrail_create_incident
     const viewerScan = await McpRoute.POST(
       makeReq('/api/v1/mcp', {
         method: 'POST',
@@ -163,6 +163,38 @@ describe('MCP Server JSON-RPC 2.0, CLI, TypeScript SDK & OpenAPI Parity', () => 
       })
     );
     expect(viewerScan.status).toBe(403);
+
+    const postureRes = await McpRoute.POST(
+      makeReq('/api/v1/mcp', {
+        method: 'POST',
+        token: adminToken,
+        body: {
+          jsonrpc: '2.0',
+          id: 6,
+          method: 'tools/call',
+          params: { name: 'trustrail_get_security_posture', arguments: {} },
+        },
+      })
+    );
+    expect(postureRes.status).toBe(200);
+    const postureJson = (await postureRes.json()) as { result: { content: Array<{ text: string }> } };
+    expect(JSON.parse(postureJson.result.content[0].text)).toHaveProperty('posture.riskScore');
+
+    const healthRes = await McpRoute.POST(
+      makeReq('/api/v1/mcp', {
+        method: 'POST',
+        token: adminToken,
+        body: {
+          jsonrpc: '2.0',
+          id: 7,
+          method: 'tools/call',
+          params: { name: 'trustrail_get_integration_health', arguments: {} },
+        },
+      })
+    );
+    expect(healthRes.status).toBe(200);
+    const healthJson = (await healthRes.json()) as { result: { content: Array<{ text: string }> } };
+    expect(JSON.parse(healthJson.result.content[0].text).connectors.length).toBeGreaterThanOrEqual(19);
   });
 
   it('executes Trustrail CLI scan and terraform-check against real vulnerable fixtures with secret redaction', async () => {

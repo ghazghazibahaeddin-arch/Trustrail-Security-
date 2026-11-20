@@ -218,10 +218,20 @@ CREATE TABLE IF NOT EXISTS connectors (
   permissions_json JSONB NOT NULL,
   status TEXT NOT NULL,
   availability_state TEXT NOT NULL DEFAULT 'NOT_CONFIGURED',
+  lifecycle_state TEXT NOT NULL DEFAULT 'NOT_CONFIGURED',
   health_check TEXT NOT NULL,
   last_sync TEXT NOT NULL,
   config_hint TEXT NOT NULL,
-  config_json TEXT
+  config_json TEXT,
+  sync_cursor TEXT,
+  assets_discovered INTEGER NOT NULL DEFAULT 0,
+  events_imported INTEGER NOT NULL DEFAULT 0,
+  failure_count INTEGER NOT NULL DEFAULT 0,
+  last_error TEXT,
+  credential_expires_at TEXT,
+  missing_permissions_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  owner_email TEXT,
+  data_direction TEXT NOT NULL DEFAULT 'bidirectional'
 );
 
 CREATE TABLE IF NOT EXISTS api_keys (
@@ -336,9 +346,152 @@ CREATE TABLE IF NOT EXISTS notification_deliveries (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS connector_sync_runs (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  connector_id TEXT NOT NULL REFERENCES connectors(id) ON DELETE CASCADE,
+  mode TEXT NOT NULL CHECK (mode IN ('initial', 'incremental', 'webhook', 'manual')),
+  status TEXT NOT NULL CHECK (status IN ('Running', 'Completed', 'Partial', 'Failed')),
+  assets_discovered INTEGER NOT NULL DEFAULT 0,
+  events_imported INTEGER NOT NULL DEFAULT 0,
+  failures_count INTEGER NOT NULL DEFAULT 0,
+  cursor TEXT,
+  error_message TEXT,
+  started_at TIMESTAMPTZ NOT NULL,
+  completed_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS internal_events (
+  event_id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  event_type TEXT NOT NULL,
+  event_version TEXT NOT NULL DEFAULT '1.0',
+  actor_id TEXT NOT NULL,
+  source_connector TEXT NOT NULL,
+  source_resource_id TEXT NOT NULL,
+  affected_assets_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  correlation_id TEXT NOT NULL,
+  causation_id TEXT,
+  evidence_reference TEXT,
+  payload_json JSONB NOT NULL,
+  idempotency_key TEXT NOT NULL UNIQUE,
+  processing_status TEXT NOT NULL DEFAULT 'Pending' CHECK (processing_status IN ('Pending', 'Processing', 'Processed', 'Failed', 'Dead_Letter')),
+  attempts INTEGER NOT NULL DEFAULT 0,
+  last_error TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  processed_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS vulnerability_intel (
+  id TEXT PRIMARY KEY,
+  cve_id TEXT NOT NULL,
+  source TEXT NOT NULL CHECK (source IN ('OSV', 'NVD', 'KEV', 'EPSS', 'GHSA')),
+  source_url TEXT,
+  kev_listed BOOLEAN NOT NULL DEFAULT FALSE,
+  kev_due_date TEXT,
+  epss_score REAL,
+  epss_percentile REAL,
+  cvss_score REAL,
+  cwes_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  fixed_versions_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  raw_json JSONB,
+  retrieved_at TIMESTAMPTZ NOT NULL,
+  expires_at TIMESTAMPTZ NOT NULL,
+  UNIQUE(cve_id, source)
+);
+
+CREATE TABLE IF NOT EXISTS runners (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  mode TEXT NOT NULL CHECK (mode IN ('scan', 'cicd', 'runtime_collector')),
+  status TEXT NOT NULL CHECK (status IN ('Pending_Enrollment', 'Online', 'Degraded', 'Offline', 'Revoked')),
+  token_hash TEXT NOT NULL UNIQUE,
+  token_prefix TEXT NOT NULL,
+  device_fingerprint TEXT,
+  environment TEXT NOT NULL DEFAULT 'production',
+  version TEXT NOT NULL DEFAULT '1.2.0',
+  capabilities_json JSONB NOT NULL DEFAULT '[]'::jsonb,
+  last_heartbeat_at TIMESTAMPTZ,
+  stats_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS runner_jobs (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  runner_id TEXT REFERENCES runners(id) ON DELETE SET NULL,
+  job_type TEXT NOT NULL,
+  target_json JSONB NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('Queued', 'Dispatched', 'Running', 'Completed', 'Failed', 'Cancelled')),
+  timeout_sec INTEGER NOT NULL DEFAULT 300,
+  result_json JSONB,
+  signature TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  completed_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS runtime_events (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  source TEXT NOT NULL CHECK (source IN ('otel', 'kubernetes_audit', 'falco', 'cloudtrail', 'custom')),
+  severity TEXT NOT NULL CHECK (severity IN ('CRITICAL', 'HIGH', 'MEDIUM', 'LOW', 'INFO')),
+  event_type TEXT NOT NULL,
+  asset_id TEXT,
+  actor TEXT NOT NULL,
+  resource TEXT NOT NULL,
+  summary TEXT NOT NULL,
+  raw_json JSONB NOT NULL,
+  correlated_finding_id TEXT,
+  correlated_incident_id TEXT,
+  received_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS siem_exports (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  destination TEXT NOT NULL CHECK (destination IN ('splunk', 'elastic', 'sentinel', 'webhook')),
+  resource_type TEXT NOT NULL,
+  resource_id TEXT NOT NULL,
+  correlation_id TEXT NOT NULL,
+  status TEXT NOT NULL CHECK (status IN ('Delivered', 'Queued', 'Failed')),
+  http_status INTEGER,
+  attempts INTEGER NOT NULL DEFAULT 1,
+  error_message TEXT,
+  exported_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS sso_configs (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL UNIQUE REFERENCES organizations(id) ON DELETE CASCADE,
+  provider TEXT NOT NULL CHECK (provider IN ('oidc', 'saml', 'okta', 'entra')),
+  issuer_url TEXT,
+  client_id TEXT,
+  metadata_xml_or_url TEXT,
+  domain_hint TEXT,
+  role_mapping_json JSONB NOT NULL DEFAULT '{}'::jsonb,
+  enabled BOOLEAN NOT NULL DEFAULT FALSE,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS scim_tokens (
+  id TEXT PRIMARY KEY,
+  org_id TEXT NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  token_prefix TEXT NOT NULL,
+  token_hash TEXT NOT NULL UNIQUE,
+  revoked BOOLEAN NOT NULL DEFAULT FALSE,
+  last_used_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 CREATE INDEX IF NOT EXISTS idx_findings_org ON findings(org_id, severity, status);
 CREATE INDEX IF NOT EXISTS idx_projects_org ON projects(org_id);
 CREATE INDEX IF NOT EXISTS idx_assets_org ON assets(org_id);
 CREATE INDEX IF NOT EXISTS idx_audit_org ON audit_logs(org_id, id DESC);
 CREATE INDEX IF NOT EXISTS idx_api_keys_hash ON api_keys(key_hash);
 CREATE INDEX IF NOT EXISTS idx_cloud_org ON cloud_resources(org_id, provider);
+CREATE INDEX IF NOT EXISTS idx_events_org_status ON internal_events(org_id, processing_status, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_intel_cve ON vulnerability_intel(cve_id);
+CREATE INDEX IF NOT EXISTS idx_runners_org ON runners(org_id, status);
+CREATE INDEX IF NOT EXISTS idx_runtime_org ON runtime_events(org_id, received_at DESC);

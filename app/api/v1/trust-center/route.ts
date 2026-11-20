@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { getDb, appendAuditLog } from '@/lib/db';
 import { jsonError, jsonOk, requireAuth } from '@/lib/api-response';
 import { sha256 } from '@/lib/security/crypto';
+import { publishEvent } from '@/lib/fabric/event-bus';
 
 const CreateReceiptSchema = z.object({
   title: z.string().min(3).max(160),
@@ -91,6 +92,16 @@ export async function POST(req: NextRequest) {
     resourceType: 'TrustReceipt',
     resourceId: id,
     details: `Issued signed Trust Passport "${parsed.data.title}" expiring ${expiresAt}.`,
+  });
+
+  publishEvent(db, {
+    orgId: authResult.auth.orgId,
+    eventType: 'trust_receipt.created',
+    actorId: authResult.auth.email,
+    sourceConnector: 'trust_center',
+    sourceResourceId: id,
+    evidenceReference: signature,
+    payload: { title: parsed.data.title.trim(), expiresAt, scope: parsed.data.scope },
   });
 
   const rows = db

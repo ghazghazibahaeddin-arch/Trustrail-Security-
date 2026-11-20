@@ -215,5 +215,102 @@ export class TrustrailClient {
   async getSystemMetrics() {
     return this.request<Record<string, unknown>>('/api/v1/system/metrics');
   }
+
+  async getSecurityPosture() {
+    return this.request<{ organization: Record<string, unknown> }>('/api/v1/organizations');
+  }
+
+  async listFabricEvents(params?: { status?: string; eventType?: string; limit?: number }) {
+    const qs = new URLSearchParams();
+    if (params?.status) qs.set('status', params.status);
+    if (params?.eventType) qs.set('eventType', params.eventType);
+    if (params?.limit) qs.set('limit', String(params.limit));
+    const suffix = qs.toString() ? `?${qs.toString()}` : '';
+    return this.request<{ events: Array<Record<string, unknown>>; statusCounts: Record<string, number> }>(
+      `/api/v1/fabric/events${suffix}`
+    );
+  }
+
+  async replayFabricEvent(eventId: string, simulateFailure = false) {
+    return this.request<Record<string, unknown>>('/api/v1/fabric/events', {
+      method: 'POST',
+      body: JSON.stringify({ action: 'replay', eventId, simulateFailure }),
+    });
+  }
+
+  async queryVulnerabilityIntel(payload: {
+    cveIds?: string[];
+    packages?: Array<{ ecosystem: 'npm' | 'PyPI' | 'Go' | 'Maven'; name: string; version: string }>;
+    forceRefresh?: boolean;
+  }) {
+    return this.request<Record<string, unknown>>('/api/v1/intel/query', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async analyzeKubernetes(payload: { clusterName?: string; manifestYaml?: string }) {
+    return this.request<Record<string, unknown>>('/api/v1/integrations/kubernetes/analyze', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async ingestRuntimeEvent(payload: {
+    source: 'otel' | 'kubernetes_audit' | 'falco' | 'cloudtrail' | 'custom';
+    severity: 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
+    eventType: string;
+    actor: string;
+    resource: string;
+    summary: string;
+    raw?: Record<string, unknown>;
+  }) {
+    return this.request<Record<string, unknown>>('/api/v1/events/ingest', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async syncConnector(id: string, mode: 'initial' | 'incremental' | 'manual' = 'manual') {
+    return this.request<Record<string, unknown>>(`/api/v1/connectors/${encodeURIComponent(id)}/sync`, {
+      method: 'POST',
+      body: JSON.stringify({ mode }),
+    });
+  }
+
+  async deleteConnector(id: string) {
+    return this.request<Record<string, unknown>>(`/api/v1/connectors/${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+    });
+  }
+
+  async listRunners() {
+    return this.request<{ runners: Array<Record<string, unknown>>; jobs: Array<Record<string, unknown>>; ciSnippets: Record<string, string> }>(
+      '/api/v1/runner'
+    );
+  }
+
+  async createRunner(name: string, mode: 'scan' | 'cicd' | 'runtime_collector' = 'cicd', environment = 'production') {
+    return this.request<{ runner: Record<string, unknown>; enrollmentToken: string }>('/api/v1/runner', {
+      method: 'POST',
+      body: JSON.stringify({ action: 'create_runner', name, mode, environment }),
+    });
+  }
+
+  async exportSiem(payload: {
+    destination: 'splunk' | 'elastic' | 'sentinel' | 'webhook';
+    resourceType: string;
+    resourceId: string;
+    eventData: Record<string, unknown>;
+  }) {
+    return this.request<Record<string, unknown>>('/api/v1/siem/export', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+  }
+
+  async getSsoConfig() {
+    return this.request<Record<string, unknown>>('/api/v1/sso');
+  }
 }
 
