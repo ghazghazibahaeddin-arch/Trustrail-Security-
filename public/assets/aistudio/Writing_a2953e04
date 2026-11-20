@@ -1,0 +1,1462 @@
+TRUSTRAIL SECURITY CLOUD
+
+MASTER AUTONOMOUS PRODUCT COMPLETION, ENGINEERING, INTEGRATION, SECURITY & PRODUCTIONIZATION PROMPT
+
+0. YOUR MISSION
+
+You are taking ownership of the existing TRUSTRAIL Security Cloud repository as an autonomous principal engineering team.
+
+You are simultaneously responsible for:
+
+- Principal Software Architecture.
+- Full-Stack Engineering.
+- Backend Engineering.
+- Frontend Engineering.
+- Cybersecurity Engineering.
+- Application Security.
+- Cloud Security.
+- DevSecOps.
+- Software Supply Chain Security.
+- AI Agent Security.
+- API and Integration Engineering.
+- Database Engineering.
+- Quality Assurance.
+- Automated Testing.
+- Reliability Engineering.
+- Product Experience.
+- Production Deployment.
+
+Your task is NOT merely to audit the application.
+
+Your task is to finish, repair, connect, extend, test, and productionize the actual existing TRUSTRAIL product.
+
+The repository already contains work that must be preserved and improved.
+
+Do not restart from scratch without a compelling technical reason.
+
+Do not replace real implementations with simplified mock implementations.
+
+Do not remove important features to make the application easier to test.
+
+Do not reduce the product vision.
+
+Do not stop after producing an audit report.
+
+Do not stop after creating a plan.
+
+Inspect the actual code, identify what exists, retain what works, repair what is broken, implement what is incomplete, build what is missing from the agreed product scope, and connect all components into one coherent platform.
+
+The ultimate product is:
+
+TRUSTRAIL SECURITY CLOUD
+
+A unified, developer-first cybersecurity platform for individual developers, startups, small businesses, medium-sized companies, and eventually enterprise organizations.
+
+It must combine:
+
+1. Application Security.
+2. Software Supply Chain Security.
+3. Cloud Security.
+4. Attack Surface Management.
+5. Attack Path Intelligence.
+6. Identity and Permission Security.
+7. CI/CD and Deployment Security.
+8. Runtime Security Signals.
+9. API Security.
+10. AI Agent and MCP Security.
+11. Change Integrity.
+12. Intelligent Risk Prioritization.
+13. Automated Remediation.
+14. Incident Response.
+15. Recovery and Continuity.
+16. Security Evidence and Compliance.
+17. Security APIs.
+18. CLI.
+19. SDKs.
+20. MCP Server.
+21. Developer Integrations.
+22. Enterprise Administration.
+23. Trust and Growth Features.
+
+All these capabilities must operate as parts of one interconnected security system.
+
+The objective is a complete, commercially credible, operational cybersecurity product.
+
+---
+
+1. NON-NEGOTIABLE ENGINEERING PRINCIPLES
+
+These rules apply to the entire project.
+
+1.1 Preserve and Complete, Never Artificially Simplify
+
+Inspect the existing implementation before modifying it.
+
+Preserve working code.
+
+Preserve existing functionality.
+
+Preserve existing routes, components, integrations, database records, and product capabilities unless there is a demonstrable technical reason to modify them.
+
+When an existing feature is partially implemented, complete it rather than replacing it with a placeholder.
+
+When a feature is missing from the agreed product scope, implement it using the existing architecture wherever possible.
+
+Do not remove an advertised capability because its implementation is difficult.
+
+Do not downgrade an integration into a decorative setup page.
+
+Do not replace functional code with hardcoded examples.
+
+1.2 Every Feature Must Work End to End
+
+A feature is not complete because:
+
+- Its page exists.
+- Its button exists.
+- Its API route exists.
+- Its database table exists.
+- Its OpenAPI documentation exists.
+- Its integration configuration form exists.
+
+A feature is complete only when a real user can perform the advertised operation and receive a correct result from the actual backend.
+
+Every operation must have:
+
+- Real input.
+- Real validation.
+- Correct authorization.
+- Real backend execution.
+- Correct data persistence.
+- Correct output.
+- Error handling.
+- Audit trail where appropriate.
+- Automated tests.
+
+1.3 No Fake Success
+
+Never:
+
+- Display fake scan results in production.
+- Claim an integration is connected when it is not.
+- Mark a vulnerability resolved without verification.
+- Claim an AWS resource was inspected if no AWS API call occurred.
+- Claim a deployment was blocked if the CI/CD gate did not enforce the decision.
+- Claim an alert was delivered merely because a job entered a queue.
+- Claim MCP tools are operational without calling and testing them.
+- Claim compliance based on the existence of a checklist.
+- Report a successful scan when the scanner failed or only partially ran.
+
+Use transparent operational states throughout the platform.
+
+1.4 Continue Until the Product Scope Is Implemented
+
+The audit is the beginning of the work, not the final deliverable.
+
+After documenting defects, immediately fix them.
+
+After documenting missing functionality, implement it.
+
+After implementing functionality, connect it to the rest of the platform.
+
+After connecting it, test the complete workflow.
+
+After testing it, fix failures and repeat.
+
+Do not ask the owner to approve every ordinary engineering decision.
+
+Make sensible engineering decisions consistent with the existing codebase.
+
+Only require user intervention for genuine external account access, legally significant decisions, unavailable secrets, or irreversible actions that require explicit owner authorization.
+
+---
+
+2. TREAT THE PREVIOUS ENGINEERING REPORT AS A STARTING POINT, NOT PROOF OF COMPLETENESS
+
+The existing TRUSTRAIL report claims the following have been implemented:
+
+- Login and registration pages.
+- New organization provisioning.
+- Six default security policies.
+- Five compliance controls.
+- GitHub repository scanning.
+- OSV.dev vulnerability querying.
+- HTTP/TLS security probing.
+- SSRF protection.
+- API key issuance and revocation.
+- Connector configuration.
+- Slack, Discord, GitHub and AWS configuration support.
+- Terraform and Docker/OCI connector preparation.
+- 47 documented API routes.
+- OpenAPI 3.1 documentation.
+- 26 passing tests across five test files.
+- Successful type checking.
+- Successful build.
+- Successful lint.
+- Live registration and API key tests.
+- A test of OSV.dev using lodash 4.17.15.
+- A public GitHub repository scanning test.
+- An HTTP/TLS test using example.com.
+- A blocked SSRF request to 169.254.169.254.
+
+Treat these as claims requiring source-code and runtime verification.
+
+Do not assume they are false.
+
+Do not assume they are complete.
+
+Verify every claim against the actual implementation.
+
+Build on everything that is genuinely working.
+
+Correct any inaccurate descriptions or misleading statuses.
+
+---
+
+3. FULL REPOSITORY AND SYSTEM DISCOVERY
+
+Inspect the complete repository.
+
+Identify:
+
+- Application structure.
+- Existing architecture.
+- Frontend framework.
+- Backend framework.
+- API route registration.
+- Database and migrations.
+- Authentication architecture.
+- Organization isolation.
+- Background processing.
+- Queue system.
+- Scheduled tasks.
+- External services.
+- Scanner integrations.
+- Connector architecture.
+- REST API.
+- OpenAPI schema.
+- CLI implementation.
+- SDK implementations.
+- MCP implementation.
+- Deployment files.
+- Docker configuration.
+- Tests.
+- Monitoring.
+- Documentation.
+- Build scripts.
+- Runtime scripts.
+- Dependency versions.
+- Unfinished code.
+- Duplicate implementations.
+
+Run the current application and its existing test commands.
+
+Create:
+
+"PROJECT_ENGINEERING_MAP.md"
+
+"IMPLEMENTATION_STATUS.md"
+
+"KNOWN_DEFECTS.md"
+
+"MISSING_CAPABILITIES.md"
+
+Document the real state, but continue to engineering work immediately.
+
+---
+
+4. COMPLETE AUTHENTICATION AND ORGANIZATION MANAGEMENT
+
+Complete the real authentication lifecycle.
+
+Implement and verify:
+
+- Register.
+- Login.
+- Logout.
+- Session creation.
+- Session expiration.
+- Secure session renewal.
+- Password reset.
+- Email verification when required by the authentication model.
+- Account recovery.
+- Password hashing using a suitable password-hashing algorithm.
+- Login rate limiting.
+- Brute-force protection.
+- Optional MFA.
+- Passkey support if appropriate to the existing architecture.
+- User profile management.
+- Organization creation.
+- Organization switching.
+- Invitations.
+- Team management.
+- Role management.
+- User deactivation.
+- API token management.
+
+Every organization must have isolated data.
+
+4.1 New Organization Provisioning
+
+When a new organization is created:
+
+1. Create the organization.
+2. Create its owner.
+3. Initialize its default workspace.
+4. Initialize appropriate security policy templates.
+5. Initialize relevant compliance control templates.
+6. Initialize available connector definitions.
+7. Initialize its project inventory.
+8. Initialize its audit history.
+9. Initialize its notification preferences.
+10. Initialize its onboarding workflow.
+
+Do not create fake external connections.
+
+Built-in engines may be initialized as available and locally operational.
+
+External connectors requiring credentials must start as Not Configured.
+
+Public threat-intelligence providers should have their own service availability status.
+
+Recommended states:
+
+- AVAILABLE.
+- NOT_CONFIGURED.
+- CONFIGURED.
+- AUTHENTICATING.
+- AUTHENTICATED.
+- CONNECTED.
+- SYNCHRONIZING.
+- HEALTHY.
+- DEGRADED.
+- ERROR.
+- DISCONNECTED.
+
+A new organization must never falsely display an external service as Connected.
+
+Make initial workspace provisioning transactional, repeatable, and safe against duplicate registrations or partial failures.
+
+---
+
+5. CORRECT API KEY AND SECRET MANAGEMENT
+
+Inspect the current API key implementation carefully.
+
+The existing report describes SHA-256 as encryption.
+
+Correct the technical implementation and documentation.
+
+SHA-256 is a one-way cryptographic hash, not reversible encryption.
+
+For high-entropy generated API keys:
+
+- Generate secrets using a cryptographically secure random number generator.
+- Use a sufficiently large random secret.
+- Show the full key only once.
+- Store a secure hash or keyed HMAC digest.
+- Never store the original plaintext API key.
+- Never return the original key again.
+- Use constant-time comparison where applicable.
+- Associate each key with a specific organization and owner.
+- Enforce explicit scopes.
+- Enforce expiration if configured.
+- Support revocation.
+- Record use timestamps.
+- Audit sensitive operations.
+- Rate-limit failed authentication attempts.
+
+For credentials that must be retrieved later, such as GitHub PATs or cloud integration credentials:
+
+- Use actual authenticated encryption.
+- Prefer envelope encryption backed by a KMS or equivalent secure key-management mechanism.
+- Use authenticated encryption such as AES-256-GCM when appropriate.
+- Support encryption key rotation.
+- Store encryption metadata and key versions.
+- Never log plaintext secrets.
+- Apply access controls to secret decryption.
+- Ensure only the relevant connector can access its credentials.
+
+Masking a secret in the frontend is not an adequate substitute for secure storage.
+
+Test revocation, expiration, tenant isolation, token rotation, and secret access.
+
+---
+
+6. UNIFIED SECURITY DATA ARCHITECTURE
+
+Build and complete a unified model.
+
+The platform must share context between features.
+
+A security finding should not exist as an isolated number.
+
+It should be linked to its affected asset, project, repository, identity, dependency, cloud resource, change, attack path, remediation and evidence where relevant.
+
+Core entities should include:
+
+- Organizations.
+- Users.
+- Teams.
+- Projects.
+- Assets.
+- Repositories.
+- Dependencies.
+- SBOM Components.
+- Cloud Resources.
+- Identities.
+- Service Accounts.
+- Agents.
+- MCP Servers.
+- API Endpoints.
+- Security Findings.
+- Vulnerabilities.
+- Security Events.
+- Attack Paths.
+- Policies.
+- Policy Decisions.
+- Change Contracts.
+- Approvals.
+- Evidence.
+- Scans.
+- Integrations.
+- Incidents.
+- Remediations.
+- Recovery Actions.
+- Trust Receipts.
+- Notifications.
+- Audit Records.
+
+Create a consistent identifier and relationship model.
+
+The Security Graph must be based on collected evidence.
+
+Every graph relationship should have:
+
+- Source.
+- Destination.
+- Relationship type.
+- Evidence.
+- Collection timestamp.
+- Confidence.
+- Last verification time.
+
+Never invent edges to make a graph look populated.
+
+Database completion
+
+Inspect the existing database.
+
+The previous report refers to SQLite.
+
+Determine whether SQLite is currently used only for local development or also for production.
+
+If SQLite is currently the production database, implement a safe migration path to PostgreSQL for the multi-tenant SaaS deployment.
+
+Preserve existing user and organization data.
+
+Use migrations.
+
+Test rollback where practical.
+
+Test concurrency.
+
+Use transactions.
+
+Implement appropriate indexes.
+
+Implement tenant-scoped queries.
+
+Use database-level security controls where appropriate, but do not rely exclusively on PostgreSQL Row-Level Security for tenant isolation.
+
+Test all tenant access at the application and database layers.
+
+Ensure background jobs are also tenant-isolated.
+
+---
+
+7. COMPLETE THE CYBERSECURITY PRODUCT
+
+This is a full-product completion requirement.
+
+Do not implement only registration, GitHub scanning, OSV queries, and HTTP probing.
+
+Complete the broader cybersecurity platform.
+
+7.1 Attack Surface Management
+
+Implement real discovery and inventory for supported assets:
+
+- Domains.
+- Subdomains within authorized scope.
+- Repositories.
+- Cloud resources.
+- Containers.
+- APIs.
+- Services.
+- IAM identities.
+- Service accounts.
+- Certificates and TLS endpoints.
+- Dependencies.
+- Build artifacts.
+
+Include:
+
+- Initial discovery.
+- Incremental updates.
+- Change detection.
+- Asset ownership.
+- Exposure information.
+- Asset relationships.
+- Last verified timestamp.
+- Discovery history.
+
+7.2 Advanced Vulnerability Management
+
+Implement integrated scanning and normalized findings.
+
+Support:
+
+- SAST.
+- SCA.
+- Secret Scanning.
+- IaC Scanning.
+- Container Scanning.
+- Dependency Vulnerability Analysis.
+- License Risk Identification.
+- Misconfiguration Checks.
+
+Use appropriate established scanners through safe adapters where suitable.
+
+Examples:
+
+- Semgrep or equivalent.
+- Gitleaks or equivalent.
+- Trivy or equivalent.
+- OSV.dev.
+- Additional package advisory providers if required.
+
+Do not assume a tool is integrated just because its executable is installed.
+
+Verify input, execution, output, result normalization, error handling and persistence.
+
+Support:
+
+- Multiple programming languages.
+- Multiple package ecosystems.
+- Direct dependencies.
+- Transitive dependencies.
+- Lockfiles.
+- Manifest files.
+- Large repositories.
+- Unsupported files.
+- Partial scans.
+- Scan cancellation.
+- Scan history.
+
+A scanner crash must be reported as a failed scan, not a clean result.
+
+7.3 SBOM and Software Supply Chain
+
+Complete the actual SBOM functionality.
+
+Support:
+
+- CycloneDX.
+- SPDX.
+- Component inventory.
+- Package URLs where appropriate.
+- Version identification.
+- Direct and transitive dependency relationships.
+- License information.
+- Vulnerability association.
+- Artifact digest.
+- Source provenance.
+- Build provenance.
+- Artifact signatures.
+- Signature verification.
+- Policy checks.
+
+Use appropriate tools such as Syft, Cosign and related established tooling where suitable.
+
+Validate generated SBOM documents against their schemas.
+
+Do not claim that a signed artifact has trusted provenance merely because an SBOM exists.
+
+7.4 Attack Path Intelligence
+
+Implement a genuine attack path analysis engine.
+
+Connect:
+
+- Vulnerable dependencies.
+- Misconfigured cloud resources.
+- Public endpoints.
+- Excessive permissions.
+- Secrets.
+- Service identities.
+- Repositories.
+- Build systems.
+- Production assets.
+
+Identify multi-step exposure paths.
+
+Explain why each path exists.
+
+Display its evidence and confidence.
+
+Identify the best remediation point for breaking the path.
+
+Recalculate the graph after fixes.
+
+Test expected paths using isolated synthetic environments.
+
+7.5 Cloud Security
+
+Complete AWS integration.
+
+Implement:
+
+- Secure role assumption.
+- External ID validation.
+- Least-privilege access.
+- Account identity verification.
+- Resource discovery.
+- IAM policy analysis.
+- Excessive permissions.
+- Public resource exposure.
+- S3 checks.
+- Security group checks.
+- Encryption status.
+- CloudTrail ingestion.
+- Configuration drift.
+- Cloud identity analysis.
+- Findings.
+- Evidence.
+
+Do not treat saving an AWS Role ARN as a successful connection.
+
+Perform an actual authorized STS AssumeRole test.
+
+Read the permitted resources.
+
+Persist results.
+
+Report unsupported permissions clearly.
+
+Prepare a connector architecture for Azure and GCP.
+
+Do not claim full Azure or GCP functionality unless actually implemented.
+
+7.6 Terraform, OpenTofu, Docker and OCI
+
+Complete these integrations rather than merely exposing setup pages.
+
+Terraform/OpenTofu:
+
+- Parse real plan files.
+- Identify resource changes.
+- Evaluate policy.
+- Detect dangerous configuration.
+- Calculate affected resources.
+- Record decisions.
+- Reject unauthorized changes in configured test pipelines.
+- Detect drift.
+
+Docker/OCI:
+
+- Authenticate to registries when required.
+- Retrieve images.
+- Inspect image metadata.
+- Analyze image layers when supported.
+- Identify packages.
+- Scan operating-system packages.
+- Generate SBOM.
+- Verify digests.
+- Verify signatures where configured.
+- Persist results.
+
+---
+
+8. COMPLETE CI/CD AND CHANGE INTEGRITY
+
+The platform must become capable of enforcing security decisions rather than only displaying warnings.
+
+Implement:
+
+- GitHub App.
+- GitHub checks.
+- Pull Request analysis.
+- Branch policy integration.
+- Workflow permission analysis.
+- Build integrity checks.
+- Pipeline secret checks.
+- Deployment policies.
+- Change Passport.
+- IntentLock.
+- Exact approvals.
+- Execution Gate.
+- State Witness.
+- Drift Detection.
+- Change Receipt.
+
+A security approval must be bound to the exact change and its relevant metadata.
+
+If the change changes after approval, require a new decision.
+
+Make enforcement configurable and understandable.
+
+Never block a real production deployment unexpectedly during initial onboarding.
+
+Start with observation or explicitly selected policy enforcement.
+
+The customer must clearly understand when TRUSTRAIL is in:
+
+- Observe Mode.
+- Recommend Mode.
+- Enforce Mode.
+
+Test every mode.
+
+---
+
+9. COMPLETE IDENTITY, AGENT AND MCP SECURITY
+
+Treat AI agents as identities with authority and capabilities.
+
+Implement:
+
+- Agent Inventory.
+- MCP Server Inventory.
+- Tool Inventory.
+- Agent Identity.
+- Delegation Passport.
+- Scoped Authority.
+- Tool Allowlisting.
+- Short-Lived Credentials.
+- Agent Session Tracking.
+- Action Recording.
+- Cumulative Action Limits.
+- Sensitive Data Access Controls.
+- Approval for High-Risk Actions.
+- Revocation.
+- Suspicious Behavior Signals.
+
+MCP must not independently bypass TRUSTRAIL authorization.
+
+Use the same tenant, identity, permission and policy services as the REST API.
+
+Test all tools.
+
+Separate read-only tools from action tools.
+
+The AI model must not be trusted as the final policy enforcement mechanism.
+
+Use deterministic authorization and policy evaluation.
+
+---
+
+10. COMPLETE AI-ASSISTED REMEDIATION
+
+Build the full repair lifecycle.
+
+When a finding is identified:
+
+1. Explain the actual evidence.
+2. Identify affected files and assets.
+3. Explain business impact.
+4. Recommend a fix.
+5. Generate a patch where supported.
+6. Run tests.
+7. Run relevant security scans.
+8. Generate a Pull Request when authorized.
+9. Record review and merge status.
+10. Re-scan.
+11. Verify that the finding is resolved.
+12. Update Attack Paths and security evidence.
+
+Never close a finding solely because an AI-generated patch was created.
+
+Never claim a remediation succeeded if tests failed.
+
+Never automatically make destructive production changes without an explicitly configured authorization policy.
+
+---
+
+11. COMPLETE INCIDENT RESPONSE AND RECOVERY
+
+Implement:
+
+- Incident creation.
+- Event correlation.
+- Related asset mapping.
+- Incident timeline.
+- Severity and priority.
+- Owner assignment.
+- Response tasks.
+- Playbooks.
+- Approval flows.
+- Safe containment actions.
+- Credential rotation support.
+- Trust recall.
+- Recovery actions.
+- Evidence capture.
+- Post-incident reporting.
+
+Add backup inventory and recovery readiness.
+
+Test restore procedures in an authorized test environment.
+
+Include canary and deception capabilities where appropriate.
+
+Do not market the platform as a complete EDR or full SIEM unless those capabilities actually exist and have the required collection architecture.
+
+Clearly explain its actual monitoring scope.
+
+---
+
+12. COMPLETE API, CLI, SDK AND MCP PRODUCT INTERFACES
+
+The REST API is a first-class product interface.
+
+Discover all existing routes and complete them.
+
+Keep OpenAPI aligned with implementation.
+
+Support the appropriate endpoint families:
+
+- Authentication.
+- Organizations.
+- Users and teams.
+- Assets.
+- Projects.
+- Repositories.
+- Scans.
+- Findings.
+- Attack Paths.
+- Cloud Resources.
+- Security Policies.
+- Changes.
+- Approvals.
+- Remediation.
+- Incidents.
+- Recovery.
+- Agents.
+- MCP Servers.
+- Integrations.
+- API Keys.
+- Trust Center.
+- Evidence.
+- Reports.
+- Notifications.
+
+Use consistent versioning, schemas, authentication, authorization, pagination, errors, rate limits and audit logging.
+
+Complete a functional CLI, SDKs and MCP Server.
+
+Each must use the actual backend services.
+
+No separate mocked business logic.
+
+The same user and tenant policies must apply consistently across all interfaces.
+
+---
+
+13. COMPLETE EXTERNAL INTEGRATIONS
+
+The minimum core integration set is:
+
+- GitHub.
+- OSV.dev.
+- HTTP/TLS Probe.
+- Terraform/OpenTofu.
+- Docker/OCI.
+- AWS.
+- Slack.
+- Email.
+- Discord or generic Webhooks where supported.
+
+Add Azure, GCP, Kubernetes, GitLab, SIEM and other integrations where they are included in the product scope.
+
+For every external provider:
+
+1. Implement authentication.
+2. Validate scopes.
+3. Verify connection.
+4. Read supported provider data.
+5. Normalize records.
+6. Persist data.
+7. Implement incremental synchronization.
+8. Handle provider pagination.
+9. Handle rate limiting.
+10. Handle failures.
+11. Handle expired credentials.
+12. Support reconnection.
+13. Support disconnection.
+14. Record health and sync status.
+15. Test actual provider operations.
+
+Use proper secret storage.
+
+Use signed webhooks and idempotent event processing.
+
+Never call a connector Healthy solely because its configuration fields are present.
+
+Do not allow a failed provider request to create misleading clean security results.
+
+If external test credentials are unavailable, implement and test the complete connector code with contract tests and fixtures, and clearly identify the live provider verification still required.
+
+Do not invent access or credentials.
+
+---
+
+14. SECURITY OF HTTP PROBE AND ALL OUTBOUND NETWORK REQUESTS
+
+Treat outbound networking as a high-risk subsystem.
+
+Apply the same secure network policy to every feature that fetches user-provided URLs.
+
+Protect against:
+
+- Localhost.
+- Private IPv4.
+- Private IPv6.
+- Loopback.
+- Link-local.
+- Reserved IP ranges.
+- Cloud metadata endpoints.
+- DNS rebinding.
+- Redirect-based SSRF.
+- Alternate IP representations.
+- Non-HTTP protocols.
+- Unsafe proxy behavior.
+- Unexpected ports.
+- Outbound Webhook SSRF.
+
+Resolve and validate DNS addresses safely.
+
+Protect against DNS changes between validation and the actual request.
+
+Revalidate redirects at every hop.
+
+Use strict egress controls.
+
+Apply timeouts and response-size limits.
+
+Add tests against known unsafe URL patterns.
+
+HTTP/TLS scanning must not report a vulnerability merely because an informational header is missing without evaluating the actual context and impact.
+
+Validate TLS certificate chains, expiration, protocol support and hostname matching where supported.
+
+Separate findings by evidence and confidence.
+
+---
+
+15. COMPLETE FRONTEND AND PRODUCT EXPERIENCE
+
+Inspect every existing screen and complete every user workflow.
+
+The product must offer:
+
+- Login.
+- Registration.
+- Organization onboarding.
+- Overview.
+- Projects.
+- Integrations.
+- Assets.
+- Findings.
+- Attack Paths.
+- Vulnerabilities.
+- Supply Chain.
+- SBOM.
+- Cloud Security.
+- Identity.
+- CI/CD.
+- Change Integrity.
+- AI Agents.
+- MCP.
+- Remediation.
+- Incidents.
+- Recovery.
+- Evidence.
+- Trust Center.
+- Notifications.
+- Team Management.
+- API Keys.
+- Developer Settings.
+- Enterprise Administration.
+
+Every displayed feature must be functional.
+
+Each page must contain real data or a useful empty state.
+
+Implement loading, failure, success, no-results and partial-availability states.
+
+Make all forms validate input.
+
+Make all buttons perform their advertised operations.
+
+Use consistent design components.
+
+Ensure responsive layouts.
+
+Ensure accessible forms and keyboard navigation.
+
+Do not hide unimplemented features inside decorative dashboards.
+
+Do not overwhelm developers with enterprise complexity.
+
+Provide sensible default experiences for individual developers and more advanced administrative controls for organizations.
+
+---
+
+16. BUILD AND COMPLETE ALL REQUIRED AUTOMATED TESTS
+
+Create a comprehensive testing system.
+
+Do not restrict testing to the existing 26 tests.
+
+Expand test coverage according to the actual architecture and advertised capabilities.
+
+Include:
+
+- Unit tests.
+- Integration tests.
+- API tests.
+- Connector tests.
+- Database tests.
+- Authorization tests.
+- Tenant isolation tests.
+- CLI tests.
+- MCP tests.
+- SDK tests.
+- Scanner tests.
+- Browser E2E tests.
+- Security tests.
+- Regression tests.
+- Performance tests.
+- Recovery tests.
+
+Every major user journey must work end to end.
+
+Required flows include:
+
+1. Register and create an organization.
+2. Connect GitHub.
+3. Import a repository.
+4. Generate SBOM.
+5. Run scans.
+6. Identify vulnerabilities.
+7. Link findings to assets.
+8. Analyze an attack path.
+9. Propose remediation.
+10. Create and verify a Pull Request.
+11. Connect AWS.
+12. Discover resources.
+13. Detect insecure configuration.
+14. Analyze Terraform plans.
+15. Detect unsafe deployments.
+16. Test approvals.
+17. Verify final state.
+18. Connect notifications.
+19. Deliver actual alerts.
+20. Use the CLI.
+21. Use the REST API.
+22. Call MCP tools.
+23. Verify authorization failures.
+24. Create and manage an incident.
+25. Execute a safe test response procedure.
+26. Generate evidence.
+27. Publish a Trust Center report.
+28. Share and revoke a report.
+29. Test account removal and data retention.
+30. Test tenant isolation under asynchronous processing.
+
+Use isolated test environments for destructive or security-sensitive tests.
+
+Never attack external infrastructure without authorization.
+
+---
+
+17. FIX ALL EXISTING SOFTWARE AND USER-FACING ERRORS
+
+Inspect all source files and runtime behavior.
+
+Identify and repair:
+
+- Compilation errors.
+- Type errors.
+- Runtime errors.
+- Broken imports.
+- Failed requests.
+- Incorrect API mappings.
+- Unhandled promise rejections.
+- Incorrect state management.
+- Broken navigation.
+- Database inconsistency.
+- Race conditions.
+- Queue duplication.
+- Invalid authentication states.
+- Permission bypasses.
+- Connector failures.
+- Incorrect loading states.
+- Empty states without guidance.
+- Infinite loading.
+- Responsive layout defects.
+- Incorrect date handling.
+- Search and pagination bugs.
+- Invalid form submissions.
+- File upload defects.
+- Missing error boundaries.
+- Inaccurate success notifications.
+- Background job failures.
+- Broken webhook handling.
+- Incorrect API response codes.
+
+For each significant defect:
+
+1. Reproduce it.
+2. Inspect its root cause.
+3. Correct the implementation.
+4. Create a regression test.
+5. Run the test.
+6. Run relevant broader tests.
+7. Verify adjacent functionality.
+8. Record the fix.
+
+Never disable a test simply because it fails.
+
+Never suppress a genuine exception to display a fake success message.
+
+Never remove security controls to make integration tests pass.
+
+---
+
+18. DATABASE AND SECURITY INTEGRITY
+
+Check:
+
+- Data isolation.
+- Database indexes.
+- Foreign keys.
+- Transaction handling.
+- Concurrent updates.
+- Queue consistency.
+- Idempotency.
+- Backup creation.
+- Backup restoration.
+- Secret encryption.
+- Key rotation.
+- Audit records.
+- File access controls.
+- Export permissions.
+- Data deletion.
+- Retention policies.
+
+Test with multiple organizations and users.
+
+Ensure that no API, export, search, background job, webhook or MCP operation can bypass tenant isolation.
+
+Protect security evidence from unauthorized modification.
+
+Do not expose secrets inside evidence exports.
+
+---
+
+19. OBSERVABILITY AND OPERATIONAL RELIABILITY
+
+Complete the operational infrastructure.
+
+Implement or improve:
+
+- Structured logging.
+- Error tracking.
+- OpenTelemetry.
+- Metrics.
+- Tracing.
+- Health checks.
+- Connector health.
+- Queue monitoring.
+- Scanner monitoring.
+- API monitoring.
+- Failed job monitoring.
+- Alerting.
+- Database monitoring.
+- Resource limits.
+- Retry strategies.
+- Dead-letter processing.
+- Graceful shutdown.
+- Deployment health.
+- Rollback.
+
+Make system health visible to administrators.
+
+Do not confuse application health with external provider health.
+
+A healthy web server does not mean every security scanner or connector is healthy.
+
+---
+
+20. PRODUCTION DEPLOYMENT AND ENTERPRISE COMPLETENESS
+
+Complete deployment configuration for actual production operation.
+
+Implement:
+
+- Production environment configuration.
+- Secure secrets configuration.
+- Database migrations.
+- PostgreSQL production support if needed.
+- Redis or the selected job infrastructure.
+- Object storage.
+- Container build.
+- Health checks.
+- Readiness checks.
+- Backup strategy.
+- Restore testing.
+- TLS.
+- Environment validation.
+- Deployment documentation.
+- Rollback procedure.
+
+Complete enterprise capabilities that are part of the intended commercial scope:
+
+- Organization-level administration.
+- Advanced RBAC.
+- SSO.
+- SCIM.
+- Audit exports.
+- Data retention controls.
+- Team policies.
+- Multi-project management.
+- Private deployment preparation when required.
+- Subscription and billing integration if included in the existing product plan.
+
+Do not create fake subscription states.
+
+Use an actual payment provider integration if billing is implemented.
+
+---
+
+21. SECURITY AND COMPLIANCE EVIDENCE
+
+Align relevant security controls with:
+
+- OWASP Top 10.
+- OWASP ASVS.
+- OWASP CI/CD Security Risks.
+- NIST SSDF.
+- SLSA.
+- CycloneDX.
+- SPDX.
+- Sigstore.
+
+Produce evidence based on actual implementation and customer data.
+
+Do not falsely claim:
+
+- SOC 2 certification.
+- ISO 27001 certification.
+- SLSA compliance.
+- Complete security coverage.
+- Complete threat detection.
+
+Map relevant controls, display evidence, and explain what remains incomplete.
+
+---
+
+22. GROWTH AND DEVELOPER DISTRIBUTION
+
+Do not remove the product's growth architecture.
+
+Complete:
+
+- Developer CLI onboarding.
+- GitHub App onboarding.
+- Free individual developer experience.
+- Team invitations.
+- Project sharing.
+- SDK documentation.
+- API key onboarding.
+- MCP setup.
+- Reusable security templates.
+- Shareable Change Receipts.
+- Security Trust Center.
+- Public evidence links with expiration and revocation.
+- Organization expansion.
+
+Sharing must respect privacy.
+
+Public reports must never expose internal assets, secrets, source code, private vulnerabilities or internal attack paths.
+
+Free tier functionality must be genuine rather than an empty advertising interface.
+
+---
+
+23. AUTONOMOUS EXECUTION LOOP
+
+You must follow this continuous loop:
+
+Inspect → Implement → Integrate → Test → Diagnose → Repair → Retest → Optimize → Document.
+
+Repeat the loop for every incomplete or defective feature.
+
+Execute the work in sensible technical order, but do not use phase boundaries as reasons to abandon the remaining product scope.
+
+Finish each available area before claiming it is completed.
+
+Continue through all required capabilities.
+
+If a feature is missing, build it.
+
+If a feature is partial, finish it.
+
+If a feature is broken, repair it.
+
+If two features are disconnected, connect them.
+
+If two services duplicate logic, unify them carefully.
+
+If the architecture creates an unnecessary constraint, improve it without losing functional capabilities.
+
+If an external account is unavailable, complete all local implementation, mocks restricted to tests, connector contract tests, documentation, configuration handling and error paths. Mark only the live verification as blocked by that external dependency.
+
+Do not wait for the user for decisions that can be made using safe engineering defaults.
+
+---
+
+24. FINAL ACCEPTANCE CRITERIA
+
+The project is complete only when the following have been verified.
+
+Product
+
+- All agreed core features implemented.
+- All advertised pages functional.
+- All important user workflows operational.
+- Shared data model working.
+- Cross-module relationships working.
+- No misleading feature states.
+- No dead controls.
+
+Security
+
+- Tenant isolation verified.
+- Authentication secured.
+- Permissions enforced.
+- Secrets protected.
+- API security tested.
+- SSRF protections tested.
+- No unresolved critical vulnerabilities.
+- High-risk issues fixed or explicitly mitigated.
+
+APIs
+
+- Required endpoints operational.
+- OpenAPI matches actual implementation.
+- Authorization consistent.
+- Error handling correct.
+- Pagination and validation correct.
+- Rate limits enforced.
+
+Integrations
+
+- GitHub works with real authorized repositories.
+- OSV.dev returns actual vulnerability data.
+- HTTP/TLS Probe operates safely.
+- AWS performs real account and resource operations.
+- Terraform analyzes real plans.
+- Docker/OCI performs real image analysis.
+- Notifications are actually delivered.
+- MCP and CLI work with actual platform services.
+
+Scanning
+
+- Findings have verifiable evidence.
+- SBOMs are valid.
+- Dependencies are correctly mapped.
+- Scanners report incomplete runs accurately.
+- Remediation is tested.
+- Resolved findings are verified.
+
+Reliability
+
+- Build passes.
+- Type checking passes.
+- Lint passes.
+- Unit tests pass.
+- Integration tests pass.
+- E2E tests pass for critical flows.
+- Security tests pass.
+- Database migration passes.
+- Backup and recovery have been tested.
+- No known release-blocking defects remain.
+
+Do not guarantee that future bugs cannot occur.
+
+The requirement is to eliminate known defects, establish reliable automated coverage, and provide a production-grade process for detecting and fixing future defects.
+
+---
+
+25. REQUIRED ENGINEERING DELIVERABLES
+
+Update the actual product, not merely documentation.
+
+Produce:
+
+- Architecture and feature map.
+- Full feature implementation matrix.
+- Full API matrix.
+- Integration health report.
+- Security audit.
+- Database migration report.
+- Frontend QA results.
+- Scanner validation results.
+- Attack path validation.
+- MCP and CLI test results.
+- SDK test results.
+- User journey test results.
+- Bug-fix log.
+- Regression test report.
+- Performance report.
+- Production deployment guide.
+- Remaining external dependencies.
+- Final production-readiness report.
+
+For every reported success, include actual evidence.
+
+For every blocked feature, explain precisely what is missing.
+
+For every incomplete feature, continue implementation rather than silently excluding it.
+
+---
+
+26. FINAL INSTRUCTION
+
+You are not being asked to produce a simplified MVP, a partial demo, or an audit-only result.
+
+You are being asked to finish the existing TRUSTRAIL Security Cloud into the complete unified cybersecurity product defined above.
+
+Do not limit the product to the integrations already present.
+
+Do not limit it to 47 existing API routes.
+
+Do not limit it to the current 26 tests.
+
+Do not assume that the features already mentioned in the previous report are complete.
+
+Do not discard the work already done.
+
+Expand the implementation to cover the full agreed platform scope.
+
+Preserve existing good work, repair all defects, implement missing functionality, connect all modules and verify every important workflow.
+
+Perform the actual engineering work in the existing repository.
+
+Continue until all implementation and verification tasks that can be completed with the available code, tools, accounts and permissions have been completed.
+
+The final outcome must be a real, interconnected, maintainable, secure and operational TRUSTRAIL Security Cloud.
+
+The product must work as a complete cybersecurity platform, not merely look like one.

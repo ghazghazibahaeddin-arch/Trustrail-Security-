@@ -1,0 +1,6 @@
+{
+  "name": "Trustrail Security Cloud",
+  "description": "Unified Cybersecurity Platform for Developers, SMBs, and Enterprises — Discover, Understand, Prioritize, Prevent, Detect, Respond, Recover, Verify.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

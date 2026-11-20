@@ -1,0 +1,1566 @@
+MASTER BUILD PROMPT — TRUSTRAIL SECURITY CLOUD
+
+Build a complete, production-grade, unified cybersecurity platform for developers, startups, SMBs and mid-market companies
+
+أنت الآن تعمل بصفتك فريقًا هندسيًا متكاملًا يضم:
+
+- Principal Software Architect
+- Senior Full-Stack Engineer
+- Cybersecurity Architect
+- Application Security Engineer
+- Cloud Security Engineer
+- DevSecOps Engineer
+- AI Security Engineer
+- Product Designer متخصص في SaaS
+- QA Automation Engineer
+- Site Reliability Engineer
+- Security Operations Engineer
+
+مهمتك ليست إنشاء تصميم أولي أو لوحة تحكم شكلية، وليست كتابة نموذج تجريبي يعرض بيانات ثابتة.
+
+مهمتك هي بناء منتج حقيقي باسم مؤقت:
+
+TRUSTRAIL SECURITY CLOUD
+
+منصة دفاع سيبراني موحدة تساعد المطورين والشركات الناشئة والصغيرة والمتوسطة على اكتشاف الهجمات والمخاطر، وفهم مسارات الاختراق، ومنع التغييرات الخطرة، وحماية دورة تطوير البرمجيات والبنية السحابية، واكتشاف السلوك غير الطبيعي، وإصلاح المشكلات والتحقق من نجاح الإصلاح، والاستجابة للحوادث والتعافي منها.
+
+يجب أن يكون المنتج متكاملًا، مترابطًا، قابلًا للتشغيل فعليًا، سهل الاستخدام، وقابلًا للتوسع إلى المؤسسات الكبيرة.
+
+اسم TRUSTRAIL اسم عمل مؤقت، ولا تعتبر توفر العلامة التجارية أو النطاق مثبتًا.
+
+---
+
+1. القاعدة الأساسية للمشروع
+
+لا تبنِ مجموعة أدوات أمنية متفرقة.
+
+ابنِ محركًا أمنيًا موحدًا يجمع بين:
+
+1. اكتشاف الأصول والهوية.
+2. فهم العلاقات والاعتماديات بين الأصول.
+3. اكتشاف الثغرات والمخاطر.
+4. بناء مسارات الهجوم المحتملة.
+5. تقييم المخاطر بحسب أثرها الحقيقي على العمل.
+6. منع التغييرات غير المصرح بها.
+7. مراقبة سلوك الأنظمة والتغييرات أثناء التشغيل.
+8. إدارة صلاحيات البشر والخدمات والوكلاء الذكيين.
+9. الإصلاح الآلي المنضبط.
+10. التحقق من نجاح الإصلاح.
+11. الاستجابة للحوادث والاحتواء والتعافي.
+12. إثبات الحالة الأمنية وتقديم تقارير قابلة للمشاركة.
+
+يجب أن تتصل كل هذه الأنظمة عبر نموذج بيانات موحد ومحرك مخاطر موحد وسجل أحداث موحد.
+
+الفكرة الأساسية:
+
+Discover → Understand → Prioritize → Prevent → Detect → Respond → Recover → Verify → Improve
+
+أي أن المنصة لا تعرض ثغرة وتنتهي مهمتها؛ بل تربط الاكتشاف بأصل متأثر ومسار هجوم محتمل وإجراء إصلاح والتحقق من إغلاق الخطر.
+
+لا تعتبر أي ميزة مكتملة لمجرد ظهورها في واجهة المستخدم.
+
+---
+
+2. العملاء المستهدفون
+
+صمّم المنصة لثلاث فئات مترابطة:
+
+A. Developer Edition
+
+للمطور المستقل والفرق الصغيرة.
+
+يجب أن يستطيع المطور:
+
+- ربط مستودعه البرمجي بسهولة.
+- فحص الكود والاعتماديات والأسرار.
+- فحص ملفات البنية التحتية.
+- اكتشاف المخاطر في Git وCI/CD.
+- فهم سبب الخطر بدل مشاهدة تنبيه مبهم.
+- الحصول على اقتراح إصلاح.
+- إنشاء Pull Request للإصلاح عند دعمه.
+- حماية التغييرات الحساسة.
+- مراقبة حالة المشروع من مكان واحد.
+
+يجب أن تكون تجربة المطور بسيطة ولا تتطلب خبير أمن سيبراني لتشغيل الوظائف الأساسية.
+
+B. Teams / SMB Edition
+
+للشركات الناشئة والصغيرة والفرق التقنية.
+
+أضف:
+
+- مساحة عمل متعددة المستخدمين.
+- جرد الأصول والمشاريع.
+- إدارة صلاحيات الفريق.
+- سياسات الموافقة على التغييرات.
+- تنبيهات مشتركة.
+- إدارة المخاطر حسب الفريق والمشروع.
+- التكامل مع السحابة وCI/CD.
+- تقارير الإدارة.
+- الاستجابة للحوادث.
+- توزيع مهام الإصلاح ومتابعة إغلاقها.
+
+C. Business / Mid-Market / Enterprise Edition
+
+للشركات المتوسطة والمؤسسات.
+
+أضف:
+
+- Multi-tenant administration عند دعم نموذج MSP، مع عزل صارم بين العملاء.
+- إدارة عدة فرق ومشاريع وبيئات.
+- SSO وSAML وOIDC.
+- SCIM.
+- RBAC متقدم.
+- سياسات مركزية.
+- سجل تدقيق غير قابل للتعديل من واجهة المستخدم العادية.
+- تكاملات SIEM.
+- تصدير أدلة الامتثال.
+- سياسات الاحتفاظ بالبيانات.
+- دعم الاستضافة الخاصة عند الحاجة.
+- إدارة التنبيهات والحوادث على مستوى المؤسسة.
+
+يجب ألا يكون إصدار المؤسسة مجرد تغيير في الأسعار أو إخفاء بعض القوائم؛ يجب أن يحتوي على قدرات تشغيلية حقيقية.
+
+---
+
+3. المعمارية المركزية: Unified Security Intelligence Graph
+
+هذه أهم إضافة استراتيجية في المنصة.
+
+ابنِ رسمًا بيانيًا موحدًا لأصول الشركة وعلاقاتها ومخاطرها.
+
+يجب أن يربط بين:
+
+- المستخدمين والمطورين.
+- فرق العمل.
+- مستودعات Git.
+- الفروع والالتزامات البرمجية.
+- أنظمة CI/CD.
+- Build Artifacts.
+- الحاويات والصور.
+- المكتبات والتبعيات.
+- ملفات Infrastructure as Code.
+- الحسابات السحابية.
+- الخوادم والخدمات.
+- قواعد البيانات.
+- النطاقات.
+- واجهات API.
+- الأسرار والرموز ومفاتيح API.
+- الحسابات الخدمية.
+- صلاحيات IAM.
+- تطبيقات OAuth.
+- خوادم MCP.
+- وكلاء الذكاء الاصطناعي.
+- الحوادث.
+- الثغرات.
+- التغييرات.
+- الإصلاحات.
+- الأدلة الأمنية.
+
+مثال:
+
+مستودع GitHub → GitHub Actions → صورة Docker → خدمة AWS → حساب خدمة → قاعدة بيانات حساسة.
+
+إذا ظهر خلل في المستودع، يجب أن تستطيع المنصة تتبع أثره إلى الخدمات والأصول التي تعتمد عليه.
+
+لا تكتفِ برسم Graph جميل. يجب أن تكون العلاقات مستندة إلى أدلة فعلية تم جمعها من التكاملات.
+
+أضف إمكانية:
+
+- البحث عن أصل.
+- عرض علاقاته.
+- عرض سلسلة الاعتماديات.
+- إظهار المخاطر المرتبطة به.
+- اكتشاف الأصول غير المعروفة.
+- معرفة من يملك الأصل.
+- إظهار مدى تعرضه للإنترنت.
+- حساب مسارات الوصول إلى الأصول الحساسة.
+- تحديد التغيير الذي قد يفتح مسار هجوم جديدًا.
+
+استخدم قاعدة بيانات مناسبة. ابدأ بنموذج علائقي مع جداول علاقات وفهارس جيدة إن كان ذلك أكثر بساطة وموثوقية، واستخدم قاعدة Graph مستقلة فقط إذا أثبت الحجم والحاجة ذلك.
+
+---
+
+4. وحدات المنتج الأساسية
+
+يجب تنفيذ الوحدات التالية كأنظمة مترابطة وليست صفحات منفصلة.
+
+MODULE 01 — Attack Surface Discovery
+
+اكتشاف الأصول الداخلية والخارجية.
+
+المزايا:
+
+- اكتشاف مستودعات الكود.
+- اكتشاف النطاقات والنطاقات الفرعية المصرح بفحصها.
+- اكتشاف خدمات السحابة.
+- اكتشاف الحاويات والصور.
+- اكتشاف ملفات IaC.
+- اكتشاف واجهات API.
+- اكتشاف حسابات الخدمات.
+- اكتشاف التكاملات الخارجية.
+- اكتشاف التبعيات والمكتبات.
+- اكتشاف نقاط الدخول والخدمات المكشوفة.
+- اكتشاف الأصول التي لا يوجد لها مالك واضح.
+- مقارنة الأصول الحالية بالأصول التي كانت معروفة سابقًا.
+- اكتشاف تغييرات سطح الهجوم بمرور الوقت.
+
+كل عملية فحص خارجي يجب أن تكون ضمن نطاق مصرح به، وأن تفرض حدود سرعة وقيودًا تمنع الإضرار بالأنظمة.
+
+لا تنفذ فحصًا عدوانيًا افتراضيًا.
+
+MODULE 02 — Attack Path Intelligence
+
+هذه إحدى أهم ميزات التميز التنافسي.
+
+لا تعرض 500 ثغرة باعتبارها 500 مشكلة منفصلة.
+
+حلّل كيف يمكن أن ترتبط المخاطر ببعضها.
+
+مثال:
+
+- مستودع يحتوي على سر مكشوف.
+- خط نشر يملك صلاحيات واسعة.
+- حساب خدمة يستطيع قراءة التخزين.
+- قاعدة بيانات تحتوي على بيانات حساسة.
+
+اربط هذه النتائج لتوضيح مسار هجوم محتمل.
+
+كل Attack Path يجب أن يعرض:
+
+- نقطة البداية.
+- الخطوات الوسيطة.
+- الأصول المتأثرة.
+- الصلاحيات المطلوبة.
+- الأدلة.
+- نقاط الضعف التي تجعل المسار ممكنًا.
+- مستوى الثقة في التحليل.
+- ما الذي يستطيع المدافع فعله لقطع المسار.
+- الأثر المتوقع في حالة نجاح الهجوم.
+
+اعرض المسارات الأكثر خطورة أولًا، وليس مجرد قائمة طويلة من CVEs.
+
+MODULE 03 — Advanced Vulnerability Intelligence
+
+ابنِ طبقة موحدة لإدارة الثغرات.
+
+تدعم:
+
+- SAST.
+- SCA.
+- Secret Scanning.
+- IaC Scanning.
+- Container Image Scanning.
+- License Risk Detection.
+- Dependency Vulnerability Analysis.
+- API Configuration Checks.
+- Software Supply Chain Findings.
+
+اجعل أدوات الفحص قابلة للاستبدال من خلال Scanner Adapter Interface.
+
+يمكن دمج محركات موثوقة مثل:
+
+- Semgrep أو بديل مناسب لفحص الكود.
+- Gitleaks أو بديل موثوق لفحص الأسرار.
+- Trivy لفحص الحاويات وملفات الإعدادات.
+- OSV-Scanner أو مصدر مكافئ لفحص الثغرات في التبعيات.
+
+تحقق من التراخيص والإصدارات قبل الدمج، ولا تنسخ أدوات خارجية بطريقة تخالف تراخيصها.
+
+يجب أن تكون نتائج كل محرك قابلة للتحويل إلى Security Finding موحد.
+
+لكل Finding اعرض:
+
+- المعرّف.
+- الأصل المرتبط به.
+- الملف والسطر عند توفرهما.
+- المصدر الذي اكتشفه.
+- الدليل الفني.
+- مستوى الخطورة.
+- قابلية الاستغلال.
+- أثره على الشركة.
+- مسار الإصلاح المقترح.
+- حالة الإصلاح.
+- تاريخ آخر تحقق.
+
+لا تفترض أن كل تنبيه حقيقي. أضف Duplicate Detection وFalse Positive Management وأدلة الثقة.
+
+MODULE 04 — Intelligent Risk Prioritization
+
+ابنِ محرك تقييم مخاطر يتجاوز مجرد CVSS.
+
+يجب أن يأخذ في الاعتبار:
+
+- شدة الثغرة.
+- إمكانية استغلالها.
+- وجود استغلال معروف.
+- مدى إمكانية الوصول للأصل.
+- تعرضه للإنترنت.
+- قيمة الأصل التجارية.
+- حساسية البيانات.
+- الصلاحيات المرتبطة به.
+- وجود مسار هجوم قابل للتحقق.
+- الضوابط الأمنية التي تحد من أثره.
+- مدى انتشار الاعتمادية.
+- تاريخ التغييرات والحوادث.
+- وجود إصلاح آمن متاح.
+
+اعرض سبب تصنيف كل خطر.
+
+لا تخترع درجة مخاطر بلا تفسير.
+
+يجب أن يستطيع المستخدم معرفة لماذا ظهر خطر ما في أول القائمة ولماذا يوجد خطر آخر في مرتبة أقل.
+
+استخدم بيانات تهديد خارجية موثوقة وقابلة للتحديث، مع حفظ مصدرها وتاريخ تحديثها.
+
+MODULE 05 — Secure Software Supply Chain
+
+حوّل سلامة سلسلة توريد البرمجيات إلى ميزة رئيسية.
+
+ادعم:
+
+- SBOM بصيغ قياسية مثل SPDX وCycloneDX.
+- Dependency Inventory.
+- Dependency Pinning Checks.
+- Malicious Package Signals.
+- Typosquatting Detection.
+- Dependency Confusion Indicators.
+- Package Provenance.
+- Build Attestations.
+- Artifact Signature Verification.
+- Untrusted Build Environment Detection.
+- Base Image Security.
+- License Compliance Signals.
+
+ادمج Sigstore/Cosign أو وسائل مكافئة للتحقق من التوقيعات.
+
+ادعم SLSA provenance ومستويات الضمان بحسب الإمكانات الفعلية.
+
+يجب أن يستطيع العميل معرفة:
+
+- من بنى هذه الحزمة؟
+- من أين أتى الكود؟
+- ما التبعيات المستخدمة؟
+- هل تم توقيع الملف؟
+- هل التوقيع صالح؟
+- هل تغير الملف بعد بنائه؟
+- هل توجد سلسلة مصدر موثوقة؟
+
+لا تعرض على العميل أن منتجه يحقق مستوى SLSA معينًا إلا إذا استوفيت متطلبات ذلك المستوى فعلًا.
+
+MODULE 06 — CI/CD Security Guardian
+
+احمِ دورة انتقال الكود إلى الإنتاج.
+
+ادعم:
+
+- GitHub.
+- GitHub Actions.
+- GitLab عند اكتمال موصله.
+- CI Pipeline Configuration Analysis.
+- Pull Request Security Checks.
+- Workflow Permission Analysis.
+- Untrusted Pull Request Execution Detection.
+- Pipeline Secret Exposure Detection.
+- Build Artifact Integrity.
+- Protected Branch Recommendations.
+- Deployment Approval Rules.
+- Release Security Validation.
+- Pipeline Change History.
+- Detection of Suspicious Workflow Modifications.
+
+يجب أن تكون نتائج الفحص ظاهرة داخل لوحة TRUSTRAIL، وأن يستطيع المسار المدعوم إرجاع نتيجة ناجحة أو فاشلة إلى CI.
+
+أضف Policy-as-Code.
+
+يمكن استخدام OPA/Rego أو محرك سياسات مكافئ يفصل قرار السياسة عن عملية التنفيذ.
+
+لا تمنع Deployments بلا سبب واضح. اعرض القاعدة المخالفة والدليل وإجراء المعالجة.
+
+MODULE 07 — Cloud Security Posture
+
+ابدأ بدعم AWS بعمق، مع معمارية تسمح بإضافة Azure وGCP لاحقًا.
+
+يجب أن يشمل AWS:
+
+- Cloud Account Inventory.
+- IAM Risk Analysis.
+- Public Resource Detection.
+- Security Group Misconfiguration.
+- Storage Exposure Detection.
+- Encryption Configuration Checks.
+- Logging and Monitoring Checks.
+- CloudTrail Event Ingestion.
+- Config Drift Detection.
+- Excessive Permissions.
+- Unused or Stale Identities.
+- Dangerous Trust Relationships.
+- Secrets and Key Exposure Indicators.
+
+استخدم Role Assumption بصلاحيات قراءة محدودة عند الربط الأولي.
+
+لا تطلب صلاحيات واسعة افتراضيًا.
+
+أي إجراء تغيير في بيئة العميل، مثل تعطيل حساب أو إلغاء مفتاح أو تعديل سياسة، يجب أن يكون عملية مستقلة محكومة بموافقة واضحة وسجل تدقيق.
+
+MODULE 08 — Identity & Privilege Intelligence
+
+ابنِ محركًا يفهم الهوية والصلاحيات.
+
+يشمل:
+
+- Human Identity Inventory.
+- Service Account Inventory.
+- Machine Identity Inventory.
+- OAuth App Inventory.
+- API Token Exposure.
+- Excessive Permissions.
+- Privilege Escalation Paths.
+- Dormant Accounts.
+- Stale Credentials.
+- Over-Privileged Workloads.
+- Permission Drift.
+- Secret Rotation Recommendations.
+
+أضف مفهوم Just-in-Time Access حيث تسمح الأنظمة المتصلة.
+
+أظهر الصلاحيات الفعلية، لا الصلاحيات النظرية فقط عندما يمكن جمع أدلة من المزود.
+
+MODULE 09 — Runtime Threat Intelligence
+
+لا تجعل المنصة تقتصر على ما يحدث قبل النشر.
+
+أضف مراقبة الأحداث والسلوك التشغيلي عبر موصلات حقيقية.
+
+ادعم:
+
+- Cloud Audit Events.
+- Identity Events.
+- CI/CD Events.
+- Runtime Security Signals عند توفر Agent أو Integration مناسب.
+- Unusual Permission Changes.
+- Suspicious Workload Activity.
+- Unexpected Network Access Signals.
+- Unusual API Usage.
+- Credential Misuse Signals.
+- Suspicious Deployment Activity.
+
+اربط الأحداث بالأصول والهويات ومسارات الهجوم.
+
+أضف قواعد Correlation تربط عدة إشارات ضعيفة لتكوين حادثة ذات معنى.
+
+لا تدّعِ قدرات EDR أو مراقبة كاملة لنظام التشغيل ما لم يتم تنفيذ Agent حقيقي وموثق لذلك.
+
+MODULE 10 — API & Application Exposure Security
+
+اكتشف واجهات API والأصول المعرضة للخطر.
+
+ادعم:
+
+- API Inventory.
+- OpenAPI Specification Analysis.
+- Missing Authentication Signals.
+- Weak Authorization Indicators.
+- Sensitive Endpoint Discovery ضمن النطاق المصرح به.
+- Dangerous Configuration Detection.
+- API Secret Exposure.
+- Unexpected Endpoint Changes.
+- Authentication and Authorization Test Hooks.
+- Rate Limit and Abuse Configuration Checks.
+
+أضف DAST فقط ضمن نطاق يملكه العميل أو لديه تفويض صريح بفحصه، مع حدود سرعة وحماية من التسبب في توقف الخدمة.
+
+MODULE 11 — TRUSTRAIL CHANGE INTEGRITY ENGINE
+
+احتفظ بالمزايا الأصلية، ولكن اجعلها جزءًا من المحرك المركزي.
+
+A. Universal Change Passport
+
+كل تغيير حساس يحصل على سجل موحد.
+
+يحفظ:
+
+- الفاعل.
+- الأصل.
+- الحالة السابقة.
+- الحالة الجديدة.
+- الغرض.
+- الوقت.
+- مصدر الطلب.
+- مستوى المخاطر.
+- الأدلة.
+- سياسة الموافقة.
+
+B. IntentLock
+
+تكون الموافقة مرتبطة بالتغيير المحدد، وليس بنص عام.
+
+إذا تغير محتوى التغيير بعد الموافقة، تلغى الموافقة السابقة تلقائيًا.
+
+C. Change Risk Engine
+
+يقيّم أثر التغييرات على بقية الأصول.
+
+D. Execution Gate
+
+يمنع التغييرات المخالفة في مسارات التنفيذ التي يدعمها الموصل.
+
+E. State Witness
+
+يتحقق بعد التنفيذ من الحالة الفعلية.
+
+F. Change Receipt
+
+ينشئ دليلًا قابلًا للتحقق يوضح ما الذي تمت الموافقة عليه وما الذي نُفذ.
+
+G. Drift Monitor
+
+يراقب الاختلاف بين الحالة المعتمدة والحالة الفعلية.
+
+يجب أن تعمل هذه العناصر مع GitHub وTerraform/OpenTofu والتكاملات المدعومة فعلًا، وليس كمحاكاة داخل Dashboard.
+
+MODULE 12 — AI Agent & MCP Security
+
+هذه وحدة استراتيجية وليست مجرد إضافة شكلية.
+
+يجب أن تتعامل المنصة مع الوكلاء باعتبارهم هويات تستطيع تنفيذ أفعال، وليس نصوصًا تنتج إجابات فقط.
+
+ادعم:
+
+- Agent Inventory.
+- MCP Server Inventory.
+- Tool Inventory.
+- Tool Manifest Validation.
+- Agent Identity.
+- Delegation Passport.
+- Tool Permission Management.
+- Scoped Credentials.
+- Session-Level Authority.
+- Action Logging.
+- Approval for High-Risk Actions.
+- Cumulative Action Limits.
+- Egress Policy.
+- Sensitive Data Access Controls.
+- Suspicious Tool Behavior Detection.
+- Agent Activity Timeline.
+- Revocation of Agent Authority.
+
+حماية الوكلاء يجب أن تعتمد على ضوابط قابلة للتحقق مثل:
+
+- Allowlisted Tools.
+- Structured Tool Schemas.
+- Least Privilege.
+- Sandboxing.
+- Short-Lived Credentials.
+- Output Validation.
+- Network and Filesystem Restrictions.
+- Human Approval for High-Risk Actions.
+- Explicit Separation Between Untrusted Content and System Instructions.
+
+لا تعتمد على LLM وحده لاتخاذ قرار أمني نهائي.
+
+أي نص خارجي يقرؤه الوكيل يجب اعتباره بيانات غير موثوقة، وليس تعليمات تسمح بتغيير سياسات النظام.
+
+MODULE 13 — Safe Attack Simulation & Continuous Control Validation
+
+أضف محركًا يختبر قدرة دفاع الشركة بصورة مستمرة.
+
+المطلوب:
+
+- Safe Configuration Tests.
+- Synthetic Attack Scenarios.
+- CI/CD Threat Scenarios.
+- Permission Escalation Tests في بيئة اختبار.
+- Secret Exposure Detection Tests باستخدام بيانات اصطناعية.
+- Security Control Validation.
+- Detection Coverage Checks.
+- Alert Routing Validation.
+- Recovery Procedure Tests.
+- Regression Security Tests.
+
+يمكن إضافة محاكاة Purple Team باستخدام سيناريوهات معروفة واختبارات غير مدمرة.
+
+ممنوع تنفيذ استغلال هجومي ضد أنظمة خارج النطاق المصرح به.
+
+أي Simulation مؤثرة يجب أن تعمل في بيئة Sandbox أو على حسابات اختبار، مع تحديد واضح لمستوى الخطورة.
+
+النتيجة يجب أن تقول:
+
+- ما الاختبار؟
+- لماذا نفذ؟
+- ماذا كان متوقعًا؟
+- ماذا حدث بالفعل؟
+- هل اكتشفت المنصة السلوك؟
+- هل وصلت الإشارة إلى المسؤول؟
+- ما الضابط الذي يحتاج إصلاحًا؟
+
+MODULE 14 — AI Remediation Autopilot
+
+هذه واحدة من أهم الميزات التي قد تجعل المنتج جذابًا للمطورين.
+
+لا تكتفِ بقول: يوجد خطر.
+
+ابنِ مساعد إصلاح عملي.
+
+لكل مشكلة، يستطيع النظام عند الإمكان:
+
+1. تحديد سبب المشكلة.
+2. شرح أثرها بلغة واضحة.
+3. تحديد الملفات أو الإعدادات المتأثرة.
+4. اقتراح إصلاح دقيق.
+5. إعداد Patch.
+6. تشغيل الاختبارات المناسبة.
+7. إنشاء Pull Request عند سماح المستخدم.
+8. إعادة الفحص.
+9. التحقق من إغلاق الخطر.
+10. تحديث حالة الإصلاح.
+
+أضف مستويات:
+
+- Recommend.
+- Prepare Patch.
+- Open Pull Request.
+- Apply with Approval.
+- Auto-Remediate ضمن سياسات محددة ومنخفضة المخاطر.
+
+لا تسمح للذكاء الاصطناعي بتعديل الإنتاج أو حذف بيانات أو تغيير صلاحيات حساسة دون سياسة وموافقة صريحة.
+
+كل إصلاح آلي يجب أن يكون قابلًا للتراجع حيث يكون ذلك ممكنًا.
+
+إذا فشل الاختبار، لا تعلن نجاح الإصلاح.
+
+MODULE 15 — Incident Response Command Center
+
+أنشئ مركزًا لإدارة الحوادث.
+
+يجب أن يدعم:
+
+- Incident Creation.
+- Severity Classification.
+- Timeline.
+- Related Assets.
+- Related Identities.
+- Attack Path Context.
+- Evidence Collection.
+- Incident Ownership.
+- Tasks and Assignments.
+- Playbooks.
+- Notification Routing.
+- Response Approval.
+- Containment Actions.
+- Recovery Actions.
+- Closure Review.
+- Post-Incident Report.
+
+أضف إجراءات آمنة مثل:
+
+- إبطال رمز مكشوف عبر موصل مخول.
+- طلب تعطيل هوية عالية الخطورة بعد موافقة.
+- عزل مورد تشغيل عبر تكامل مدعوم.
+- إيقاف مسار نشر مشبوه.
+- سحب الثقة من تكامل مخترق.
+- تفعيل إجراء استعادة.
+
+لا تنفذ إجراءات تدميرية بصمت.
+
+كل إجراء له معاينة وتأثير واضح وموافقة وسجل نتيجة.
+
+MODULE 16 — Recovery & Ransomware Readiness
+
+أضف قدرات استمرارية العمل والتعافي.
+
+- Backup Inventory.
+- Backup Configuration Review.
+- Backup Access Risk.
+- Backup Integrity Signals.
+- Recovery Point Objectives.
+- Recovery Time Objectives.
+- Restore Drill Tracking.
+- Configuration Snapshots.
+- IaC Recovery.
+- Credential Rotation Plans.
+- Incident Recovery Checklist.
+- Recovery Evidence.
+
+لا تدّعِ أن النسخة الاحتياطية قابلة للاستعادة لمجرد أنها موجودة.
+
+أضف Restore Validation حيث تتوفر بيئة اختبار وتكامل مناسب.
+
+MODULE 17 — Deception & Canary Intelligence
+
+أضف قدرة خفيفة ومدروسة للاستفادة من Agent Trap Network وMutual Decoy Mesh.
+
+ادعم:
+
+- Canary Tokens.
+- Honey Credentials.
+- Decoy Files.
+- Decoy API Keys.
+- Suspicious Access Detection.
+- Canary Events Correlation.
+- Alerting and Response.
+
+يجب أن تكون جميع العناصر مصطنعة وآمنة، وألا تحتوي على أسرار إنتاجية حقيقية.
+
+تُستخدم للكشف عن نشاط غير طبيعي، لا لجمع بيانات غير ضرورية عن المستخدمين.
+
+MODULE 18 — Trust & Compliance Evidence Center
+
+أنشئ مركزًا للأدلة الأمنية.
+
+اربط نتائج المنصة بالأطر ذات الصلة، مع المحافظة على عدم المبالغة في ادعاءات الامتثال.
+
+ادعم خرائط مرجعية إلى:
+
+- OWASP Top 10:2025.
+- OWASP ASVS 5.0.
+- OWASP Top 10 CI/CD Security Risks.
+- NIST SSDF.
+- SLSA.
+- ضوابط SOC 2 ذات الصلة.
+- ISO 27001 control mapping عند توفر نموذج صحيح.
+
+لا تدّعِ أن العميل أصبح معتمدًا أو حاصلًا على شهادة بسبب استخدام TRUSTRAIL.
+
+اعرض:
+
+- Control.
+- Evidence.
+- Last Verified.
+- Related Finding.
+- Owner.
+- Status.
+- Missing Evidence.
+- Recommended Action.
+
+أضف تصدير PDF وCSV وJSON بحسب الحاجة.
+
+MODULE 19 — Customer Trust Center & Security Passport
+
+هذه ميزة استراتيجية للانتشار والتوسع التجاري.
+
+اسمح للشركة بإنشاء صفحة أمنية قابلة للمشاركة مع العملاء أو الشركاء.
+
+يستطيع العميل اختيار نشر:
+
+- حالة التغطية الأمنية العامة.
+- حالة التحقق من بناء إصدار معين.
+- وجود أدلة توقيع Artifact.
+- حالة ضوابط معينة.
+- آخر تاريخ تحقق.
+- معلومات الاتصال بفريق الأمن.
+- مستندات يختار مشاركتها.
+
+لا تنشر الثغرات أو الأسرار أو المخططات الداخلية.
+
+يجب أن يكون لكل تقرير قابل للمشاركة:
+
+- توقيع أو إثبات سلامة.
+- تاريخ إصدار.
+- تاريخ انتهاء صلاحية عند الحاجة.
+- صلاحيات مشاهدة واضحة.
+- إمكانية إلغاء الرابط.
+- سجل وصول عند الحاجة.
+
+استخدم هذا المركز لتسهيل إرسال أدلة الثقة إلى العملاء المحتملين، وليس لإصدار شعارات خضراء غير مستندة إلى أدلة.
+
+MODULE 20 — Security Intelligence Assistant
+
+أضف مساعدًا ذكيًا داخل المنصة.
+
+يستطيع المستخدم أن يسأل:
+
+- ما أخطر مشكلة لدينا الآن؟
+- لماذا هذا الخطر مهم؟
+- ما الأنظمة المتأثرة؟
+- ما مسار الهجوم المحتمل؟
+- ما الإصلاح الأسرع والأكثر أمانًا؟
+- ما الذي تغير هذا الأسبوع؟
+- هل توجد صلاحيات واسعة أكثر مما ينبغي؟
+- ما الذي لا يزال غير محمي؟
+- ما الأدلة الناقصة؟
+- ماذا حدث خلال الحادث الأخير؟
+
+يجب أن يعتمد المساعد على بيانات الشركة الفعلية والأدلة المخزنة في المنصة.
+
+قواعد صارمة:
+
+- لا يخترع نتائج فحص.
+- لا يختلق حالة تكامل.
+- لا يدعي نجاح إجراء لم ينفذ.
+- لا يعرض بيانات من مؤسسة أخرى.
+- لا ينفذ أوامر حساسة لمجرد أن مستخدمًا كتبها في المحادثة.
+- يوضح مصدر كل استنتاج مهم.
+- يميز بين حقيقة مكتشفة وتقدير واحتمال.
+
+اجعل اتخاذ قرارات السياسات والتحكم النهائي من محركات حتمية، وليس من النموذج اللغوي وحده.
+
+---
+
+5. محرك الترابط الموحد
+
+كل الوحدات السابقة يجب أن تعمل على نموذج بيانات موحد.
+
+أنشئ الكيانات الأساسية على الأقل:
+
+- Organization
+- User
+- Team
+- Role
+- Project
+- Asset
+- Identity
+- Connector
+- Repository
+- Workflow
+- BuildArtifact
+- Dependency
+- SecretFinding
+- Vulnerability
+- SecurityFinding
+- AttackPath
+- Policy
+- PolicyDecision
+- ChangeContract
+- Approval
+- Evidence
+- SecurityEvent
+- Incident
+- Playbook
+- Remediation
+- Agent
+- MCPServer
+- AgentTool
+- TrustReceipt
+
+أنشئ علاقات واضحة بين هذه الكيانات.
+
+مثال وظيفي:
+
+إذا اكتشفت المنصة Dependency Vulnerability في مكتبة مستخدمة في مشروع، وكانت المكتبة موجودة في تطبيق إنتاجي على AWS، يجب أن تستطيع:
+
+1. ربط الثغرة بالمكتبة.
+2. ربط المكتبة بالمستودع.
+3. ربط المستودع بعملية البناء.
+4. ربط Artifact بالخدمة المنشورة.
+5. تحديد الخدمة والحساب السحابي المتأثرين.
+6. تقييم أثر الخطر.
+7. إنشاء خطة إصلاح.
+8. إنشاء Pull Request.
+9. إعادة الفحص.
+10. إغلاق Finding عند تحقق الإصلاح.
+11. تحديث Attack Graph وسجل الأدلة.
+
+هذه هي وحدة المنتج. لا تجعل كل صفحة تعمل ببيانات أو منطق منفصل.
+
+---
+
+6. Growth & Distribution Engine — ميزات الانتشار
+
+لا أريد أن يعتمد نمو TRUSTRAIL على الإعلانات فقط.
+
+صمم المنتج ليكتسب المستخدمين من داخل الاستخدام الطبيعي.
+
+A. Developer Free Entry
+
+أنشئ خطة مطور مجانية ذات قيمة حقيقية.
+
+تسمح بتجربة حقيقية لفحص مشروع أو مستودع ضمن حدود واضحة.
+
+لا تجعل الخطة المجانية مجرد واجهة معطلة لدفع المستخدم للترقية.
+
+B. One-Command Integration
+
+قدّم CLI حقيقيًا يجعل المطور يستطيع بدء فحص مستودعه بسهولة.
+
+مثلًا:
+
+trustrail scan
+
+يجب أن يؤدي إلى عملية فعلية ويعرض النتائج والأدلة، وليس مجرد رسالة تجريبية.
+
+C. GitHub / GitLab Sharing Loop
+
+عندما تتم إضافة TRUSTRAIL إلى مستودع أو Pull Request، يستطيع المطور دعوة زملائه لمراجعة نتيجة أو إصلاح.
+
+اجعل تجربة الدعوة مفيدة، ولا تفرض دعوات غير مرغوبة.
+
+D. Shareable Change Receipts
+
+كل تغيير مهم يمكن أن ينتج Change Receipt قابلًا للمشاركة مع فريق أو عميل.
+
+يكون الرابط محدود الصلاحية أو قابلًا للإلغاء، ولا يكشف معلومات سرية.
+
+E. Public Security Badge
+
+اسمح بعرض شارة أمنية عامة لمستودع أو إصدار عند موافقة مالكه.
+
+يجب أن تعتمد الشارة على أدلة حقيقية حديثة، وأن توضح ما الذي تم التحقق منه وحدود هذا التحقق.
+
+لا تحولها إلى درجة عامة مضللة.
+
+F. Trust Center for Sales
+
+كل شركة تستطيع إرسال صفحة ثقة وأدلة محددة إلى عميل محتمل.
+
+هذا يخلق سببًا تجاريًا لاستخدام المنصة، وليس فقط سببًا تقنيًا.
+
+G. Team Expansion
+
+عندما يستخدم المطور المنتج منفردًا، يجب أن تكون إضافة فريق أو مؤسسة عملية طبيعية:
+
+- دعوة عضو.
+- إنشاء Team.
+- ربط مستودعات الشركة.
+- مشاركة السياسات.
+- توزيع مهام الإصلاح.
+- توسيع الاشتراك عندما تزيد الاحتياجات.
+
+H. Open-Source Security Templates
+
+أنشئ مكتبة قوالب مجانية:
+
+- GitHub Actions Security.
+- Terraform Security.
+- AWS Baseline.
+- Docker Security.
+- Node.js Security.
+- Python Security.
+- Kubernetes Security.
+- MCP Server Security.
+
+يجب أن تكون القوالب قابلة للتطبيق فعليًا، ومحدثة ومختبرة.
+
+I. Partner / MSP Portal
+
+صمم البنية لتسمح لاحقًا لشركات الاستشارات ومديري خدمات الأمن بإدارة عدة مؤسسات بواجهة منفصلة لكل عميل وعزل كامل للبيانات.
+
+J. Privacy-Preserving Threat Signals
+
+يمكن إضافة تبادل اختياري لإشارات التهديد بين العملاء.
+
+لا تشارك الأكواد أو الأسرار أو المعلومات الحساسة.
+
+شارك فقط مؤشرات أو بصمات مسموح بها، مع احترام الخصوصية وإتاحة إلغاء المشاركة.
+
+لا تفترض أن كل العملاء وافقوا على مشاركة البيانات.
+
+---
+
+7. UX — تجربة استخدام ممتازة
+
+يجب أن تكون المنصة سهلة حتى لمن ليس متخصصًا في الأمن.
+
+صمم واجهة احترافية هادئة وسريعة.
+
+لا تجعل Dashboard مليئة بمئات الأرقام غير المهمة.
+
+الصفحات الرئيسية
+
+1. Overview Dashboard.
+2. Security Graph.
+3. Attack Paths.
+4. Projects & Repositories.
+5. Vulnerabilities.
+6. Supply Chain.
+7. CI/CD Security.
+8. Cloud Security.
+9. Identity & Access.
+10. API Security.
+11. AI Agents & MCP.
+12. Change Integrity.
+13. Security Policies.
+14. Remediation Center.
+15. Runtime Events.
+16. Incident Command.
+17. Recovery Center.
+18. Deception Signals.
+19. Compliance & Evidence.
+20. Trust Center.
+21. Integrations.
+22. Team & Access Management.
+23. Billing & Plans.
+24. Settings.
+
+لكل صفحة وظيفة واضحة وبيانات فعلية.
+
+Dashboard الذكي
+
+يجب أن يعرض:
+
+- أهم خمسة مخاطر يجب معالجتها الآن.
+- مسارات الهجوم الحرجة.
+- عدد الأصول المكتشفة.
+- حالة التكاملات.
+- تغييرات الإنتاج الأخيرة.
+- مشكلات سلسلة التوريد.
+- الحوادث النشطة.
+- الإصلاحات المعلقة.
+- نسبة التغطية التي تم التحقق منها.
+- ما الذي تغير منذ آخر زيارة.
+
+لا تعرض أرقامًا ثابتة.
+
+UX Requirements
+
+- Onboarding Wizard.
+- Integration Health Status.
+- Empty States مفيدة.
+- Loading States سليمة.
+- Error States واضحة.
+- Search عالمي.
+- Global Notifications.
+- Keyboard Navigation.
+- Accessibility.
+- Responsive Layout.
+- صفحات تفاصيل مرتبطة ببعضها.
+- بحث وتصفية وفرز.
+- Pagination للبيانات الكبيرة.
+- حفظ الفلاتر.
+- رسائل نجاح وفشل دقيقة.
+- تأكيد العمليات الحساسة.
+- دعم الوضع الفاتح والداكن.
+- توحيد تصميم المكونات.
+
+كل زر يجب أن ينفذ فعلًا حقيقيًا.
+
+ممنوع الأزرار الوهمية أو الروابط التي لا تعمل أو النماذج التي لا تحفظ البيانات.
+
+---
+
+8. التكاملات الحقيقية
+
+أنشئ Connector Framework موحدًا.
+
+كل Connector يجب أن يحتوي على:
+
+- Authentication.
+- Permission Scope.
+- Connection Validation.
+- Health Status.
+- Last Successful Sync.
+- Sync History.
+- Error Handling.
+- Rate Limit Handling.
+- Retry.
+- Webhook Signature Verification عندما تكون مدعومة.
+- Idempotency.
+- Disconnect.
+- Credential Rotation Support.
+
+نطاق التكاملات المطلوب في الإصدار التجاري الأول
+
+نفّذ التكاملات التالية بعمق، ولا تدّعِ اكتمال تكامل لم يُختبر:
+
+Source Control
+
+- GitHub App حقيقي.
+- GitHub Webhooks.
+- GitHub Checks / Pull Request Feedback.
+- GitLab Connector فعلي عند تضمينه في النطاق.
+
+Cloud
+
+- AWS Cross-Account IAM Role.
+- External ID.
+- Read-Only Discovery.
+- Security Event Ingestion.
+- IAM and Resource Analysis.
+
+Infrastructure
+
+- Terraform / OpenTofu Plan Ingestion.
+- IaC Policy Evaluation.
+- Configuration Drift Analysis.
+
+Build & Artifact
+
+- Docker / OCI Image Support.
+- SBOM Generation.
+- Image Scanning.
+- Signature Verification.
+
+Notifications
+
+- Slack.
+- Email.
+- In-App Notifications.
+
+Developer Tools
+
+- CLI.
+- API.
+- Webhooks.
+- SDK عند الحاجة.
+
+أنشئ Architecture تسمح بإضافة Azure وGCP وKubernetes Live Connectors لاحقًا.
+
+لكن لا تعرض أي مزود على أنه مدعوم بالكامل قبل اختبار وظائفه الحقيقية.
+
+عندما تكون بيانات الاعتماد غير موجودة:
+
+- اعرض أن التكامل غير متصل.
+- اعرض ما يلزم لربطه.
+- لا تعرض حالة مزيفة بأنه متصل.
+- لا تُنشئ نتائج فحص وهمية.
+- لا تخلط Demo Mode ببيانات الإنتاج.
+
+---
+
+9. الهندسة المعمارية التقنية
+
+افحص المشروع الموجود أولًا.
+
+إذا كان يحتوي على بنية وتقنيات مستقرة، حافظ عليها ما لم يوجد سبب تقني قوي لتغييرها.
+
+إذا كان المشروع جديدًا، اختر بنية قوية ومناسبة للتشغيل التجاري.
+
+التفضيل المعماري:
+
+- Frontend: React / Next.js / TypeScript.
+- Backend: TypeScript API أو إطار Backend مناسب للمشروع.
+- Database: PostgreSQL.
+- Background Jobs: Redis + BullMQ أو نظام مكافئ.
+- Object Storage: S3-Compatible Storage للأدلة والملفات.
+- Policy Engine: OPA/Rego أو محرك موثوق مكافئ.
+- Observability: OpenTelemetry.
+- Containerization: Docker.
+- Deployment: Docker Compose للتطوير، وبنية قابلة للنشر السحابي.
+- Scanner Workers: Workers معزولة لتشغيل المحركات الأمنية.
+- Authentication: OIDC، ومصادقة قوية، ودعم Passkeys عندما يكون مناسبًا.
+- Database Migration System موثوق.
+
+لا تبنِ Microservices كثيرة دون حاجة.
+
+ابدأ بمعمارية Modular وقابلة للتوسع، مع حدود واضحة بين الوحدات.
+
+أضف:
+
+- Typed API Contracts.
+- Input Validation.
+- Central Error Handling.
+- Structured Logging.
+- Event Outbox Pattern.
+- Idempotent Jobs.
+- Retry Policies.
+- Dead Letter Queue.
+- Rate Limits.
+- Connection Timeouts.
+- Circuit Breakers عند الحاجة.
+- Database Indexing.
+- Background Job Monitoring.
+
+---
+
+10. الأمن الداخلي للمنصة نفسها
+
+لأن TRUSTRAIL منتج أمني، فإن اختراقه سيكون خطيرًا جدًا.
+
+يجب أن تكون المنصة مصممة وفق Secure-by-Default.
+
+الحد الأدنى الإلزامي:
+
+- Strong Authentication.
+- MFA / Passkeys.
+- RBAC.
+- Tenant Isolation.
+- PostgreSQL Row-Level Security حيث يناسب التصميم.
+- Encryption in Transit.
+- Encryption at Rest.
+- Secure Secret Storage.
+- KMS Integration.
+- Signed Webhooks.
+- CSRF Protection.
+- XSS Protection.
+- SQL Injection Prevention.
+- SSRF Protection.
+- Secure File Uploads.
+- Rate Limiting.
+- Session Security.
+- Token Rotation.
+- Audit Logging.
+- Data Retention Controls.
+- Backup and Restore.
+- Dependency Security.
+- Container Hardening.
+- Sandbox Untrusted Scanner Processes.
+- Secure Admin Actions.
+
+لا تطبع أسرار العملاء في Logs أو رسائل الخطأ.
+
+لا تضع API Keys في Frontend أو Source Code.
+
+لا تسمح للموظف العادي بمشاهدة بيانات مؤسسة أخرى.
+
+أضف اختبارات مخصصة لاكتشاف Cross-Tenant Access وBroken Access Control.
+
+---
+
+11. الذكاء الاصطناعي: كيف نستخدمه دون أن يصبح خطرًا؟
+
+استخدم AI في:
+
+- شرح الثغرات.
+- تفسير مسارات الهجوم.
+- اقتراح الإصلاحات.
+- إعداد Pull Requests.
+- كتابة تقارير الحوادث.
+- تلخيص تغييرات الأمن.
+- فهم أسئلة المستخدم عن بياناته.
+- مساعدة المطور على التعلم.
+
+لكن:
+
+- لا تمنح النموذج صلاحيات تنفيذ مطلقة.
+- لا تسمح له بقراءة بيانات خارج حدود المؤسسة.
+- لا تعتبر مخرجاته دليلًا أمنيًا بذاتها.
+- يجب أن تكون كل استنتاجاته مرتبطة بمصادر داخل المنصة.
+- لا تدعه يقرر وحده أن ثغرة مغلقة.
+- يجب أن تكون الإجراءات الحساسة تحت محرك سياسات وموافقة مستقلة.
+- افصل التعليمات عن البيانات غير الموثوقة.
+
+أضف AI Evaluation Tests تشمل Prompt Injection وUnauthorized Tool Use وSensitive Data Disclosure.
+
+---
+
+12. Reliability & Performance
+
+المنصة يجب أن تكون قابلة للاستخدام اليومي على مشاريع حقيقية.
+
+اعمل على:
+
+- Pagination.
+- Incremental Scanning.
+- Caching الآمن.
+- Delta Synchronization.
+- Async Processing.
+- Efficient Queries.
+- Index Optimization.
+- Rate-Limited Connectors.
+- Job Deduplication.
+- Failure Recovery.
+- Database Transactions.
+- Data Consistency.
+- Background Job Health.
+- Queue Monitoring.
+- Performance Profiling.
+
+لا تجعل فحص مستودع كبير يؤدي إلى تعليق لوحة التحكم.
+
+لا تنفذ عمليات ثقيلة داخل HTTP Request إذا كان من الأفضل تشغيلها كمهام خلفية.
+
+يجب أن يستطيع المستخدم رؤية تقدم المهمة وحالتها ونتيجتها الحقيقية.
+
+أضف Metrics وLogs وTracing مع حماية البيانات الحساسة.
+
+---
+
+13. Testing — الاختبارات الإلزامية
+
+لا تعتبر المشروع مكتملًا دون اختبار فعلي.
+
+أنشئ:
+
+Unit Tests
+
+لجميع محركات المخاطر والسياسات والتحقق.
+
+Integration Tests
+
+لقاعدة البيانات والصفوف والموصلات ومحركات الفحص.
+
+API Tests
+
+لكل Endpoint.
+
+Connector Contract Tests
+
+لكل تكامل.
+
+End-to-End Tests
+
+لرحلات الاستخدام الأساسية.
+
+Security Tests
+
+لعزل المؤسسات والصلاحيات والمدخلات والأسرار والروابط والخطافات.
+
+Regression Tests
+
+لكل خطأ يتم إصلاحه.
+
+يجب أن تشمل سيناريوهات الاختبار:
+
+1. إنشاء مستخدم ومؤسسة.
+2. إنشاء مشروع.
+3. ربط GitHub فعليًا.
+4. اكتشاف المستودعات.
+5. تشغيل فحص حقيقي.
+6. اكتشاف ثغرة مصطنعة داخل مشروع اختبار.
+7. إنشاء Finding مع دليل.
+8. اكتشاف Secret دون طباعة السر كاملًا.
+9. تحليل Terraform Plan.
+10. تقييم سياسة ممنوعة.
+11. منع تغيير غير مصرح به في CI المدعوم.
+12. الموافقة على تغيير مسموح.
+13. إلغاء الموافقة عند تغير محتوى التغيير.
+14. التحقق من الحالة الفعلية بعد التنفيذ.
+15. إنشاء Pull Request للإصلاح عند دعم ذلك.
+16. إعادة الفحص بعد الإصلاح.
+17. تحديث حالة الخطر إلى Resolved فقط عند وجود دليل.
+18. إنشاء Incident.
+19. تشغيل Playbook تجريبي.
+20. التحقق من تسجيل جميع إجراءات الاستجابة.
+21. اختبار فصل البيانات بين مؤسستين.
+22. اختبار صلاحيات المستخدمين.
+23. اختبار توقف أحد التكاملات.
+24. اختبار Rate Limits.
+25. اختبار إعادة المحاولة وIdempotency.
+26. اختبار تصدير الأدلة.
+27. اختبار إلغاء رابط Trust Center.
+28. اختبار فشل مهمة خلفية ثم استعادتها.
+
+أضف بيانات اختبار اصطناعية واضحة منفصلة تمامًا عن الإنتاج.
+
+لا تستخدم نتائج وهمية في الاختبارات على أنها نتائج حقيقية، ولا تعرض Fixtures على أنها بيانات متصلة.
+
+---
+
+14. Definition of Done — متى تعتبر المهمة مكتملة؟
+
+لا تعتبر أي ميزة مكتملة حتى تتحقق جميع الشروط المناسبة لها:
+
+1. لها واجهة فعلية.
+2. لها Backend حقيقي.
+3. لها Database Model وMigration عند الحاجة.
+4. لها API موثقة.
+5. لها صلاحيات محددة.
+6. لها Validation.
+7. لها Error Handling.
+8. لها Loading / Empty / Success / Failure States.
+9. لها Logging آمن.
+10. لها Tests.
+11. لها تكامل حقيقي إذا كانت تعتمد على مزود خارجي.
+12. لا تستخدم Mock Results في وضع الإنتاج.
+13. لا توجد أزرار غير متصلة.
+14. لا يوجد TODO في مسار تشغيل أساسي.
+15. يمكن إثبات نجاح الوظيفة عبر اختبار قابل للتكرار.
+
+إذا كانت هناك وظيفة تعتمد على خدمة خارجية لم تتوفر بيانات اعتمادها، نفذ مسار الإعداد والاختبار وحالة الانقطاع كاملة، لكن لا تدّعِ أن الاتصال الفعلي قد تم.
+
+---
+
+15. Repair & Continuous Quality
+
+أريد منك إصلاح المشروع على مستوى الجذر، لا إخفاء الأعراض.
+
+افعل التالي:
+
+- فحص الأخطاء الموجودة في المشروع.
+- تشغيل Type Checking.
+- تشغيل Lint.
+- تشغيل Unit Tests.
+- تشغيل Integration Tests.
+- تشغيل E2E.
+- تشغيل Build.
+- إصلاح جميع الأخطاء القابلة للإصلاح.
+- إزالة التكرارات غير الضرورية.
+- إصلاح مشاكل الواجهات المتجاوبة.
+- إصلاح أخطاء API.
+- إصلاح أخطاء Database.
+- إصلاح أخطاء التكاملات.
+- إصلاح مشاكل صلاحيات المستخدمين.
+- إصلاح الأداء والتحميل.
+- إضافة Regression Test لكل Bug مهم يتم إصلاحه.
+- إعادة تشغيل الاختبارات بعد كل مجموعة إصلاحات.
+
+لا تتجاهل تحذيرات الأمن أو الأخطاء فقط كي ينجح Build.
+
+إذا ظهر خطأ أثناء التطوير، تتبع السبب الأساسي وأصلحه ثم أعد الاختبار.
+
+أضف CI Pipeline يشغل الفحوص الأساسية عند كل Pull Request.
+
+---
+
+16. Deployment & Operations
+
+أنشئ تجهيزًا حقيقيًا للتشغيل.
+
+يجب أن يتضمن:
+
+- Development Environment.
+- Production Environment Configuration.
+- Docker Compose.
+- Environment Variable Validation.
+- Database Migrations.
+- Backup Procedures.
+- Restore Procedures.
+- Health Checks.
+- Readiness Checks.
+- Liveness Checks.
+- Observability.
+- Error Reporting.
+- Rate Limit Configuration.
+- Secure Default Configuration.
+- Deployment Documentation.
+- Rollback Procedure.
+- Incident Runbook.
+
+أضف وثائق واضحة:
+
+- README.
+- Architecture Overview.
+- Local Development Setup.
+- Production Deployment.
+- Database Schema.
+- API Documentation.
+- Connector Setup.
+- Security Model.
+- Threat Model.
+- Backup / Restore Guide.
+- Troubleshooting.
+- Operations Runbook.
+
+لا تضع أسرارًا أو حسابات فعلية في الملفات أو المستودع.
+
+---
+
+17. خطة التنفيذ المطلوبة منك
+
+لا تقف عند اقتراح خطة.
+
+افحص المشروع أولًا، ثم نفّذ العمل بالترتيب التالي، واستمر حتى تحقق أكبر قدر ممكن من Definition of Done.
+
+Phase 0 — Repository Audit
+
+- اكتشف المشروع الحالي.
+- افهم بنيته.
+- اقرأ ملفات الإعداد.
+- شغّل المشروع.
+- شغّل الاختبارات الموجودة.
+- حدد الأخطاء والمشكلات المعمارية.
+- احفظ تقريرًا بالوضع الحالي.
+
+لا تحذف أعمالًا موجودة لمجرد أنك تفضل بنية أخرى.
+
+Phase 1 — Core Platform
+
+- Auth.
+- Organizations.
+- Projects.
+- Teams.
+- RBAC.
+- Tenant Isolation.
+- Database.
+- Audit.
+- Background Jobs.
+- Observability.
+
+Phase 2 — Integrations & Asset Discovery
+
+- GitHub.
+- AWS.
+- Terraform.
+- Docker / OCI.
+- Notifications.
+- Connector Framework.
+- Asset Inventory.
+
+Phase 3 — Security Intelligence
+
+- Scanner Adapters.
+- Unified Findings.
+- Vulnerability Management.
+- Supply Chain.
+- Security Graph.
+- Attack Paths.
+- Risk Engine.
+
+Phase 4 — Prevention & Change Integrity
+
+- Change Passport.
+- Exact Approvals.
+- Policy Engine.
+- CI/CD Gates.
+- State Verification.
+- Drift Detection.
+
+Phase 5 — Advanced Defense
+
+- Runtime Events.
+- IAM Intelligence.
+- API Security.
+- AI / MCP Guard.
+- Deception.
+- Safe Attack Simulation.
+
+Phase 6 — Remediation & Response
+
+- AI Remediation.
+- Pull Request Fixes.
+- Incident Center.
+- Playbooks.
+- Recovery.
+- Evidence.
+
+Phase 7 — Growth & Enterprise
+
+- CLI.
+- SDK.
+- Trust Center.
+- Shareable Receipts.
+- Templates.
+- MSP Architecture.
+- Enterprise Controls.
+- Billing.
+
+Phase 8 — Quality & Production Readiness
+
+- Full Test Suite.
+- Security Audit.
+- Performance.
+- UX Audit.
+- Regression Fixes.
+- Deployment.
+- Documentation.
+
+لا تتوقف بعد Phase 0 وتطلب مني أن أكمل. أنجز التنفيذ فعليًا ضمن صلاحيات البيئة المتاحة لك.
+
+إذا كان التنفيذ الكامل لا يمكن إنجازه في جلسة واحدة، فلا تدّعِ اكتماله. أكمل الجزء الممكن، وسجل بدقة ما تم وما لم يتم، وما يحتاج إلى حساب خارجي أو قرار لا يمكن اتخاذه دون المالك.
+
+---
+
+18. تعليمات نهائية حاسمة
+
+- لا أريد مجرد Dashboard.
+- لا أريد صفحات تحتوي على بيانات وهمية.
+- لا أريد أزرارًا لا تعمل.
+- لا أريد API ترجع نجاحًا دون تنفيذ حقيقي.
+- لا أريد إخفاء الأخطاء.
+- لا أريد تكاملات شكلية.
+- لا أريد تكرار وظائف موجودة بلا قيمة مضافة.
+- لا أريد بنية معقدة بلا ضرورة.
+- لا أريد الاعتماد على AI وحده لتقرير الأمن.
+- لا أريد جعل المطور ينتظر طويلًا بسبب واجهة معقدة.
+- لا أريد ادعاء أن جميع الأصول محمية إذا لم يتم اكتشافها فعليًا.
+- لا أريد ادعاء أن حادثة أُغلقت قبل التحقق من نجاح الإجراء.
+
+أريد منتجًا سريعًا، دقيقًا، واضحًا، وقابلًا للتوسع.
+
+المبدأ الذي يجب أن يحكم كل قرار:
+
+كل خطر يجب أن يكون مرتبطًا بأصل ودليل وسياق. كل إجراء يجب أن يكون له صلاحية واضحة وسجل. كل إصلاح يجب أن يعاد اختباره. وكل ادعاء أمني يجب أن يكون قابلًا للإثبات.
+
+المعيار النهائي للنجاح:
+
+يستطيع مطور واحد ربط مشروعه وبدء حمايته دون تعقيد.
+
+تستطيع شركة صغيرة فهم المخاطر وإصلاحها دون فريق أمني كامل.
+
+تستطيع شركة متوسطة توحيد الأصول والسياسات والتغييرات والاستجابة للحوادث.
+
+وتستطيع مؤسسة كبيرة توسيع المنصة عبر فرق وبيئات وتكاملات مع الاحتفاظ بالعزل والتدقيق والحوكمة.
+
+لا تبنِ عشرين منتجًا منفصلًا. ابنِ منصة واحدة ذات محرك أمني موحد، وتجربة استخدام واحدة، وتدفق عمل متصل من اكتشاف التهديد حتى التحقق من إغلاقه.
+
+ابدأ بفحص المستودع الحالي، ثم نفّذ، واختبر، وأصلح، وأعد الاختبار حتى تصل إلى أفضل حالة تشغيلية ممكنة.

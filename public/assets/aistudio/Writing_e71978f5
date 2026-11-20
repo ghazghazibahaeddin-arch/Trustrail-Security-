@@ -1,0 +1,1339 @@
+TRUSTRAIL — MASTER PRODUCTION READINESS, FULL FUNCTIONAL AUDIT & BUG ELIMINATION PROMPT
+
+MISSION
+
+You are now the independent Principal QA Engineer, Software Architect, Cybersecurity Auditor, Integration Engineer, SRE, DevOps Engineer, and Release Manager responsible for validating and completing TRUSTRAIL Security Cloud.
+
+Your mission is to perform a comprehensive, evidence-based audit of the ENTIRE existing TRUSTRAIL product.
+
+Do not merely inspect source code and produce recommendations.
+
+You must actually:
+
+1. Inspect the entire repository and existing implementation.
+2. Discover every existing feature, page, workflow, API endpoint, background worker, database model, and external integration.
+3. Test whether every advertised feature works end to end.
+4. Verify that every required API exists, is connected, secured, documented, and operational.
+5. Verify every required external integration using real credentials and supported test or sandbox environments.
+6. Find and fix actual programming errors, UI errors, workflow failures, data consistency issues, security vulnerabilities, and performance problems.
+7. Add regression tests for every meaningful bug.
+8. Repeat tests after making changes.
+9. Validate the application from the perspective of real users.
+10. Deliver a production-readiness report supported by actual test evidence.
+
+The objective is to release a genuinely operational cybersecurity platform, not a demo, mockup, prototype, or collection of incomplete screens.
+
+Do not claim that the application is flawless or that every integration works unless the corresponding tests and evidence prove it.
+
+Your release objective is:
+
+Zero known release-blocking defects, zero known critical security vulnerabilities, no broken advertised core workflows, and no falsely reported integrations or functionality.
+
+---
+
+PART 1 — ESTABLISH THE TRUE STATE OF THE PRODUCT
+
+Before modifying anything, inspect the whole project.
+
+Do not assume that the previous development work is correct.
+
+Perform a complete repository audit.
+
+Inspect:
+
+- Frontend application.
+- Backend application.
+- API routes.
+- Database schema.
+- Database migrations.
+- Authentication.
+- Authorization.
+- Organization and tenant management.
+- Background workers.
+- Job queues.
+- Scheduler.
+- Webhooks.
+- External integrations.
+- CLI.
+- SDKs.
+- MCP server.
+- Scanner engines.
+- Security policies.
+- Event processing.
+- Logging.
+- Error reporting.
+- File uploads.
+- Object storage.
+- Configuration.
+- Environment variables.
+- Deployment configuration.
+- Docker files.
+- CI/CD configuration.
+- Automated tests.
+- Documentation.
+- Dependency versions.
+- Unused modules.
+- Incomplete modules.
+- TODO and FIXME markers.
+- Mock implementations.
+- Placeholder data.
+- Dead routes.
+- Unused components.
+- Unhandled errors.
+
+Run the existing project before making changes.
+
+Run its current test suite and build process.
+
+Record the actual initial state.
+
+Create a file:
+
+"QUALITY_AUDIT_BASELINE.md"
+
+It must contain:
+
+- Existing working functionality.
+- Existing incomplete functionality.
+- Existing failing tests.
+- Existing frontend errors.
+- Existing backend errors.
+- Existing integration problems.
+- Existing API problems.
+- Security concerns.
+- Performance concerns.
+- Missing environment configuration.
+- Known limitations.
+
+Do not hide existing failures by modifying or deleting tests.
+
+Do not delete functional features merely because they are difficult to test.
+
+Preserve working functionality unless a change is technically necessary and properly tested.
+
+---
+
+PART 2 — CREATE A COMPLETE FEATURE INVENTORY
+
+Create a comprehensive inventory of every advertised TRUSTRAIL feature.
+
+Use this platform scope:
+
+1. Attack Surface Discovery.
+2. Asset Inventory.
+3. Unified Security Intelligence Graph.
+4. Attack Path Intelligence.
+5. Vulnerability Management.
+6. SAST.
+7. SCA.
+8. Secret Scanning.
+9. IaC Security.
+10. Container Security.
+11. Software Supply Chain Security.
+12. SBOM Generation.
+13. Artifact Verification.
+14. CI/CD Security.
+15. GitHub Integration.
+16. GitLab Integration, if advertised.
+17. AWS Security Posture.
+18. Cloud IAM Analysis.
+19. Identity and Privilege Intelligence.
+20. Runtime Security Signals.
+21. API Security.
+22. Change Integrity Engine.
+23. Change Passport.
+24. IntentLock.
+25. Execution Gate.
+26. State Witness.
+27. Configuration Drift Detection.
+28. AI Agent Security.
+29. MCP Security.
+30. Agent Permission Management.
+31. Cumulative Action Limits.
+32. Safe Attack Simulation.
+33. AI-Assisted Remediation.
+34. Pull Request Remediation.
+35. Incident Management.
+36. Incident Response Playbooks.
+37. Recovery Center.
+38. Deception and Canary Signals.
+39. Compliance Evidence.
+40. Trust Center.
+41. Security Intelligence Assistant.
+42. Public REST API.
+43. Webhooks.
+44. CLI.
+45. SDKs.
+46. MCP Server.
+47. Notifications.
+48. Organization and Team Management.
+49. Enterprise Administration.
+50. Billing and Subscription Management, if advertised.
+
+For every feature, document:
+
+- Feature name.
+- User-facing location.
+- Frontend components.
+- Backend services.
+- Database models.
+- API endpoints.
+- Background jobs.
+- External dependencies.
+- Permissions.
+- Data flow.
+- Expected behavior.
+- Actual behavior.
+- Test coverage.
+- Current status.
+
+Create:
+
+"FEATURE_COMPLETENESS_MATRIX.md"
+
+Use these statuses:
+
+- PASS: Fully operational and verified.
+- PARTIAL: Implemented but incomplete.
+- FAIL: Exists but does not function correctly.
+- BLOCKED: Requires external credentials, access, or infrastructure not currently available.
+- NOT IMPLEMENTED: Advertised but not built.
+- NOT APPLICABLE: Properly excluded from the current product scope.
+
+Never mark a feature PASS based solely on the existence of a frontend page, API route, or code file.
+
+---
+
+PART 3 — TEST EVERY USER INTERFACE
+
+Perform a complete frontend audit.
+
+Use Playwright or an equivalent real browser automation framework.
+
+Test the application as a real human user.
+
+A. Global navigation
+
+Verify:
+
+- Every sidebar link.
+- Every navigation item.
+- Every submenu.
+- Breadcrumbs.
+- Tabs.
+- Modals.
+- Dropdowns.
+- Search.
+- Filters.
+- Sorting.
+- Pagination.
+- Tables.
+- Forms.
+- Tooltips.
+- Notifications.
+- User menus.
+- Organization switching.
+- Project switching.
+- Settings navigation.
+
+No dead navigation links.
+
+No broken routes.
+
+No buttons that appear interactive but do nothing.
+
+B. Every page
+
+Open every page and test every important interaction.
+
+Verify:
+
+- Data loads correctly.
+- Empty states make sense.
+- Loading states work.
+- Error states display useful messages.
+- Data is saved.
+- Data is updated.
+- Data is deleted only after valid confirmation.
+- Refreshing does not corrupt the page.
+- Browser back and forward navigation work.
+- Pagination preserves the correct filters.
+- Search results are accurate.
+- Filters work together correctly.
+- Dates and time zones display correctly.
+
+C. Responsive UI
+
+Test:
+
+- Desktop.
+- Laptop.
+- Tablet.
+- Mobile.
+
+Check:
+
+- Overflow.
+- Broken layouts.
+- Cut-off text.
+- Modal positioning.
+- Sidebar behavior.
+- Tables.
+- Forms.
+- Graph visualizations.
+- Action buttons.
+
+D. User experience
+
+Check:
+
+- Clear language.
+- Consistent labels.
+- Meaningful error messages.
+- Helpful confirmation messages.
+- No duplicate actions.
+- No infinite loading.
+- No unexpected page reloads.
+- No accidental destructive actions.
+- No confusing workflows.
+
+E. Accessibility
+
+Test:
+
+- Keyboard navigation.
+- Focus indicators.
+- Form labels.
+- Button names.
+- Screen-reader semantics.
+- Color contrast.
+- Error announcements.
+- Modal focus handling.
+
+Create:
+
+"FRONTEND_QA_REPORT.md"
+
+Include screenshots or browser test evidence for significant failures.
+
+---
+
+PART 4 — VERIFY EVERY BACKEND API
+
+Perform a complete API audit.
+
+Do not trust existing API documentation alone.
+
+Discover the actual registered backend routes and compare them with the advertised feature inventory.
+
+Create:
+
+"API_COMPLETENESS_MATRIX.md"
+
+For every API endpoint, record:
+
+- HTTP method.
+- Route.
+- Description.
+- Authentication requirements.
+- Authorization requirements.
+- Organization/tenant scope.
+- Request schema.
+- Response schema.
+- Validation.
+- Database operations.
+- External API dependencies.
+- Expected status codes.
+- Error handling.
+- Rate limiting.
+- Idempotency requirements.
+- Audit logging.
+- Test results.
+
+Test all relevant operations:
+
+- GET.
+- POST.
+- PUT.
+- PATCH.
+- DELETE.
+
+Where an API is intentionally read-only, do not introduce unnecessary write operations.
+
+API functional tests
+
+Verify:
+
+- Correct responses.
+- Correct HTTP status codes.
+- Correct response structures.
+- Correct pagination.
+- Correct sorting.
+- Correct filtering.
+- Correct validation.
+- Correct authorization.
+- Correct database persistence.
+- Correct background processing.
+- Correct webhook triggering.
+- Correct error responses.
+- No accidental information disclosure.
+
+API security tests
+
+Test for:
+
+- Broken Object Level Authorization.
+- Broken Function Level Authorization.
+- Cross-Tenant Data Access.
+- IDOR.
+- SQL Injection.
+- NoSQL Injection where applicable.
+- XSS.
+- CSRF.
+- SSRF.
+- Authentication bypass.
+- Privilege escalation.
+- Mass assignment.
+- Unvalidated input.
+- Unsafe file uploads.
+- Excessive resource consumption.
+- Rate limit bypass.
+- Token leakage.
+- Sensitive information in error messages.
+- Improper CORS.
+- Insecure redirects.
+
+Specifically create at least two separate test organizations.
+
+Verify that:
+
+- Organization A cannot access Organization B's assets.
+- Organization A cannot read B's findings.
+- Organization A cannot access B's incidents.
+- Organization A cannot view B's scan results.
+- Organization A cannot modify B's policies.
+- Organization A cannot use B's integrations.
+- Background jobs cannot cross tenant boundaries.
+- Search and export endpoints cannot bypass tenant filtering.
+
+Test normal users, administrators, organization owners, and limited-access users.
+
+Never use production customer data for destructive security tests.
+
+---
+
+PART 5 — AUDIT ALL REQUIRED INTEGRATIONS
+
+Create a master integration registry.
+
+Include only integrations that are actually required by the platform's advertised features and supported product scope.
+
+For each integration, verify:
+
+1. Authentication.
+2. Permission scopes.
+3. Connection setup.
+4. Connection validation.
+5. Initial data synchronization.
+6. Incremental synchronization.
+7. Pagination.
+8. Rate limits.
+9. Token expiration.
+10. Token refresh.
+11. Reconnection.
+12. Credential revocation.
+13. Webhooks.
+14. Webhook signature verification.
+15. Idempotency.
+16. Duplicate event prevention.
+17. Retry logic.
+18. Network timeouts.
+19. Error recovery.
+20. Disconnection.
+21. Data deletion where required.
+22. Health monitoring.
+23. Last successful sync time.
+24. Audit logs.
+
+A. GitHub
+
+Verify a real GitHub App integration.
+
+Test:
+
+- GitHub App installation.
+- OAuth or installation token generation.
+- Repository discovery.
+- Organization repository access.
+- Repository metadata synchronization.
+- Pull Request events.
+- Push events.
+- Branch protection analysis.
+- Workflow analysis.
+- Secret scanning input.
+- Security findings.
+- GitHub Checks.
+- Pull Request comments.
+- Creating remediation branches.
+- Creating Pull Requests.
+- Pull Request update events.
+- Permission changes.
+- App disconnection.
+
+Verify webhook signatures.
+
+Ensure that revoked or expired tokens are handled properly.
+
+B. AWS
+
+Verify a real AWS cross-account integration.
+
+Test:
+
+- IAM Role assumption.
+- External ID validation.
+- Least privilege permissions.
+- AWS account identity verification.
+- Resource inventory.
+- IAM policy analysis.
+- Security Group analysis.
+- S3 exposure checks.
+- CloudTrail event ingestion.
+- Resource configuration checks.
+- Encryption configuration.
+- Drift detection.
+- Credential expiration.
+- Permission failure handling.
+- API rate limits.
+- Disconnection.
+
+Use a dedicated sandbox/test AWS account.
+
+Do not request unrestricted administrator permissions for ordinary read-only discovery.
+
+C. Terraform / OpenTofu
+
+Verify:
+
+- Plan ingestion.
+- Plan parsing.
+- Resource change extraction.
+- Policy evaluation.
+- Dangerous configuration detection.
+- Sensitive resource identification.
+- Approval requirements.
+- Blocking unauthorized changes where configured.
+- Change receipts.
+- Drift comparison.
+- Error handling.
+
+Use synthetic test plans for destructive or unsafe configurations.
+
+D. Docker / OCI
+
+Verify:
+
+- Image identification.
+- Image scanning.
+- Layer analysis where supported.
+- Package inventory.
+- OS package vulnerability detection.
+- SBOM generation.
+- Registry authentication.
+- Image retrieval.
+- Digest verification.
+- Signature verification.
+- Unsupported image handling.
+- Large image handling.
+- Cache correctness.
+
+E. Slack and Email
+
+Verify:
+
+- Installation or authorization.
+- Notifications.
+- Finding alerts.
+- Incident alerts.
+- Remediation updates.
+- Delivery status.
+- Retry behavior.
+- Invalid destination handling.
+- Revoked permissions.
+- Notification preferences.
+
+Never mark an alert sent merely because the job was queued.
+
+Record provider delivery results where available.
+
+F. MCP Server
+
+Verify:
+
+- MCP initialization.
+- Protocol compatibility.
+- Authentication.
+- Authorization.
+- Tool discovery.
+- Tool input schemas.
+- Tool response schemas.
+- Error handling.
+- Long-running tasks.
+- Session handling.
+- Permission boundaries.
+- Tenant isolation.
+- Logging.
+- Read-only tools.
+- Action tools.
+- Approval requirements.
+- Tool revocation.
+
+Use an MCP client test harness to actually call every exposed tool.
+
+Check that MCP responses are derived from real TRUSTRAIL data.
+
+Never create fake successful results.
+
+G. CLI
+
+Test:
+
+- Installation.
+- Login.
+- Logout.
+- Token storage.
+- Token renewal.
+- Project selection.
+- Repository scanning.
+- Scan status.
+- Findings retrieval.
+- Change analysis.
+- Exit codes.
+- Error messages.
+- Configuration files.
+- CI/CD use.
+- Unsupported environments.
+
+Verify that CLI output matches the REST API results.
+
+H. SDKs
+
+If TypeScript or Python SDKs are advertised, test:
+
+- Installation.
+- Authentication.
+- All public methods.
+- Pagination.
+- Error handling.
+- Timeouts.
+- Retries.
+- Types.
+- API compatibility.
+- Documentation examples.
+
+Do not advertise an SDK as supported until it passes these tests.
+
+---
+
+PART 6 — VERIFY ALL SCANNER ENGINES
+
+For every scanner:
+
+- Verify installation.
+- Verify executable availability.
+- Verify version.
+- Verify input handling.
+- Verify timeout.
+- Verify resource limits.
+- Verify error handling.
+- Verify output parsing.
+- Verify severity mapping.
+- Verify finding normalization.
+- Verify duplicate handling.
+- Verify source evidence.
+- Verify result persistence.
+
+Test with safe synthetic vulnerability fixtures.
+
+Test at minimum:
+
+- Known vulnerable dependency.
+- Safe dependency.
+- Synthetic exposed secret.
+- Safe code sample.
+- IaC misconfiguration.
+- Vulnerable container fixture.
+- Invalid file.
+- Empty repository.
+- Very large repository.
+- Unsupported language.
+- Scanner crash.
+- Scanner timeout.
+- Network failure.
+
+Verify that:
+
+- A finding is not created without evidence.
+- A duplicate finding is not created unnecessarily.
+- A scanner failure is reported as a failure, not as a clean scan.
+- An incomplete scan is never described as a fully successful scan.
+- A resolved finding is reopened when the vulnerability is detected again.
+
+---
+
+PART 7 — TEST THE COMPLETE SECURITY WORKFLOWS
+
+These are mandatory end-to-end scenarios.
+
+Scenario 1: Vulnerability to Verified Remediation
+
+1. Connect a test repository.
+2. Run a real scan.
+3. Detect a known safe test vulnerability fixture.
+4. Create a finding.
+5. Link it to the affected dependency.
+6. Link it to the related asset.
+7. Assign a risk score.
+8. Generate an explanation.
+9. Suggest a fix.
+10. Create a remediation patch.
+11. Run the relevant tests.
+12. Create a Pull Request.
+13. Merge the fix in the test repository.
+14. Run a new scan.
+15. Verify the finding is resolved.
+16. Store the evidence.
+17. Update the security graph.
+
+No step may be skipped or simulated as successful.
+
+Scenario 2: Dangerous Infrastructure Change
+
+1. Submit a synthetic Terraform plan.
+2. Detect an unsafe production configuration.
+3. Identify affected assets.
+4. Calculate the impact.
+5. Evaluate the policy.
+6. Block the change in the configured test pipeline.
+7. Record the policy decision.
+8. Submit a compliant change.
+9. Obtain the required approval.
+10. Pass the policy check.
+11. Execute only in the test environment.
+12. Verify actual state.
+13. Produce a Change Receipt.
+
+Scenario 3: Attack Path Discovery
+
+1. Create a test environment with several synthetic assets.
+2. Establish realistic asset relationships.
+3. Introduce a known combination of test misconfigurations.
+4. Run the analysis.
+5. Verify that the expected attack path is identified.
+6. Verify the evidence for each edge.
+7. Resolve one of the contributing risks.
+8. Recalculate the attack path.
+9. Verify that the path is removed or updated correctly.
+
+Scenario 4: Credential Exposure
+
+1. Use a fake test credential.
+2. Introduce it into a test repository.
+3. Run secret scanning.
+4. Confirm safe detection without displaying the full secret.
+5. Generate a finding.
+6. Generate a remediation recommendation.
+7. Revoke the fake credential in the test provider.
+8. Re-scan.
+9. Verify closure.
+
+Scenario 5: AI Agent and MCP Permission Control
+
+1. Create a test agent identity.
+2. Grant limited permissions.
+3. Request an allowed read-only tool.
+4. Verify success.
+5. Request an unauthorized action.
+6. Verify denial.
+7. Request an action requiring approval.
+8. Verify approval workflow.
+9. Change the request payload after approval.
+10. Verify that stale approval is rejected.
+11. Revoke the agent.
+12. Verify that subsequent requests fail.
+
+Scenario 6: Incident Response
+
+1. Create a synthetic security incident.
+2. Associate its assets and findings.
+3. Assign an owner.
+4. Generate a response playbook.
+5. Request an approved test containment action.
+6. Execute it in the sandbox.
+7. Record the result.
+8. Run recovery validation.
+9. Generate a post-incident report.
+10. Verify the complete audit trail.
+
+Scenario 7: Trust Center
+
+1. Create an evidence report.
+2. Generate a secure share link.
+3. Access it as an external viewer.
+4. Verify that only permitted information appears.
+5. Verify expiration.
+6. Revoke the link.
+7. Verify that subsequent access is rejected.
+
+---
+
+PART 8 — VERIFY SECURITY AND DATA INTEGRITY
+
+TRUSTRAIL is itself a cybersecurity product, so its internal security must be treated as critical.
+
+Test:
+
+- Tenant isolation.
+- Authentication.
+- MFA.
+- Passkey support if advertised.
+- Session management.
+- Role permissions.
+- API token security.
+- Connector token encryption.
+- Secret handling.
+- Database access controls.
+- File upload security.
+- Object storage permissions.
+- Webhook validation.
+- Audit integrity.
+- Backup integrity.
+- Restore procedures.
+- Scanner sandbox isolation.
+- AI data boundaries.
+
+Verify that secrets never appear in:
+
+- Frontend bundles.
+- Browser local storage unless specifically justified and protected.
+- Console logs.
+- Application logs.
+- Error responses.
+- Analytics events.
+- Public reports.
+- Screenshots.
+- Unprotected database fields.
+
+Review the platform's own attack surface and dependency vulnerabilities.
+
+Fix all critical and high-risk issues before release, or document a justified mitigation and block release if the risk remains unacceptable.
+
+Do not use production secrets in test fixtures.
+
+---
+
+PART 9 — DATA CONSISTENCY AND DATABASE AUDIT
+
+Test the complete data lifecycle.
+
+For every important entity, verify:
+
+- Creation.
+- Reading.
+- Updating.
+- Deletion or retention behavior.
+- Ownership.
+- Tenant association.
+- Relationships.
+- Validation.
+- Audit history.
+- Pagination.
+
+Check:
+
+- Foreign key integrity.
+- Unique constraints.
+- Missing indexes.
+- Duplicate records.
+- Orphaned records.
+- Migration correctness.
+- Transaction boundaries.
+- Concurrent updates.
+- Race conditions.
+- Background job consistency.
+
+Test database failure and recovery.
+
+Verify that a completed job is not accidentally executed twice.
+
+Verify idempotency when events are delivered multiple times.
+
+Ensure that deleting an integration does not silently corrupt historical audit records.
+
+---
+
+PART 10 — PERFORMANCE AND RELIABILITY
+
+Measure actual performance instead of guessing.
+
+Test:
+
+- Dashboard load time.
+- API response time.
+- Search performance.
+- Large repository scanning.
+- Large findings datasets.
+- Concurrent scans.
+- Background queue processing.
+- Webhook processing.
+- Graph query performance.
+- Export generation.
+- Database load.
+
+Establish realistic performance targets based on the existing architecture.
+
+Suggested initial goals, to be measured rather than claimed:
+
+- Normal dashboard API requests: p95 below 500 ms under representative load.
+- Interactive page loading: no indefinite spinners or blocking failures.
+- Background jobs: clear status and bounded retries.
+- Webhook processing: quick acknowledgment followed by asynchronous processing where appropriate.
+- Scanner workloads: isolated, resource-limited, cancellable.
+
+Test:
+
+- Redis or queue failure.
+- Database connection loss.
+- External API timeout.
+- Rate limit response.
+- Expired credentials.
+- Worker crash.
+- Duplicate webhook.
+- Temporary network interruption.
+- Restart during processing.
+
+Verify graceful recovery.
+
+---
+
+PART 11 — ERROR ELIMINATION AND AUTOMATIC REGRESSION TESTING
+
+Search the project for known and potential software defects.
+
+Run:
+
+- TypeScript type checking.
+- Lint.
+- Formatting checks.
+- Build.
+- Unit tests.
+- Integration tests.
+- API tests.
+- E2E tests.
+- Security tests.
+- Dependency audit.
+- Container scanning.
+- Database migration checks.
+
+Inspect application logs and browser console errors.
+
+Find and fix:
+
+- Runtime exceptions.
+- Unhandled promise rejections.
+- Failed requests.
+- Incorrect loading states.
+- Broken navigation.
+- Invalid forms.
+- Incorrect API data mapping.
+- Race conditions.
+- Incorrect state updates.
+- Missing error boundaries.
+- Unhandled database errors.
+- Failed background jobs.
+- Inconsistent user permissions.
+- Broken responsive layouts.
+- Incorrect date and timezone handling.
+- Incorrect money or numeric formatting where applicable.
+- Duplicate event processing.
+- Data synchronization problems.
+
+For every significant bug:
+
+1. Reproduce the bug.
+2. Determine the root cause.
+3. Fix the root cause.
+4. Add a regression test.
+5. Run the relevant tests.
+6. Run the full affected test suite.
+7. Verify that unrelated workflows still work.
+
+Do not hide errors by suppressing logs or swallowing exceptions.
+
+Do not introduce broad exception handlers that turn failures into fake success responses.
+
+---
+
+PART 12 — REAL INTEGRATION AND API COMPLETENESS GATE
+
+Before release, produce a complete integration inventory.
+
+For each integration provide:
+
+- Provider.
+- Purpose.
+- Required API scopes.
+- Authentication method.
+- Implemented operations.
+- Tested operations.
+- Successful test evidence.
+- Failed operations.
+- Remaining blockers.
+- Rate limits.
+- Webhook status.
+- Reconnection behavior.
+- Security considerations.
+
+Distinguish these states rigorously:
+
+- Implemented.
+- Configured.
+- Authenticated.
+- Connected.
+- Synchronized.
+- Functionally tested.
+- Production-ready.
+
+These terms are not interchangeable.
+
+For example:
+
+A configured AWS connector is not necessarily authenticated.
+
+An authenticated connector is not necessarily synchronized.
+
+A synchronized connector is not necessarily functionally verified.
+
+An API route existing does not mean the corresponding API workflow works.
+
+If a real credential or provider account is unavailable:
+
+- Do not invent credentials.
+- Do not use random production endpoints.
+- Do not claim successful integration.
+- Test the connector using safe contract tests.
+- Mark the live test BLOCKED.
+- Document the precise credentials and scopes needed.
+
+Do not mark external integrations as fully passed without live evidence in a supported test or authorized environment.
+
+---
+
+PART 13 — USER ACCEPTANCE TESTING
+
+Create complete user journeys.
+
+Test as:
+
+Developer
+
+- Create account.
+- Create organization.
+- Create project.
+- Install CLI.
+- Connect repository.
+- Run first scan.
+- Review findings.
+- Analyze attack path.
+- Fix a finding.
+- Create Pull Request.
+- Verify fix.
+- Configure notifications.
+
+Startup Owner
+
+- Create workspace.
+- Invite developers.
+- Assign roles.
+- Connect repositories.
+- Connect AWS.
+- Configure security policy.
+- View risks.
+- Assign remediation tasks.
+- Review changes.
+- Export a security report.
+
+Mid-Market Security Administrator
+
+- Configure SSO where available.
+- Create multiple teams.
+- Configure RBAC.
+- Connect multiple environments.
+- Set policies.
+- Review attack paths.
+- Manage incidents.
+- Review audit logs.
+- Export evidence.
+- Monitor integrations.
+
+AI Agent User
+
+- Connect an authorized MCP client.
+- Authenticate.
+- Discover tools.
+- Query security data.
+- Run an authorized scan.
+- Request remediation.
+- Obtain approval when necessary.
+- Verify that unauthorized actions are denied.
+
+Test every journey from a clean account, not only an existing administrator session.
+
+---
+
+PART 14 — UI AND PRODUCT POLISH
+
+After fixing functional issues, perform a complete product-quality review.
+
+The product must feel like a professional commercial SaaS.
+
+Improve:
+
+- Navigation consistency.
+- Page layouts.
+- Visual hierarchy.
+- Information density.
+- Typography.
+- Color contrast.
+- Forms.
+- Tables.
+- Charts.
+- Graph visualizations.
+- Empty states.
+- Error messages.
+- Onboarding.
+- Tooltips.
+- Documentation links.
+- Responsive layouts.
+- Accessibility.
+
+Avoid decorative features that do not help the user.
+
+Do not add new features merely to make the dashboard look full.
+
+Make critical information immediately understandable.
+
+A developer must be able to identify and act on a security problem without needing to understand the internal architecture of TRUSTRAIL.
+
+---
+
+PART 15 — DOCUMENTATION AND API VALIDATION
+
+Verify that actual implementation matches documentation.
+
+Generate or update:
+
+- OpenAPI specification.
+- API authentication guide.
+- API endpoint documentation.
+- CLI documentation.
+- MCP tools documentation.
+- SDK documentation.
+- GitHub App setup.
+- AWS integration setup.
+- Terraform integration guide.
+- Scanner documentation.
+- Permission scope documentation.
+- Troubleshooting guide.
+- Error code reference.
+- Webhook event reference.
+- Deployment guide.
+
+Automatically compare registered routes with documented routes.
+
+Fail the validation if:
+
+- A required endpoint is undocumented.
+- Documentation describes an endpoint that does not exist.
+- An endpoint has a different request schema.
+- A response schema is incorrect.
+- An advertised connector operation is missing.
+
+Verify example requests and responses using the actual implementation.
+
+---
+
+PART 16 — FINAL RELEASE GATES
+
+Do not declare the product production-ready until all mandatory gates have been assessed.
+
+Gate A — Core Functionality
+
+- All advertised core workflows pass.
+- No broken critical pages.
+- No nonfunctional main buttons.
+- No missing critical backend operations.
+- Data persists correctly.
+- User journeys work end to end.
+
+Gate B — API
+
+- All required API operations implemented.
+- OpenAPI documentation matches implementation.
+- Authentication and authorization tested.
+- Tenant isolation verified.
+- Input validation and errors tested.
+- Rate limiting tested.
+
+Gate C — Integrations
+
+- Required connectors implemented.
+- Available live connectors authenticated.
+- Available live connectors functionally tested.
+- Failed and blocked connections reported accurately.
+- No false successful states.
+
+Gate D — Cybersecurity
+
+- No unresolved critical vulnerabilities.
+- No unresolved high-risk issue without an approved mitigation.
+- Tenant isolation verified.
+- Secrets protected.
+- Sensitive operations require correct permissions.
+- Audit logs verified.
+- No unsafe default privileges.
+
+Gate E — Reliability
+
+- Critical workflows survive expected transient failures.
+- Background jobs recover correctly.
+- Migrations work.
+- Backups and recovery documented and tested.
+- No unresolved data corruption issue.
+
+Gate F — User Experience
+
+- No broken critical navigation.
+- No fatal browser errors.
+- No critical form failures.
+- No infinite loading.
+- No unresolved critical responsive issues.
+- Core onboarding completed successfully.
+
+Gate G — Testing
+
+- Build succeeds.
+- Type checks succeed.
+- Lint succeeds.
+- Unit tests pass.
+- Integration tests pass.
+- Critical E2E tests pass.
+- Security regression tests pass.
+
+If a gate cannot be passed because an external credential, account, environment, or provider dependency is missing, label it BLOCKED and explain exactly why.
+
+Do not convert BLOCKED into PASS.
+
+Do not conceal failing tests.
+
+---
+
+PART 17 — REQUIRED FINAL DELIVERABLES
+
+Produce the following files in the repository:
+
+1. "QUALITY_AUDIT_BASELINE.md"
+2. "FEATURE_COMPLETENESS_MATRIX.md"
+3. "API_COMPLETENESS_MATRIX.md"
+4. "INTEGRATION_AUDIT_REPORT.md"
+5. "FRONTEND_QA_REPORT.md"
+6. "SECURITY_AUDIT_REPORT.md"
+7. "PERFORMANCE_REPORT.md"
+8. "BUG_FIX_LOG.md"
+9. "REGRESSION_TEST_REPORT.md"
+10. "USER_ACCEPTANCE_TEST_REPORT.md"
+11. "PRODUCTION_READINESS_REPORT.md"
+12. "REMAINING_BLOCKERS.md"
+13. "DEPLOYMENT_CHECKLIST.md"
+
+The final readiness report must contain:
+
+- Total features assessed.
+- Features fully passed.
+- Features partial.
+- Features failed.
+- Features blocked.
+- API endpoints assessed.
+- API endpoints passed.
+- Integrations assessed.
+- Integrations successfully tested live.
+- Integrations blocked by credentials.
+- Number of bugs discovered.
+- Number of bugs fixed.
+- Number of regression tests added.
+- Unit test results.
+- Integration test results.
+- E2E test results.
+- Security test results.
+- Remaining high-risk issues.
+- Remaining blockers.
+- Actual build status.
+- Actual deployment status.
+
+Include commands executed and actual outcomes.
+
+Do not invent numbers or claim tests were run when they were not.
+
+---
+
+PART 18 — EXECUTION RULES
+
+You must work on the actual existing repository.
+
+Do not return only a written audit plan.
+
+Do not stop after inspecting the code.
+
+Perform the tests, diagnose failures, modify the code, add missing implementations when appropriate, and repeat the tests.
+
+Do not rewrite the entire application unnecessarily.
+
+Prefer focused, safe, incremental fixes.
+
+Protect existing customer data.
+
+Never run destructive tests against production infrastructure.
+
+Use synthetic test environments for risky operations.
+
+Never expose secrets in reports.
+
+Never disable existing security protections to make a test pass.
+
+Never mark a function as working merely because an exception was caught.
+
+Do not silently skip tests.
+
+If you cannot run a test, record it as NOT RUN or BLOCKED, not PASS.
+
+Do not make an unsupported guarantee of zero bugs.
+
+Your goal is to eliminate all known defects within the available scope and make the remaining limitations explicit.
+
+When external user action is necessary, provide an exact list of the required accounts, permissions, credentials, environment variables, and setup steps. Never fabricate them.
+
+FINAL INSTRUCTION
+
+Begin immediately with the complete repository audit.
+
+Then execute the full test and repair cycle.
+
+Continue until all available and authorized validation tasks are complete.
+
+The final result must be the actual repaired and verified TRUSTRAIL application, not a proposal for how it could be repaired.
+
+A feature is complete only when a real user can use it, the backend performs the promised operation, the data is correct, the permissions are enforced, errors are handled properly, and the behavior is covered by repeatable tests.
+
+A connector is complete only when it successfully communicates with its real provider in an authorized test or production environment and performs its advertised operations.
+
+TRUSTRAIL must never claim to protect, detect, prevent, repair, or verify something that it has not actually tested and demonstrated.
